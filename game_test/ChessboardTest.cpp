@@ -24,37 +24,32 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
+#include "ChessboardTest.h"
 
-#include "game/File.h"
-#include "game/Rank.h"
+#include <game/Position.h>
+#include <game/Chessboard.h>
+#include <game/Square.h>
+#include <QtTest/QtTest>
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-
-namespace Chess
+ChessboardTest::ChessboardTest(QObject *parent)
+    : QObject(parent)
 {
 
-class Position;
-class Square;
+}
 
-class Chessboard : public QObject
+void ChessboardTest::shouldCreate8x8Board()
 {
-    Q_OBJECT
-public:
-    const int CHESS_SIZE = 8;
+    Chess::Chessboard sut;
+    const Chess::Square* a1 = sut.squareAt(Chess::Position(Chess::File::A, Chess::Rank::R1));
+    QVERIFY(a1 != nullptr);
+    QVERIFY(a1->position() == Chess::Position(Chess::File::A, Chess::Rank::R1));
 
-public:
-    explicit Chessboard(QObject *parent = nullptr);
+    const Chess::Square* a8 = sut.squareAt(Chess::Position(Chess::File::A, Chess::Rank::R8));
+    QVERIFY(a8 != nullptr);
+    QVERIFY(a8->position() == Chess::Position(Chess::File::A, Chess::Rank::R8));
 
-    Square* squareAt(const Position& pos);
-    const Square* squareAt(const Position& pos) const;
+    const Chess::Square* e4 = sut.squareAt(Chess::Position(Chess::File::E, Chess::Rank::R4));
+    QVERIFY(e4 != nullptr);
+    QVERIFY(e4->position() == Chess::Position(Chess::File::E, Chess::Rank::R4));
+}
 
-private:
-    QVector<Square*> m_squares;
-};
-
-} // namespace Chess
-
-#endif // CHESSBOARD_H

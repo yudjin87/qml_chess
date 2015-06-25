@@ -50,6 +50,9 @@ private:
     const Rank m_rank;
 };
 
+bool operator==(const Position& one, const Position& other);
+bool operator!=(const Position& one, const Position& other);
+
 } // namespace Chess
 
 #endif // POSITION_H

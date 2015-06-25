@@ -53,4 +53,14 @@ Color Position::color() const
     return odd ? Color::Light : Color::Dark;
 }
 
+bool operator==(const Position &one, const Position &other)
+{
+    return (one.file() == other.file()) && (one.rank() == other.rank());
+}
+
+bool operator!=(const Position &one, const Position &other)
+{
+    return !(one == other);
+}
+
 } // namespace Chess

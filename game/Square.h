@@ -30,6 +30,7 @@
 #include "game/Color.h"
 #include "game/File.h"
 #include "game/Rank.h"
+#include "game/Position.h"
 
 #include <QtCore/QObject>
 
@@ -42,17 +43,17 @@ class Square : public QObject
 {
     Q_OBJECT
 public:
+    Square(Chessboard &parent, const Position& pos);
     Square(Chessboard &parent, const File file, const Rank rank);
 
-    // TODO: move to Position class
+    Position position() const;
     File file() const;
     Rank rank() const;
     Color color() const;
 
 private:
     Chessboard& m_board;
-    const File m_file;
-    const Rank m_rank;
+    const Position m_position;
 };
 
 } // namespace Chess

@@ -19,11 +19,13 @@ LIBS += -L$${DESTDIR}/../bin -lgame
 
 SOURCES += main.cpp \
     SquareTest.cpp \
-    PositionTest.cpp
+    PositionTest.cpp \
+    ChessboardTest.cpp
 
 HEADERS += \
     SquareTest.h \
-    PositionTest.h
+    PositionTest.h \
+    ChessboardTest.h
 
 
 win32-msvc* {

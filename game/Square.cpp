@@ -30,30 +30,36 @@
 namespace Chess
 {
 
-Square::Square(Chessboard &parent, const File file, const Rank rank)
+Square::Square(Chessboard &parent, const Position &pos)
     : QObject(&parent)
     , m_board(parent)
-    , m_file(file)
-    , m_rank(rank)
+    , m_position(pos)
 {
+}
+
+Square::Square(Chessboard &parent, const File file, const Rank rank)
+    : Square(parent, Position(file, rank))
+{
+}
+
+Position Square::position() const
+{
+    return m_position;
 }
 
 File Square::file() const
 {
-    return m_file;
+    return m_position.file();
 }
 
 Rank Square::rank() const
 {
-    return m_rank;
+    return m_position.rank();
 }
 
 Color Square::color() const
 {
-    const int rank = static_cast<int>(m_rank);
-    const int file = static_cast<int>(m_file);
-    const bool odd = ((rank + file) % 2) == 1;
-    return odd ? Color::Light : Color::Dark;
+    return m_position.color();
 }
 
 } // namespace Chess

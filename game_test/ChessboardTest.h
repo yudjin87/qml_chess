@@ -24,37 +24,19 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
-
-#include "game/File.h"
-#include "game/Rank.h"
+#ifndef CHESSBOARDTEST_H
+#define CHESSBOARDTEST_H
 
 #include <QtCore/QObject>
-#include <QtCore/QVector>
 
-namespace Chess
-{
-
-class Position;
-class Square;
-
-class Chessboard : public QObject
+class ChessboardTest : public QObject
 {
     Q_OBJECT
 public:
-    const int CHESS_SIZE = 8;
+    explicit ChessboardTest(QObject *parent = nullptr);
 
-public:
-    explicit Chessboard(QObject *parent = nullptr);
-
-    Square* squareAt(const Position& pos);
-    const Square* squareAt(const Position& pos) const;
-
-private:
-    QVector<Square*> m_squares;
+private slots:
+    void shouldCreate8x8Board();
 };
 
-} // namespace Chess
-
-#endif // CHESSBOARD_H
+#endif // CHESSBOARDTEST_H

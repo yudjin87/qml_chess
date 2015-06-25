@@ -10,6 +10,7 @@ win32-msvc* {
     QMAKE_CXXFLAGS += /Wall
     QMAKE_CXXFLAGS += /WX
     QMAKE_CXXFLAGS += /wd4350 # xstring(684) : warning C4350: behavior change:...
+    QMAKE_CXXFLAGS += /wd4619 # qvector.h(273) : warning C4619: #pragma warning : there is no warning number '4345'
 }
 
 INCLUDEPATH += $$CHESS_SOURCE_TREE_ROOT
@@ -47,9 +48,9 @@ BIN_OUTPUT_PATH = $${CHESS_SOURCE_TREE_ROOT}/product/$${BUILD_CONFIG}
 DESTDIR         = $${BIN_OUTPUT_PATH}/bin
 
 # Store intermediate stuff somewhere else
-OBJECTS_DIR     = $${PAINTER_WD}/intermediate/$${BUILD_CONFIG}/obj/$${TARGET}
-MOC_DIR         = $${PAINTER_WD}/intermediate/$${BUILD_CONFIG}/moc/$${TARGET}
-RCC_DIR         = $${PAINTER_WD}/intermediate/$${BUILD_CONFIG}/rcc/$${TARGET}
-UI_DIR          = $${PAINTER_WD}/intermediate/$${BUILD_CONFIG}/ui/$${TARGET}
-UI_HEADERS_DIR  = $${PAINTER_WD}/intermediate/$${BUILD_CONFIG}/ui/$${TARGET}
-UI_SOURCES_DIR  = $${PAINTER_WD}/intermediate/$${BUILD_CONFIG}/ui/$${TARGET}
+OBJECTS_DIR     = $${BIN_OUTPUT_PATH}/intermediate/obj/$${TARGET}
+MOC_DIR         = $${BIN_OUTPUT_PATH}/intermediate/moc/$${TARGET}
+RCC_DIR         = $${BIN_OUTPUT_PATH}/intermediate/rcc/$${TARGET}
+UI_DIR          = $${BIN_OUTPUT_PATH}/intermediate/ui/$${TARGET}
+UI_HEADERS_DIR  = $${BIN_OUTPUT_PATH}/intermediate/ui/$${TARGET}
+UI_SOURCES_DIR  = $${BIN_OUTPUT_PATH}/intermediate/ui/$${TARGET}

@@ -24,6 +24,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
+#include "ChessboardTest.h"
 #include "SquareTest.h"
 #include "PositionTest.h"
 
@@ -33,6 +34,9 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+
+    ChessboardTest chessboardTest;
+    QTest::qExec(&chessboardTest, argc, argv);
 
     SquareTest squareTest;
     QTest::qExec(&squareTest, argc, argv);
