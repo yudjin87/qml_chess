@@ -24,29 +24,33 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
-
-#include "game/File.h"
-#include "game/Rank.h"
-
-#include <QtCore/QObject>
+#include "game/Position.h"
 
 namespace Chess
 {
 
-class Square;
-
-class Chessboard : public QObject
+Position::Position(const File file, const Rank rank)
+    : m_file(file)
+    , m_rank(rank)
 {
-    Q_OBJECT
-public:
-    explicit Chessboard(QObject *parent = nullptr);
+}
 
-    //Square* squareAt(const File file, const Rank)
+File Position::file() const
+{
+    return m_file;
+}
 
-};
+Rank Position::rank() const
+{
+    return m_rank;
+}
+
+Color Position::color() const
+{
+    const int rank = static_cast<int>(m_rank);
+    const int file = static_cast<int>(m_file);
+    const bool odd = ((rank + file) % 2) == 1;
+    return odd ? Color::Light : Color::Dark;
+}
 
 } // namespace Chess
-
-#endif // CHESSBOARD_H

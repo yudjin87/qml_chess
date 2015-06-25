@@ -20,11 +20,13 @@ SOURCES += Square.cpp \
     Chessboard.cpp \
     File.cpp \
     Rank.cpp \
-    Color.cpp
+    Color.cpp \
+    Position.cpp
 
 HEADERS += \
     Square.h \
     Chessboard.h \
     File.h \
     Rank.h \
-    Color.h
+    Color.h \
+    Position.h

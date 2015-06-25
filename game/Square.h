@@ -42,8 +42,9 @@ class Square : public QObject
 {
     Q_OBJECT
 public:
-    explicit Square(Chessboard &parent, const File file, const Rank rank);
+    Square(Chessboard &parent, const File file, const Rank rank);
 
+    // TODO: move to Position class
     File file() const;
     Rank rank() const;
     Color color() const;

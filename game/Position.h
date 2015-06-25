@@ -24,9 +24,10 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
+#ifndef POSITION_H
+#define POSITION_H
 
+#include "game/Color.h"
 #include "game/File.h"
 #include "game/Rank.h"
 
@@ -35,18 +36,20 @@
 namespace Chess
 {
 
-class Square;
-
-class Chessboard : public QObject
+class Position
 {
-    Q_OBJECT
 public:
-    explicit Chessboard(QObject *parent = nullptr);
+    Position(const File file, const Rank rank);
 
-    //Square* squareAt(const File file, const Rank)
+    File file() const;
+    Rank rank() const;
+    Color color() const;
 
+private:
+    const File m_file;
+    const Rank m_rank;
 };
 
 } // namespace Chess
 
-#endif // CHESSBOARD_H
+#endif // POSITION_H

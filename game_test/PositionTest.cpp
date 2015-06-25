@@ -24,29 +24,39 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
+#include "PositionTest.h"
+#include <game/Position.h>
+#include <QtTest/QtTest>
 
-#include "game/File.h"
-#include "game/Rank.h"
-
-#include <QtCore/QObject>
-
-namespace Chess
+PositionTest::PositionTest(QObject *parent)
+    : QObject(parent)
 {
+}
 
-class Square;
-
-class Chessboard : public QObject
+void PositionTest::shouldCalculateColor()
 {
-    Q_OBJECT
-public:
-    explicit Chessboard(QObject *parent = nullptr);
+    {
+        Chess::Position sut(Chess::File::A, Chess::Rank::R1);
+        QVERIFY(sut.color() == Chess::Color::Dark);
+    }
 
-    //Square* squareAt(const File file, const Rank)
+    {
+        Chess::Position sut(Chess::File::A, Chess::Rank::R8);
+        QVERIFY(sut.color() == Chess::Color::Light);
+    }
 
-};
+    {
+        Chess::Position sut(Chess::File::H, Chess::Rank::R8);
+        QVERIFY(sut.color() == Chess::Color::Dark);
+    }
 
-} // namespace Chess
+    {
+        Chess::Position sut(Chess::File::H, Chess::Rank::R1);
+        QVERIFY(sut.color() == Chess::Color::Light);
+    }
 
-#endif // CHESSBOARD_H
+    {
+        Chess::Position sut(Chess::File::E, Chess::Rank::R4);
+        QVERIFY(sut.color() == Chess::Color::Light);
+    }
+}

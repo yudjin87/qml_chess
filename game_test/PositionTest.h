@@ -24,29 +24,19 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
-
-#include "game/File.h"
-#include "game/Rank.h"
+#ifndef POSITIONTEST_H
+#define POSITIONTEST_H
 
 #include <QtCore/QObject>
 
-namespace Chess
-{
-
-class Square;
-
-class Chessboard : public QObject
+class PositionTest : public QObject
 {
     Q_OBJECT
 public:
-    explicit Chessboard(QObject *parent = nullptr);
+    explicit PositionTest(QObject *parent = nullptr);
 
-    //Square* squareAt(const File file, const Rank)
-
+private slots:
+    void shouldCalculateColor();
 };
 
-} // namespace Chess
-
-#endif // CHESSBOARD_H
+#endif // POSITIONTEST_H

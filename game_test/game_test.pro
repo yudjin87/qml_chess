@@ -18,10 +18,12 @@ TEMPLATE = app
 LIBS += -L$${DESTDIR}/../bin -lgame
 
 SOURCES += main.cpp \
-    SquareTest.cpp
+    SquareTest.cpp \
+    PositionTest.cpp
 
 HEADERS += \
-    SquareTest.h
+    SquareTest.h \
+    PositionTest.h
 
 
 win32-msvc* {

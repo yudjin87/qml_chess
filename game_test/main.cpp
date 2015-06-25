@@ -25,6 +25,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "SquareTest.h"
+#include "PositionTest.h"
+
 #include <QtCore/QCoreApplication>
 #include <QtTest/QtTest>
 
@@ -34,6 +36,9 @@ int main(int argc, char *argv[])
 
     SquareTest squareTest;
     QTest::qExec(&squareTest, argc, argv);
+
+    PositionTest positionTest;
+    QTest::qExec(&positionTest, argc, argv);
 
     return 0;
 }
