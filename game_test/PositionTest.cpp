@@ -94,6 +94,9 @@ void PositionTest::preIncrementTest()
     Chess::Position h1(Chess::File::H, Chess::Rank::R1);
     Chess::Position a2(Chess::File::A, Chess::Rank::R2);
     QVERIFY(++h1 == a2);
+
+    Chess::Position h8(Chess::File::H, Chess::Rank::R8);
+    QVERIFY(++h8 == Chess::Position(Chess::File::A, Chess::Rank::R1));
 }
 
 void PositionTest::loopTest()
