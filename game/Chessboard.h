@@ -29,6 +29,7 @@
 
 #include "game/game_api.h"
 #include "game/File.h"
+#include "game/Constants.h"
 #include "game/Rank.h"
 
 #include <QtCore/QObject>
@@ -43,8 +44,6 @@ class Square;
 class GAME_API Chessboard : public QObject
 {
     Q_OBJECT
-public:
-    const int CHESS_SIZE = 8;
 
 public:
     explicit Chessboard(QObject *parent = nullptr);

@@ -37,6 +37,7 @@ public:
 
 private slots:
     void shouldCalculateColor();
+    void indexTest();
     void operatorLessTest();
     void preIncrementTest();
     void loopTest();

@@ -31,4 +31,5 @@ HEADERS += \
     Rank.h \
     Color.h \
     Position.h \
-    game_api.h
+    game_api.h \
+    Constants.h

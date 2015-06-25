@@ -49,6 +49,7 @@ public:
     File file() const;
     Rank rank() const;
     Color color() const;
+    int index() const;
 
     QString toString() const;
 

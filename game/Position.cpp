@@ -25,6 +25,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "game/Position.h"
+#include "game/Constants.h"
 
 namespace Chess
 {
@@ -72,8 +73,16 @@ Color Position::color() const
 {
     const int rank = static_cast<int>(m_rank);
     const int file = static_cast<int>(m_file);
-    const bool odd = ((rank + file) % 2) == 1;
+    const bool odd = ((file + rank) % 2) == 1;
+
     return odd ? Color::Light : Color::Dark;
+}
+
+int Position::index() const
+{
+    const int rank = static_cast<int>(m_rank);
+    const int file = static_cast<int>(m_file);
+    return ((rank * CHESS_SIZE) + file);
 }
 
 QString Position::toString() const

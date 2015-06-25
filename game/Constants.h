@@ -24,32 +24,15 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef RANK_H
-#define RANK_H
-
-#include "game/game_api.h"
-#include <QtCore/QString>
+#ifndef CONSTANTS
+#define CONSTANTS
 
 namespace Chess
 {
 
-enum class Rank
-{
-    R1 = 0,
-    R2,
-    R3,
-    R4,
-    R5,
-    R6,
-    R7,
-    R8
-};
-
-GAME_API QString toString(const Rank rank);
-
-GAME_API Rank next(const Rank current);
-GAME_API Rank prev(const Rank current);
+const int CHESS_SIZE = 8;
 
 } // namespace Chess
 
-#endif // RANK_H
+#endif // CONSTANTS
+

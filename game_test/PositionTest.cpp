@@ -61,6 +61,15 @@ void PositionTest::shouldCalculateColor()
     }
 }
 
+void PositionTest::indexTest()
+{
+    Chess::Position a1(Chess::File::A, Chess::Rank::R1);
+    QCOMPARE(a1.index(), 0);
+
+    Chess::Position h8(Chess::File::H, Chess::Rank::R8);
+    QCOMPARE(h8.index(), 63);
+}
+
 void PositionTest::operatorLessTest()
 {
     Chess::Position a1(Chess::File::A, Chess::Rank::R1);

@@ -35,7 +35,7 @@ namespace Chess
 
 enum class File
 {
-    A = 1,
+    A = 0,
     B,
     C,
     D,
