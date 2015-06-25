@@ -1,0 +1,15 @@
+product/
+Makefile*
+Makefile.*
+
+# back-up files
+*~
+
+#QtCreator user files
+*.user*
+
+#QtCreator qutosaves
+*.autosave
+
+#KDE dolphin
+.directory
