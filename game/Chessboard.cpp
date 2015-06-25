@@ -37,15 +37,11 @@ Chessboard::Chessboard(QObject *parent)
     : QObject(parent)
     , m_squares()
 {
-    for (int f = 0; f < CHESS_SIZE; ++f)
+    for (Position p = Position(File::A, Rank::R1); p < Position(File::H, Rank::R8); ++p)
     {
-        for (int r = 0; r < CHESS_SIZE; ++r)
-        {
-            const Rank rank = static_cast<Rank>(r + 1);
-            const File file = static_cast<File>(f + 1);
-            m_squares.push_back(new Square(*this, Position(file, rank)));
-        }
+        m_squares.push_back(new Square(*this, p));
     }
+    m_squares.push_back(new Square(*this, Position(File::H, Rank::R8)));
 }
 
 Square *Chessboard::squareAt(const Position &pos)

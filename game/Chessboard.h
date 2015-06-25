@@ -27,6 +27,7 @@
 #ifndef CHESSBOARD_H
 #define CHESSBOARD_H
 
+#include "game/game_api.h"
 #include "game/File.h"
 #include "game/Rank.h"
 
@@ -39,7 +40,7 @@ namespace Chess
 class Position;
 class Square;
 
-class Chessboard : public QObject
+class GAME_API Chessboard : public QObject
 {
     Q_OBJECT
 public:

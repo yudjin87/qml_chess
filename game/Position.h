@@ -27,31 +27,42 @@
 #ifndef POSITION_H
 #define POSITION_H
 
+#include "game/game_api.h"
 #include "game/Color.h"
 #include "game/File.h"
 #include "game/Rank.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QString>
 
 namespace Chess
 {
 
-class Position
+class GAME_API Position
 {
 public:
     Position(const File file, const Rank rank);
+
+    Position& operator++();
+    Position operator++(int);
 
     File file() const;
     Rank rank() const;
     Color color() const;
 
+    QString toString() const;
+
 private:
-    const File m_file;
-    const Rank m_rank;
+    File m_file;
+    Rank m_rank;
 };
 
-bool operator==(const Position& one, const Position& other);
-bool operator!=(const Position& one, const Position& other);
+GAME_API bool operator==(const Position& one, const Position& other);
+GAME_API bool operator!=(const Position& one, const Position& other);
+GAME_API bool operator<(const Position& one, const Position& other);
+GAME_API bool operator<=(const Position& one, const Position& other);
+GAME_API bool operator>(const Position& one, const Position& other);
+GAME_API bool operator>=(const Position& one, const Position& other);
 
 } // namespace Chess
 

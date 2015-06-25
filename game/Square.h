@@ -27,6 +27,7 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
+#include "game/game_api.h"
 #include "game/Color.h"
 #include "game/File.h"
 #include "game/Rank.h"
@@ -39,7 +40,7 @@ namespace Chess
 
 class Chessboard;
 
-class Square : public QObject
+class GAME_API Square : public QObject
 {
     Q_OBJECT
 public:

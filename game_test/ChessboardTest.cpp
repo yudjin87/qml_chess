@@ -51,5 +51,9 @@ void ChessboardTest::shouldCreate8x8Board()
     const Chess::Square* e4 = sut.squareAt(Chess::Position(Chess::File::E, Chess::Rank::R4));
     QVERIFY(e4 != nullptr);
     QVERIFY(e4->position() == Chess::Position(Chess::File::E, Chess::Rank::R4));
+
+    const Chess::Square* h8 = sut.squareAt(Chess::Position(Chess::File::H, Chess::Rank::R8));
+    QVERIFY(h8 != nullptr);
+    QVERIFY(h8->position() == Chess::Position(Chess::File::H, Chess::Rank::R8));
 }
 

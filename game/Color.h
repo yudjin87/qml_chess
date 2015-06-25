@@ -27,7 +27,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-
+#include "game/game_api.h"
 #include <QtCore/QString>
 
 namespace Chess
@@ -39,7 +39,7 @@ enum class Color
     Light
 };
 
-QString toString(const Color color);
+GAME_API QString toString(const Color color);
 
 } // namespace Chess
 

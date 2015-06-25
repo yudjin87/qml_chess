@@ -27,6 +27,7 @@
 #ifndef RANK_H
 #define RANK_H
 
+#include "game/game_api.h"
 #include <QtCore/QString>
 
 namespace Chess
@@ -44,7 +45,10 @@ enum class Rank
     R8
 };
 
-QString toString(const Rank rank);
+GAME_API QString toString(const Rank rank);
+
+GAME_API Rank next(const Rank current);
+GAME_API Rank prev(const Rank current);
 
 } // namespace Chess
 

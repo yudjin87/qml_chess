@@ -15,6 +15,7 @@ CONFIG   -= app_bundle
 
 TEMPLATE = lib
 
+DEFINES += GAME_LIB_IMPORT
 
 SOURCES += Square.cpp \
     Chessboard.cpp \
@@ -29,4 +30,5 @@ HEADERS += \
     File.h \
     Rank.h \
     Color.h \
-    Position.h
+    Position.h \
+    game_api.h

@@ -14,7 +14,7 @@ win32-msvc* {
 }
 
 INCLUDEPATH += $$CHESS_SOURCE_TREE_ROOT
-CONFIG += static # better for tests
+#CONFIG += static # better for tests
 
 #########################################################
 # Format binary output path:

@@ -60,3 +60,40 @@ void PositionTest::shouldCalculateColor()
         QVERIFY(sut.color() == Chess::Color::Light);
     }
 }
+
+void PositionTest::operatorLessTest()
+{
+    Chess::Position a1(Chess::File::A, Chess::Rank::R1);
+    Chess::Position a2(Chess::File::A, Chess::Rank::R2);
+    QVERIFY(a1 < a2);
+    QVERIFY(a2 <= a2);
+
+    Chess::Position b1(Chess::File::B, Chess::Rank::R1);
+    QVERIFY(b1 < a2);
+    QVERIFY((a2 < b1) == false);
+
+    Chess::Position h8(Chess::File::H, Chess::Rank::R8);
+    QVERIFY(a1 < h8);
+}
+
+void PositionTest::preIncrementTest()
+{
+    Chess::Position a1(Chess::File::A, Chess::Rank::R1);
+    Chess::Position b1(Chess::File::B, Chess::Rank::R1);
+    QVERIFY(++a1 == b1);
+
+    Chess::Position h1(Chess::File::H, Chess::Rank::R1);
+    Chess::Position a2(Chess::File::A, Chess::Rank::R2);
+    QVERIFY(++h1 == a2);
+}
+
+void PositionTest::loopTest()
+{
+    int counter = 1;
+    for (Chess::Position p = Chess::Position(Chess::File::A, Chess::Rank::R1); p < Chess::Position(Chess::File::H, Chess::Rank::R8); ++p)
+    {
+        ++counter;
+    }
+
+    QCOMPARE(counter, 64);
+}

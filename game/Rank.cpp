@@ -47,5 +47,41 @@ QString toString(const Rank rank)
     return "INVALID RANK";
 }
 
+Rank next(const Rank current)
+{
+    switch (current)
+    {
+    case Rank::R1: return Rank::R2;
+    case Rank::R2: return Rank::R3;
+    case Rank::R3: return Rank::R4;
+    case Rank::R4: return Rank::R5;
+    case Rank::R5: return Rank::R6;
+    case Rank::R6: return Rank::R7;
+    case Rank::R7: return Rank::R8;
+    case Rank::R8: return Rank::R1;
+    }
+
+    Q_ASSERT(false && "Illegal value");
+    return Rank::R1;
+}
+
+Rank prev(const Rank current)
+{
+    switch (current)
+    {
+    case Rank::R1: return Rank::R8;
+    case Rank::R2: return Rank::R1;
+    case Rank::R3: return Rank::R2;
+    case Rank::R4: return Rank::R3;
+    case Rank::R5: return Rank::R4;
+    case Rank::R6: return Rank::R5;
+    case Rank::R7: return Rank::R6;
+    case Rank::R8: return Rank::R7;
+    }
+
+    Q_ASSERT(false && "Illegal value");
+    return Rank::R1;
+}
+
 } // namespace Chess
 

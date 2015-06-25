@@ -27,6 +27,7 @@
 #ifndef FILE_H
 #define FILE_H
 
+#include "game/game_api.h"
 #include <QtCore/QString>
 
 namespace Chess
@@ -44,7 +45,10 @@ enum class File
     H
 };
 
-QString toString(const File file);
+GAME_API QString toString(const File file);
+
+GAME_API File next(const File current);
+GAME_API File prev(const File current);
 
 } // namespace Chess
 #endif // FILE_H

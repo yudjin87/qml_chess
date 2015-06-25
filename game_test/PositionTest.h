@@ -37,6 +37,9 @@ public:
 
 private slots:
     void shouldCalculateColor();
+    void operatorLessTest();
+    void preIncrementTest();
+    void loopTest();
 };
 
 #endif // POSITIONTEST_H

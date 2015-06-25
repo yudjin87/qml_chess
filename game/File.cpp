@@ -46,4 +46,40 @@ QString toString(const Chess::File file)
     return "INVALID File";
 }
 
+File next(const File current)
+{
+    switch (current)
+    {
+    case File::A: return File::B;
+    case File::B: return File::C;
+    case File::C: return File::D;
+    case File::D: return File::E;
+    case File::E: return File::F;
+    case File::F: return File::G;
+    case File::G: return File::H;
+    case File::H: return File::A;
+    }
+
+    Q_ASSERT(false && "Illegal value");
+    return File::A;
+}
+
+File prev(const File current)
+{
+    switch (current)
+    {
+    case File::A: return File::H;
+    case File::B: return File::A;
+    case File::C: return File::B;
+    case File::D: return File::C;
+    case File::E: return File::D;
+    case File::F: return File::E;
+    case File::G: return File::F;
+    case File::H: return File::G;
+    }
+
+    Q_ASSERT(false && "Illegal value");
+    return File::A;
+}
+
 } // namespace Chess

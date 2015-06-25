@@ -29,10 +29,33 @@
 namespace Chess
 {
 
+namespace
+{
+int compare(const Position &one, const Position &other);
+}
+
 Position::Position(const File file, const Rank rank)
     : m_file(file)
     , m_rank(rank)
 {
+}
+
+Position Position::operator++(int)
+{
+    Position temp = *this;
+    this->operator ++();
+    return temp;
+}
+
+Position &Position::operator++()
+{
+    m_file = next(m_file);
+    if (m_file == File::A)
+    {
+        m_rank = next(m_rank);
+    }
+
+    return *this;
 }
 
 File Position::file() const
@@ -53,6 +76,11 @@ Color Position::color() const
     return odd ? Color::Light : Color::Dark;
 }
 
+QString Position::toString() const
+{
+    return QString("%1%2").arg(Chess::toString(m_file)).arg(Chess::toString(m_rank));
+}
+
 bool operator==(const Position &one, const Position &other)
 {
     return (one.file() == other.file()) && (one.rank() == other.rank());
@@ -62,5 +90,53 @@ bool operator!=(const Position &one, const Position &other)
 {
     return !(one == other);
 }
+
+bool operator<(const Position &one, const Position &other)
+{
+    return (compare(one, other) < 0);
+}
+
+bool operator<=(const Position &one, const Position &other)
+{
+    return (compare(one, other) <= 0);
+}
+
+bool operator>(const Position &one, const Position &other)
+{
+    return (compare(one, other) > 0);
+}
+
+bool operator>=(const Position &one, const Position &other)
+{
+    return (compare(one, other) >= 0);
+}
+
+namespace
+{
+int compare(const Position &one, const Position &other)
+{
+    if (one.rank() < other.rank())
+    {
+        return -1;
+    }
+    else if (one.rank() > other.rank())
+    {
+        return 1;
+    }
+
+    if (one.file() < other.file())
+    {
+        return -1;
+    }
+    else if (one.file() > other.file())
+    {
+        return 1;
+    }
+
+    return 0;
+}
+}
+
+// namespace
 
 } // namespace Chess
