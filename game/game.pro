@@ -22,7 +22,8 @@ SOURCES += Square.cpp \
     File.cpp \
     Rank.cpp \
     Color.cpp \
-    Position.cpp
+    Position.cpp \
+    Piece.cpp
 
 HEADERS += \
     Square.h \
@@ -32,4 +33,5 @@ HEADERS += \
     Color.h \
     Position.h \
     game_api.h \
-    Constants.h
+    Constants.h \
+    Piece.h
