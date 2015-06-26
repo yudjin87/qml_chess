@@ -50,6 +50,10 @@ public:
 
     Square* squareAt(const Position& pos);
     const Square* squareAt(const Position& pos) const;
+    Square* squareByIdex(const int index);
+    const Square* squareByIdex(const int index) const;
+
+    int size() const;
 
 private:
     QVector<Square*> m_squares;

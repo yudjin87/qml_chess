@@ -61,4 +61,24 @@ const Square *Chessboard::squareAt(const Position &pos) const
     return *it;
 }
 
+Square *Chessboard::squareByIdex(const int index)
+{
+    return const_cast<Square*>(const_cast<const Chessboard*>(this)->squareByIdex(index));
+}
+
+const Square *Chessboard::squareByIdex(const int index) const
+{
+    if (index < 0 || m_squares.size() <= index)
+    {
+        return nullptr;
+    }
+
+    return m_squares[index];
+}
+
+int Chessboard::size() const
+{
+    return m_squares.size();
+}
+
 } // namespace Chess

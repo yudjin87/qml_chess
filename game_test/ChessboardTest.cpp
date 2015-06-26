@@ -40,9 +40,12 @@ ChessboardTest::ChessboardTest(QObject *parent)
 void ChessboardTest::shouldCreate8x8Board()
 {
     Chess::Chessboard sut;
+    QCOMPARE(sut.size(), Chess::CHESS_SIZE * Chess::CHESS_SIZE);
+
     const Chess::Square* a1 = sut.squareAt(Chess::Position(Chess::File::A, Chess::Rank::R1));
     QVERIFY(a1 != nullptr);
     QVERIFY(a1->position() == Chess::Position(Chess::File::A, Chess::Rank::R1));
+    QVERIFY(a1 == sut.squareByIdex(0));
 
     const Chess::Square* a8 = sut.squareAt(Chess::Position(Chess::File::A, Chess::Rank::R8));
     QVERIFY(a8 != nullptr);
@@ -55,5 +58,6 @@ void ChessboardTest::shouldCreate8x8Board()
     const Chess::Square* h8 = sut.squareAt(Chess::Position(Chess::File::H, Chess::Rank::R8));
     QVERIFY(h8 != nullptr);
     QVERIFY(h8->position() == Chess::Position(Chess::File::H, Chess::Rank::R8));
+    QVERIFY(h8 == sut.squareByIdex(63));
 }
 
