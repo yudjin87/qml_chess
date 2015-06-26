@@ -25,5 +25,7 @@ SOURCES += \
 RESOURCES += \
     ui_qml.qrc
 
+LIBS += -L$${DESTDIR}/../bin -lgame \
+
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

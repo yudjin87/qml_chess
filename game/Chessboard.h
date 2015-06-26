@@ -49,10 +49,12 @@ class GAME_API Chessboard : public QObject
 public:
     explicit Chessboard(QObject *parent = nullptr);
 
-    Square* squareAt(const Position& pos);
     const Square* squareAt(const Position& pos) const;
-    Square* squareByIdex(const int index);
     const Square* squareByIdex(const int index) const;
+
+public slots:
+    Square* squareAt(const Position& pos);
+    Chess::Square* squareByIdex(const int index); // TODO: QML doesn't understand without namespace for now..
 
     int size() const;
 

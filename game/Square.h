@@ -44,9 +44,17 @@ class Piece;
 class GAME_API Square : public QObject
 {
     Q_OBJECT
+    //Q_PROPERTY(Chess::Color color READ color NOTIFY colorChanged)
 public:
     Square(Chessboard &parent, const Position& pos);
     Square(Chessboard &parent, const File file, const Rank rank);
+
+    // Convinient functions (short cuts for position()):
+    File file() const;
+    Rank rank() const;
+    int index() const;
+
+    Position position() const;
 
     Piece* piece();
     const Piece* piece() const;
@@ -56,9 +64,11 @@ public:
 
     bool isEmpty() const;
 
-    // locations
-    Position position() const;
+public slots:
+    Chess::Color color() const; // TODO: property
+    QString toStr() const; // TODO: toString() prints address...
 
+    // locations
     Square* left(const int numberOfSquares = 1);
     const Square* left(const int numberOfSquares = 1) const;
 
@@ -83,11 +93,8 @@ public:
     Square* bottomLeft(const int numberOfSquares = 1);
     const Square* bottomLeft(const int numberOfSquares = 1) const;
 
-    // Convinient functions (short cuts for position()):
-    File file() const;
-    Rank rank() const;
-    int index() const;
-    Color color() const;
+signals:
+    void colorChanged();
 
 private:
     Chessboard& m_board;

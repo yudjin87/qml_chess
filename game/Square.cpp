@@ -69,6 +69,11 @@ bool Square::isEmpty() const
     return (m_piece == nullptr);
 }
 
+QString Square::toStr() const
+{
+    return m_position.toString();
+}
+
 Position Square::position() const
 {
     return m_position;

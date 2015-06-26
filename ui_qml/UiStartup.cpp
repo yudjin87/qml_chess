@@ -25,10 +25,14 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "ui_qml/UiStartup.h"
+#include "game/Chessboard.h"
+#include "game/Square.h"
+#include "game/Piece.h"
 
 #include <QtCore/QDebug>
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
+#include <QtQml/qqml.h>
 
 namespace UiQml
 {
@@ -36,6 +40,12 @@ namespace UiQml
 UiStartup::UiStartup(QObject *parent)
     : QObject(parent)
 {
+    // TODO: move to static function
+    qmlRegisterType<Chess::Chessboard>("Chess", 1, 0, "Chessboard");
+    qRegisterMetaType<Chess::Square*>("Chess::Square");
+    qRegisterMetaType<Chess::Color>("Chess::Color");
+    //qmlRegisterType<Chess::Piece>("Chess", 1, 0, "Piece");
+
 }
 
 bool UiStartup::showQmlWindow()
@@ -48,6 +58,9 @@ bool UiStartup::showQmlWindow()
         qWarning() << "Cannot get QML context";
         return false;
     }
+
+    Chess::Chessboard* board = new Chess::Chessboard(this);
+    qmlcontext->setContextProperty("chessBoard", board);
 
     engine->load(QUrl(QStringLiteral("qrc:/ui_qml/qml/main.qml")));
 
