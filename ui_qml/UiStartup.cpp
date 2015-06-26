@@ -25,6 +25,9 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "ui_qml/UiStartup.h"
+#include "ui_qml/PieceItem.h"
+#include "ui_qml/ChessboardPresenter.h"
+
 #include "game/Chessboard.h"
 #include "game/Square.h"
 #include "game/Piece.h"
@@ -41,7 +44,10 @@ UiStartup::UiStartup(QObject *parent)
     : QObject(parent)
 {
     // TODO: move to static function
-    qmlRegisterType<Chess::Chessboard>("Chess", 1, 0, "Chessboard");
+    // TODO: qmlRegisterUncreatableType'
+    qmlRegisterUncreatableType<ChessboardPresenter>("ChessUi", 1, 0, "ChessboardPresenter", "Use 'chessBoard' object");
+    qmlRegisterType<UiQml::PieceItem>("ChessUi", 1, 0, "PieceItem");
+
     qRegisterMetaType<Chess::Square*>("Chess::Square");
     qRegisterMetaType<Chess::Color>("Chess::Color");
     //qmlRegisterType<Chess::Piece>("Chess", 1, 0, "Piece");
@@ -60,7 +66,8 @@ bool UiStartup::showQmlWindow()
     }
 
     Chess::Chessboard* board = new Chess::Chessboard(this);
-    qmlcontext->setContextProperty("chessBoard", board);
+    ChessboardPresenter* boardPresenter = new ChessboardPresenter(board, this);
+    qmlcontext->setContextProperty("chessBoard", boardPresenter);
 
     engine->load(QUrl(QStringLiteral("qrc:/ui_qml/qml/main.qml")));
 

@@ -24,46 +24,23 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
+#ifndef PIECEITEM_H
+#define PIECEITEM_H
 
-#include "game/game_api.h"
-#include "game/File.h"
-#include "game/Constants.h"
-#include "game/Rank.h"
+#include <QtQuick/QQuickPaintedItem>
 
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-
-namespace Chess
+namespace UiQml
 {
 
-class Piece;
-class Position;
-class Square;
-
-class GAME_API Chessboard : public QObject
+class PieceItem : public QQuickPaintedItem
 {
     Q_OBJECT
-
 public:
-    explicit Chessboard(QObject *parent = nullptr);
+    PieceItem(QQuickItem * parent = nullptr);
 
-public:
-    Square* squareAt(const Position& pos);
-    const Square* squareAt(const Position& pos) const;
-
-    Square* squareByIdex(const int index);
-    const Square* squareByIdex(const int index) const;
-
-    int size() const;
-
-private:
-    QVector<Square*> m_squares;
-    QVector<Piece*> m_piecesOnBoard;
-    QVector<Piece*> m_killedPieces;
+    void paint(QPainter * painter);
 };
 
-} // namespace Chess
+} // namespace UiQml
 
-#endif // CHESSBOARD_H
+#endif // PIECEITEM_H

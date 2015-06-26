@@ -17,10 +17,14 @@ DEFINES += UI_QML_LIB_IMPORT
 
 HEADERS += \
     UiStartup.h \
-    ui_qml_api.h
+    ui_qml_api.h \
+    PieceItem.h \
+    ChessboardPresenter.h
 
 SOURCES += \
-    UiStartup.cpp
+    UiStartup.cpp \
+    PieceItem.cpp \
+    ChessboardPresenter.cpp
 
 RESOURCES += \
     ui_qml.qrc

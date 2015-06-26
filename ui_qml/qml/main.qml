@@ -4,7 +4,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
-    title: chessBoard.squareByIdex(0).toStr()
+    title: chessBoard.size()
     width: 800
     height: 480
     visible: true

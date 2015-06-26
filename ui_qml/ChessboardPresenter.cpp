@@ -24,46 +24,32 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
+#include "ui_qml/ChessboardPresenter.h"
+#include "ui_qml/PieceItem.h"
+#include "game/Chessboard.h"
 
-#include "game/game_api.h"
-#include "game/File.h"
-#include "game/Constants.h"
-#include "game/Rank.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QVector>
-
-namespace Chess
+namespace UiQml
 {
 
-class Piece;
-class Position;
-class Square;
-
-class GAME_API Chessboard : public QObject
+ChessboardPresenter::ChessboardPresenter(Chess::Chessboard *board, QObject *parent)
+    : QObject(parent)
+    , m_board(board)
 {
-    Q_OBJECT
+}
 
-public:
-    explicit Chessboard(QObject *parent = nullptr);
+Chess::Square *ChessboardPresenter::squareByIdex(const int index)
+{
+    return m_board->squareByIdex(index);
+}
 
-public:
-    Square* squareAt(const Position& pos);
-    const Square* squareAt(const Position& pos) const;
+PieceItem *ChessboardPresenter::pieceByIdex(const int )
+{
+    return new PieceItem();
+}
 
-    Square* squareByIdex(const int index);
-    const Square* squareByIdex(const int index) const;
+int ChessboardPresenter::size() const
+{
+    return m_board->size();
+}
 
-    int size() const;
-
-private:
-    QVector<Square*> m_squares;
-    QVector<Piece*> m_piecesOnBoard;
-    QVector<Piece*> m_killedPieces;
-};
-
-} // namespace Chess
-
-#endif // CHESSBOARD_H
+} // namespace UiQml
