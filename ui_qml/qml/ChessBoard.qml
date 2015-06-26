@@ -25,7 +25,7 @@ Item {
                     id: chessCell
                     property PieceItem piece: chessBoard.pieceByIdex(index)
                     anchors.fill: parent
-                    color: chessBoard.squareByIdex(index).color() === 0 ? "#FFCE9E" : "#D18B47"
+                    color: chessBoard.squareByIdex(index).color() === 0 ? "#D18B47" : "#FFCE9E"
                     border.color: "black";
                     border.width: 1
 
@@ -36,6 +36,29 @@ Item {
                             piece.anchors.fill = chessCell
                             piece.width = chessCell.width
                             piece.height = chessCell.height
+                        }
+                    }
+                }
+
+                //transparent item for mouse handle
+                Item {
+                    anchors.fill: parent
+                    //z: 100
+                    MouseArea {
+                        id: mouseSquareArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+
+                        onEntered: {
+                            chessCell.color = "red"
+                        }
+
+                        onExited: {
+                            chessCell.color = chessBoard.squareByIdex(index).color() === 0 ? "#FFCE9E" : "#D18B47"
+                        }
+
+                        onClicked: {
+                            console.log("Hello" + chessBoard.squareByIdex(index).toStr())
                         }
                     }
                 }
