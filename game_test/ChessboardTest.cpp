@@ -42,22 +42,22 @@ void ChessboardTest::shouldCreate8x8Board()
     Chess::Chessboard sut;
     QCOMPARE(sut.size(), Chess::CHESS_SIZE * Chess::CHESS_SIZE);
 
-    const Chess::Square* a1 = sut.squareAt(Chess::Position(Chess::File::A, Chess::Rank::R1));
+    const Chess::Square* a1 = sut.squareAt(Chess::Position::A1());
     QVERIFY(a1 != nullptr);
-    QVERIFY(a1->position() == Chess::Position(Chess::File::A, Chess::Rank::R1));
+    QVERIFY(a1->position() == Chess::Position::A1());
     QVERIFY(a1 == sut.squareByIdex(0));
 
-    const Chess::Square* a8 = sut.squareAt(Chess::Position(Chess::File::A, Chess::Rank::R8));
+    const Chess::Square* a8 = sut.squareAt(Chess::Position::A8());
     QVERIFY(a8 != nullptr);
-    QVERIFY(a8->position() == Chess::Position(Chess::File::A, Chess::Rank::R8));
+    QVERIFY(a8->position() == Chess::Position::A8());
 
-    const Chess::Square* e4 = sut.squareAt(Chess::Position(Chess::File::E, Chess::Rank::R4));
+    const Chess::Square* e4 = sut.squareAt(Chess::Position::E4());
     QVERIFY(e4 != nullptr);
-    QVERIFY(e4->position() == Chess::Position(Chess::File::E, Chess::Rank::R4));
+    QVERIFY(e4->position() == Chess::Position::E4());
 
-    const Chess::Square* h8 = sut.squareAt(Chess::Position(Chess::File::H, Chess::Rank::R8));
+    const Chess::Square* h8 = sut.squareAt(Chess::Position::H8());
     QVERIFY(h8 != nullptr);
-    QVERIFY(h8->position() == Chess::Position(Chess::File::H, Chess::Rank::R8));
+    QVERIFY(h8->position() == Chess::Position::H8());
     QVERIFY(h8 == sut.squareByIdex(63));
 }
 

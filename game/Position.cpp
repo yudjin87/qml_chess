@@ -75,7 +75,7 @@ Color Position::color() const
     const int file = static_cast<int>(m_file);
     const bool odd = ((file + rank) % 2) == 1;
 
-    return odd ? Color::Light : Color::Dark;
+    return odd ? Color::White : Color::Black;
 }
 
 int Position::index() const

@@ -58,10 +58,17 @@ public:
 
     int size() const;
 
+    void putPiece(const Position& pos, Piece* piece);
+    void putPiece(Square* square, Piece* piece);
+    Piece* takePiece(Square* square);
+
+signals:
+    void pieceAdded(Piece* piece);
+    void pieceRemoved(Piece* piece);
+
 private:
     QVector<Square*> m_squares;
     QVector<Piece*> m_piecesOnBoard;
-    QVector<Piece*> m_killedPieces;
 };
 
 } // namespace Chess

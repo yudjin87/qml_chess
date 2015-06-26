@@ -36,73 +36,73 @@ PositionTest::PositionTest(QObject *parent)
 void PositionTest::shouldCalculateColor()
 {
     {
-        Chess::Position sut(Chess::File::A, Chess::Rank::R1);
-        QVERIFY(sut.color() == Chess::Color::Dark);
+        Chess::Position sut(Chess::Position::A1());
+        QVERIFY(sut.color() == Chess::Color::Black);
     }
 
     {
-        Chess::Position sut(Chess::File::A, Chess::Rank::R8);
-        QVERIFY(sut.color() == Chess::Color::Light);
+        Chess::Position sut(Chess::Position::A8());
+        QVERIFY(sut.color() == Chess::Color::White);
     }
 
     {
-        Chess::Position sut(Chess::File::H, Chess::Rank::R8);
-        QVERIFY(sut.color() == Chess::Color::Dark);
+        Chess::Position sut(Chess::Position::H8());
+        QVERIFY(sut.color() == Chess::Color::Black);
     }
 
     {
-        Chess::Position sut(Chess::File::H, Chess::Rank::R1);
-        QVERIFY(sut.color() == Chess::Color::Light);
+        Chess::Position sut(Chess::Position::H1());
+        QVERIFY(sut.color() == Chess::Color::White);
     }
 
     {
-        Chess::Position sut(Chess::File::E, Chess::Rank::R4);
-        QVERIFY(sut.color() == Chess::Color::Light);
+        Chess::Position sut(Chess::Position::E4());
+        QVERIFY(sut.color() == Chess::Color::White);
     }
 }
 
 void PositionTest::indexTest()
 {
-    Chess::Position a1(Chess::File::A, Chess::Rank::R1);
+    Chess::Position a1(Chess::Position::A1());
     QCOMPARE(a1.index(), 0);
 
-    Chess::Position h8(Chess::File::H, Chess::Rank::R8);
+    Chess::Position h8(Chess::Position::H8());
     QCOMPARE(h8.index(), 63);
 }
 
 void PositionTest::operatorLessTest()
 {
-    Chess::Position a1(Chess::File::A, Chess::Rank::R1);
-    Chess::Position a2(Chess::File::A, Chess::Rank::R2);
+    Chess::Position a1(Chess::Position::A1());
+    Chess::Position a2(Chess::Position::A2());
     QVERIFY(a1 < a2);
     QVERIFY(a2 <= a2);
 
-    Chess::Position b1(Chess::File::B, Chess::Rank::R1);
+    Chess::Position b1(Chess::Position::B1());
     QVERIFY(b1 < a2);
     QVERIFY((a2 < b1) == false);
 
-    Chess::Position h8(Chess::File::H, Chess::Rank::R8);
+    Chess::Position h8(Chess::Position::H8());
     QVERIFY(a1 < h8);
 }
 
 void PositionTest::preIncrementTest()
 {
-    Chess::Position a1(Chess::File::A, Chess::Rank::R1);
-    Chess::Position b1(Chess::File::B, Chess::Rank::R1);
+    Chess::Position a1(Chess::Position::A1());
+    Chess::Position b1(Chess::Position::B1());
     QVERIFY(++a1 == b1);
 
-    Chess::Position h1(Chess::File::H, Chess::Rank::R1);
-    Chess::Position a2(Chess::File::A, Chess::Rank::R2);
+    Chess::Position h1(Chess::Position::H1());
+    Chess::Position a2(Chess::Position::A2());
     QVERIFY(++h1 == a2);
 
-    Chess::Position h8(Chess::File::H, Chess::Rank::R8);
-    QVERIFY(++h8 == Chess::Position(Chess::File::A, Chess::Rank::R1));
+    Chess::Position h8(Chess::Position::H8());
+    QVERIFY(++h8 == Chess::Position(Chess::Position::A1()));
 }
 
 void PositionTest::loopTest()
 {
     int counter = 1;
-    for (Chess::Position p = Chess::Position(Chess::File::A, Chess::Rank::R1); p < Chess::Position(Chess::File::H, Chess::Rank::R8); ++p)
+    for (Chess::Position p = Chess::Position(Chess::Position::A1()); p < Chess::Position(Chess::Position::H8()); ++p)
     {
         ++counter;
     }

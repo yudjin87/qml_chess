@@ -38,13 +38,12 @@ Chessboard::Chessboard(QObject *parent)
     : QObject(parent)
     , m_squares()
     , m_piecesOnBoard()
-    , m_killedPieces()
 {
-    for (Position p = Position(File::A, Rank::R1); p < Position(File::H, Rank::R8); ++p)
+    for (Position p = Position::A1(); p < Position::H8(); ++p)
     {
         m_squares.push_back(new Square(*this, p));
     }
-    m_squares.push_back(new Square(*this, Position(File::H, Rank::R8)));
+    m_squares.push_back(new Square(*this, Position::H8()));
 }
 
 Square *Chessboard::squareAt(const Position &pos)
@@ -82,6 +81,26 @@ const Square *Chessboard::squareByIdex(const int index) const
 int Chessboard::size() const
 {
     return m_squares.size();
+}
+
+void Chessboard::putPiece(const Position &pos, Piece *piece)
+{
+    Square* square = squareAt(pos);
+    putPiece(square, piece);
+}
+
+void Chessboard::putPiece(Square *square, Piece *piece)
+{
+    Q_ASSERT(square != nullptr && "Null pointer is not allowed!");
+    Q_ASSERT(piece != nullptr && "Null pointer is not allowed!");
+
+    // TODO: something smarter, that asserts?
+    Q_ASSERT(m_squares.contains(square) && "Runtime error - square doesn't belong to this board");
+    Q_ASSERT(!m_piecesOnBoard.contains(piece) && "Runtime error - this piece has already been added");
+
+    m_piecesOnBoard.push_back(piece);
+    square->setPiece(*piece);
+    emit pieceAdded(piece);
 }
 
 } // namespace Chess
