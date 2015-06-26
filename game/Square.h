@@ -39,6 +39,7 @@ namespace Chess
 {
 
 class Chessboard;
+class Piece;
 
 class GAME_API Square : public QObject
 {
@@ -47,6 +48,15 @@ public:
     Square(Chessboard &parent, const Position& pos);
     Square(Chessboard &parent, const File file, const Rank rank);
 
+    Piece* piece();
+    const Piece* piece() const;
+
+    void setPiece(Piece& piece);
+    void removePiece();
+
+    bool isEmpty() const;
+
+    // locations
     Position position() const;
 
     Square* left(const int numberOfSquares = 1);
@@ -82,6 +92,7 @@ public:
 private:
     Chessboard& m_board;
     const Position m_position;
+    Piece* m_piece;
 };
 
 } // namespace Chess

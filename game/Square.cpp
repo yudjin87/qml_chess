@@ -26,6 +26,7 @@
 
 #include "game/Square.h"
 #include "game/Chessboard.h"
+#include "game/Piece.h"
 
 namespace Chess
 {
@@ -34,12 +35,38 @@ Square::Square(Chessboard &parent, const Position &pos)
     : QObject(&parent)
     , m_board(parent)
     , m_position(pos)
+    , m_piece(nullptr)
 {
 }
 
 Square::Square(Chessboard &parent, const File file, const Rank rank)
     : Square(parent, Position(file, rank))
 {
+}
+
+Piece *Square::piece()
+{
+    return m_piece;
+}
+
+const Piece *Square::piece() const
+{
+    return m_piece;
+}
+
+void Square::setPiece(Piece &piece)
+{
+    m_piece = &piece;
+}
+
+void Square::removePiece()
+{
+    m_piece = nullptr;
+}
+
+bool Square::isEmpty() const
+{
+    return (m_piece == nullptr);
 }
 
 Position Square::position() const

@@ -27,6 +27,7 @@
 #include "game/Chessboard.h"
 #include "game/Square.h"
 #include "game/Position.h"
+#include "game/Piece.h"
 
 #include <algorithm>
 
@@ -36,6 +37,8 @@ namespace Chess
 Chessboard::Chessboard(QObject *parent)
     : QObject(parent)
     , m_squares()
+    , m_piecesOnBoard()
+    , m_killedPieces()
 {
     for (Position p = Position(File::A, Rank::R1); p < Position(File::H, Rank::R8); ++p)
     {

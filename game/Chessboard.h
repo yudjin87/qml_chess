@@ -38,6 +38,7 @@
 namespace Chess
 {
 
+class Piece;
 class Position;
 class Square;
 
@@ -57,6 +58,8 @@ public:
 
 private:
     QVector<Square*> m_squares;
+    QVector<Piece*> m_piecesOnBoard;
+    QVector<Piece*> m_killedPieces;
 };
 
 } // namespace Chess
