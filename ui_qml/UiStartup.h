@@ -24,17 +24,25 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "ui_qml/UiStartup.h"
-#include <QtGui/QGuiApplication>
+#ifndef UISTARTUP_H
+#define UISTARTUP_H
 
-int main(int argc, char *argv[])
+#include "ui_qml/ui_qml_api.h"
+
+#include <QtCore/QObject>
+
+namespace UiQml
 {
-    QGuiApplication a(argc, argv);
-    UiQml::UiStartup startup;
-    if (!startup.showQmlWindow())
-    {
-        return 0;
-    }
 
-    return a.exec();
-}
+class UI_QML_API UiStartup : public QObject
+{
+    Q_OBJECT
+public:
+    UiStartup(QObject* parent = nullptr);
+
+    bool showQmlWindow();
+};
+
+} // namespace UiQml
+
+#endif // UISTARTUP_H

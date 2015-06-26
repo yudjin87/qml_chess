@@ -5,8 +5,7 @@
 #-------------------------------------------------
 include(../chess_shared.pro)
 
-QT       += core
-QT       -= gui
+QT       += gui
 
 TARGET = app
 CONFIG   += console
@@ -14,4 +13,9 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-SOURCES += main.cpp
+HEADERS += \
+
+SOURCES += main.cpp \
+
+LIBS += -L$${DESTDIR}/../bin -lgame \
+                             -lui_qml \

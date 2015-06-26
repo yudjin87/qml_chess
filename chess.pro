@@ -10,5 +10,6 @@ CONFIG  += ordered
 SUBDIRS += \
     game \
     game_test \
+    ui_qml \
     app \
 

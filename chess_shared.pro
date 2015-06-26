@@ -11,6 +11,7 @@ win32-msvc* {
     QMAKE_CXXFLAGS += /WX
     QMAKE_CXXFLAGS += /wd4350 # xstring(684) : warning C4350: behavior change:...
     QMAKE_CXXFLAGS += /wd4619 # qvector.h(273) : warning C4619: #pragma warning : there is no warning number '4345'
+    QMAKE_CXXFLAGS += /wd4640 # qmetatype.h(2087) : warning C4640: 'f' : construction of local static object is not thread-safe
 }
 
 INCLUDEPATH += $$CHESS_SOURCE_TREE_ROOT

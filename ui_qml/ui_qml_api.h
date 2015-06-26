@@ -24,17 +24,11 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "ui_qml/UiStartup.h"
-#include <QtGui/QGuiApplication>
+#pragma once
+#include <QtCore/qglobal.h>
 
-int main(int argc, char *argv[])
-{
-    QGuiApplication a(argc, argv);
-    UiQml::UiStartup startup;
-    if (!startup.showQmlWindow())
-    {
-        return 0;
-    }
-
-    return a.exec();
-}
+#if defined(UI_QML_LIB_IMPORT)
+#  define UI_QML_API Q_DECL_EXPORT
+#else
+#  define UI_QML_API Q_DECL_IMPORT
+#endif

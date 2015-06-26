@@ -25,16 +25,34 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "ui_qml/UiStartup.h"
-#include <QtGui/QGuiApplication>
 
-int main(int argc, char *argv[])
+#include <QtCore/QDebug>
+#include <QtQml/QQmlApplicationEngine>
+#include <QtQml/QQmlContext>
+
+namespace UiQml
 {
-    QGuiApplication a(argc, argv);
-    UiQml::UiStartup startup;
-    if (!startup.showQmlWindow())
+
+UiStartup::UiStartup(QObject *parent)
+    : QObject(parent)
+{
+}
+
+bool UiStartup::showQmlWindow()
+{
+    // TODO: clean me up
+    QQmlApplicationEngine *engine = new QQmlApplicationEngine(this);
+    QQmlContext *qmlcontext = engine->rootContext();
+    if (qmlcontext == nullptr)
     {
-        return 0;
+        qWarning() << "Cannot get QML context";
+        return false;
     }
 
-    return a.exec();
+    engine->load(QUrl(QStringLiteral("qrc:/ui_qml/qml/main.qml")));
+
+    return true;
 }
+
+} // namespace UiQml
+
