@@ -5,11 +5,13 @@ import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
     title: chessBoard.squareByIdex(0).toStr()
-    width: 640
+    width: 800
     height: 480
     visible: true
 
     ChessBoard {
-        anchors.fill: parent
+        id: board
+        height: parent.height
+        width: board.height
     }
 }
