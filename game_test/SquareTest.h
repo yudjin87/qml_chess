@@ -37,6 +37,14 @@ public:
 
 private slots:
     void shouldCalculateColor();
+    void leftTest();
+    void topLeftTest();
+    void topTest();
+    void topRightTest();
+    void rightTest();
+    void bottomRightTest();
+    void bottomTest();
+    void bottomLeftTest();
 };
 
 #endif // SQUARETEST_H

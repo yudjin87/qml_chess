@@ -48,8 +48,35 @@ public:
     Square(Chessboard &parent, const File file, const Rank rank);
 
     Position position() const;
+
+    Square* left(const int numberOfSquares = 1);
+    const Square* left(const int numberOfSquares = 1) const;
+
+    Square* topLeft(const int numberOfSquares = 1);
+    const Square* topLeft(const int numberOfSquares = 1) const;
+
+    Square* top(const int numberOfSquares = 1);
+    const Square* top(const int numberOfSquares = 1) const;
+
+    Square* topRight(const int numberOfSquares = 1);
+    const Square* topRight(const int numberOfSquares = 1) const;
+
+    Square* right(const int numberOfSquares = 1);
+    const Square* right(const int numberOfSquares = 1) const;
+
+    Square* bottomRight(const int numberOfSquares = 1);
+    const Square* bottomRight(const int numberOfSquares = 1) const;
+
+    Square* bottom(const int numberOfSquares = 1);
+    const Square* bottom(const int numberOfSquares = 1) const;
+
+    Square* bottomLeft(const int numberOfSquares = 1);
+    const Square* bottomLeft(const int numberOfSquares = 1) const;
+
+    // Convinient functions (short cuts for position()):
     File file() const;
     Rank rank() const;
+    int index() const;
     Color color() const;
 
 private:
