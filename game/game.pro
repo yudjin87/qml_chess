@@ -23,7 +23,9 @@ SOURCES += Square.cpp \
     Rank.cpp \
     Color.cpp \
     Position.cpp \
-    Piece.cpp
+    Piece.cpp \
+    ChessGame.cpp \
+    PieceType.cpp
 
 HEADERS += \
     Square.h \
@@ -34,4 +36,6 @@ HEADERS += \
     Position.h \
     game_api.h \
     Constants.h \
-    Piece.h
+    Piece.h \
+    ChessGame.h \
+    PieceType.h

@@ -35,8 +35,8 @@ namespace Chess
 
 enum class Color
 {
-    Dark,
-    Light
+    Black,
+    White
 };
 
 GAME_API QString toString(const Color color);

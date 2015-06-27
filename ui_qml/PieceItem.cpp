@@ -25,6 +25,9 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "ui_qml/PieceItem.h"
+#include "game/Piece.h"
+
+#include <QtGui/QPainter>
 #include <QtGui/QPainter>
 
 namespace UiQml
@@ -32,12 +35,51 @@ namespace UiQml
 
 PieceItem::PieceItem(QQuickItem * parent)
     : QQuickPaintedItem(parent)
+    , m_chessPiece(nullptr)
+    , m_pieceImg()
 {
+    setFlag(QQuickItem::ItemHasContents, true);
 }
 
 void PieceItem::paint(QPainter *painter)
 {
-    painter->drawLine(0, 0, 100, 100);
+    if (m_chessPiece == nullptr)
+    {
+        return;
+    }
+
+    painter->drawImage(boundingRect(), m_pieceImg);
+}
+
+Chess::Piece *PieceItem::piece()
+{
+    return m_chessPiece;
+}
+
+const Chess::Piece *PieceItem::piece() const
+{
+    return m_chessPiece;
+}
+
+void PieceItem::setPiece(Chess::Piece* piece)
+{
+    if (m_chessPiece == piece)
+    {
+        return;
+    }
+
+    const QString pieceType = Chess::toString(piece->type()).toLower();
+    const QString pieceColor = Chess::toString(piece->color()).toLower();
+    const QString path = QString(":/ui_imgs/images/%1_%2.svg").arg(pieceType).arg(pieceColor);
+    if (!m_pieceImg.load(path))
+    {
+        qCritical() << "Error during loading image \"" << path << "\"";
+        return;
+    }
+
+    m_chessPiece = piece;
+    emit pieceChanged(piece);
+    update();
 }
 
 } // namespace UiQml

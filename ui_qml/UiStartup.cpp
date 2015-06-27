@@ -26,9 +26,9 @@
 
 #include "ui_qml/UiStartup.h"
 #include "ui_qml/PieceItem.h"
-#include "ui_qml/ChessboardPresenter.h"
 
 #include "game/Chessboard.h"
+#include "game/ChessGame.h"
 #include "game/Square.h"
 #include "game/Piece.h"
 
@@ -44,14 +44,15 @@ UiStartup::UiStartup(QObject *parent)
     : QObject(parent)
 {
     // TODO: move to static function
-    // TODO: qmlRegisterUncreatableType'
-    qmlRegisterUncreatableType<ChessboardPresenter>("ChessUi", 1, 0, "ChessboardPresenter", "Use 'chessBoard' object");
-    qmlRegisterType<UiQml::PieceItem>("ChessUi", 1, 0, "PieceItem");
+    qmlRegisterUncreatableType<Chess::ChessGame>("Chess", 1, 0, "ChessGame", "Use 'game' object");
+    qmlRegisterUncreatableType<Chess::Chessboard>("Chess", 1, 0, "Chessboard", "Use 'chessBoard' object");
+    qmlRegisterUncreatableType<Chess::Piece>("Chess", 1, 0, "Piece", "Get it from 'chessBoard' object");
 
     qRegisterMetaType<Chess::Square*>("Chess::Square");
+    qRegisterMetaType<Chess::Piece*>("Chess::Piece");
     qRegisterMetaType<Chess::Color>("Chess::Color");
-    //qmlRegisterType<Chess::Piece>("Chess", 1, 0, "Piece");
 
+    qmlRegisterType<UiQml::PieceItem>("ChessUi", 1, 0, "PieceItem");
 }
 
 bool UiStartup::showQmlWindow()
@@ -61,13 +62,14 @@ bool UiStartup::showQmlWindow()
     QQmlContext *qmlcontext = engine->rootContext();
     if (qmlcontext == nullptr)
     {
-        qWarning() << "Cannot get QML context";
+        qCritical() << "Cannot get QML context";
         return false;
     }
 
     Chess::Chessboard* board = new Chess::Chessboard(this);
-    ChessboardPresenter* boardPresenter = new ChessboardPresenter(board, this);
-    qmlcontext->setContextProperty("chessBoard", boardPresenter);
+    Chess::ChessGame* game = new Chess::ChessGame(this);
+    qmlcontext->setContextProperty("chessBoard", board);
+    qmlcontext->setContextProperty("game", game);
 
     engine->load(QUrl(QStringLiteral("qrc:/ui_qml/qml/main.qml")));
 

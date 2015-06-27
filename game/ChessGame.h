@@ -24,47 +24,36 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef PIECE_H
-#define PIECE_H
+#ifndef CHESSGAME_H
+#define CHESSGAME_H
 
 #include "game/game_api.h"
-#include "game/Color.h"
-#include "game/PieceType.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QString>
+#include <QtCore/QVector>
 
 namespace Chess
 {
 
 class Chessboard;
-class Square;
+class Piece;
 
-class GAME_API Piece : public QObject
+class GAME_API ChessGame : public QObject
 {
     Q_OBJECT
 public:
-    Piece(const PieceType type, const Color color, Chessboard* parent);
-
-    QString toString() const;
-
-    PieceType type() const;
-    Color color() const;
-
-    Chessboard *board();
-    const Chessboard *board() const;
-
-    const Chess::Square* atSquare() const;
+    explicit ChessGame(QObject *parent = nullptr);
+    ~ChessGame();
 
 public slots:
-    Chess::Square* atSquare();
+    void createGame(Chess::Chessboard* onBoard);
 
 private:
-    const PieceType m_type;
-    const Color m_color;
     Chessboard* m_board;
+    QVector<Piece*> m_piecesOnBoard;
+    QVector<Piece*> m_killedPieces;
 };
 
 } // namespace Chess
 
-#endif // PIECE_H
+#endif // CHESSGAME_H

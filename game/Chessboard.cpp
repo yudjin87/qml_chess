@@ -89,12 +89,12 @@ void Chessboard::putPiece(const Position &pos, Piece *piece)
     putPiece(square, piece);
 }
 
-Square *Chessboard::findSquare(Piece *piece)
+Square *Chessboard::findSquare(const Piece *piece)
 {
     return const_cast<Square*>(const_cast<const Chessboard*>(this)->findSquare(piece));
 }
 
-const Square *Chessboard::findSquare(Piece *piece) const
+const Square *Chessboard::findSquare(const Piece *piece) const
 {
     const auto byPiece = [&piece](const Square* s) { return s->piece() == piece;};
     const auto it = std::find_if(std::begin(m_squares), std::end(m_squares), byPiece);

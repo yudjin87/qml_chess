@@ -24,47 +24,46 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef PIECE_H
-#define PIECE_H
+#include "game/ChessGame.h"
+#include "game/Chessboard.h"
+#include "game/Piece.h"
+#include "game/Position.h"
 
-#include "game/game_api.h"
-#include "game/Color.h"
-#include "game/PieceType.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QString>
+#include <QtCore/QtAlgorithms>
 
 namespace Chess
 {
 
-class Chessboard;
-class Square;
-
-class GAME_API Piece : public QObject
+ChessGame::ChessGame(QObject *parent)
+    : QObject(parent)
+    , m_board(nullptr)
+    , m_piecesOnBoard()
+    , m_killedPieces()
 {
-    Q_OBJECT
-public:
-    Piece(const PieceType type, const Color color, Chessboard* parent);
 
-    QString toString() const;
+}
 
-    PieceType type() const;
-    Color color() const;
+ChessGame::~ChessGame()
+{
+    qDeleteAll(m_piecesOnBoard);
+    qDeleteAll(m_killedPieces);
+}
 
-    Chessboard *board();
-    const Chessboard *board() const;
+void ChessGame::createGame(Chessboard *onBoard)
+{
+    Q_ASSERT(onBoard != nullptr && "Null pointer is not allowed!");
 
-    const Chess::Square* atSquare() const;
+    // TODO: clean up previ game
+    m_board = onBoard;
 
-public slots:
-    Chess::Square* atSquare();
+    Piece* pawn = new Piece(PieceType::Pawn, Color::White, m_board);
+    //m_piecesOnBoard.push_back(pawn);
+    m_board->putPiece(Position::A2(), pawn);
 
-private:
-    const PieceType m_type;
-    const Color m_color;
-    Chessboard* m_board;
-};
+    pawn = new Piece(PieceType::Pawn, Color::White, m_board);
+    //m_piecesOnBoard.push_back(pawn);
+    m_board->putPiece(Position::B2(), pawn);
+}
 
 } // namespace Chess
 
-#endif // PIECE_H

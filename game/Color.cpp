@@ -33,8 +33,8 @@ QString toString(const Chess::Color color)
 {
     switch (color)
     {
-    case Color::Dark: return "Dark";
-    case Color::Light: return "Light";
+    case Color::Black: return "Black";
+    case Color::White: return "White";
     }
 
     return "INVALID Color";

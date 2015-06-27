@@ -52,7 +52,6 @@ public:
     // Convinient functions (short cuts for position()):
     File file() const;
     Rank rank() const;
-    int index() const;
 
     Position position() const;
 
@@ -65,6 +64,8 @@ public:
     bool isEmpty() const;
 
 public slots:
+    int index() const;
+
     Chess::Color color() const; // TODO: property
     QString toStr() const; // TODO: toString() prints address...
 

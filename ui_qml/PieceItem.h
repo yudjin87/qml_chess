@@ -28,6 +28,12 @@
 #define PIECEITEM_H
 
 #include <QtQuick/QQuickPaintedItem>
+#include <QtGui/QImage>
+
+namespace Chess
+{
+class Piece;
+}
 
 namespace UiQml
 {
@@ -35,10 +41,25 @@ namespace UiQml
 class PieceItem : public QQuickPaintedItem
 {
     Q_OBJECT
+    Q_PROPERTY(Chess::Piece* piece READ piece WRITE setPiece NOTIFY pieceChanged)
+
 public:
     PieceItem(QQuickItem * parent = nullptr);
 
     void paint(QPainter * painter);
+
+    Chess::Piece* piece();
+    const Chess::Piece* piece() const;
+
+public slots:
+    void setPiece(Chess::Piece *piece);
+
+signals:
+    void pieceChanged(Chess::Piece* piece);
+
+private:
+    Chess::Piece* m_chessPiece;
+    QImage m_pieceImg;
 };
 
 } // namespace UiQml

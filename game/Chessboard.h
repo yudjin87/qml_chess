@@ -53,8 +53,8 @@ public:
     const Square* squareByIdex(const int index) const;
     void putPiece(const Position& pos, Piece* piece);
 
-    Square* findSquare(Piece* piece);
-    const Square* findSquare(Piece* piece) const;
+    Square* findSquare(const Piece* piece);
+    const Square* findSquare(const Piece* piece) const;
 
 public slots:
     Chess::Square* squareAt(const Position& pos);
