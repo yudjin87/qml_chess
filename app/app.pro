@@ -5,11 +5,13 @@
 #-------------------------------------------------
 include(../chess_shared.pro)
 
-QT       += gui
+QT       += gui quick
 
 TARGET = app
 CONFIG   += console
 CONFIG   -= app_bundle
+
+win32:QMAKE_POST_LINK = windeployqt $$shell_quote($$DESTDIR/$$TARGET.exe)
 
 TEMPLATE = app
 

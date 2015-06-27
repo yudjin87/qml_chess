@@ -31,13 +31,17 @@
 namespace Chess
 {
 
-Piece::Piece(const PieceType type, const Color color, Chessboard *parent)
+Piece::Piece(const PieceType type, const Color color, Chessboard *board, QObject *parent)
     : QObject(parent)
     , m_type(type)
     , m_color(color)
-    , m_board(parent)
+    , m_board(board)
 {
-    Q_ASSERT(parent != nullptr && "Null pointer is not allowed!");
+    Q_ASSERT(board != nullptr && "Null pointer is not allowed!");
+}
+
+Piece::~Piece()
+{
 }
 
 PieceType Piece::type() const
@@ -63,6 +67,11 @@ const Chessboard *Piece::board() const
 Square *Piece::atSquare()
 {
     return m_board->findSquare(this);
+}
+
+QVector<Square *> Piece::possibleMoves()
+{
+    return QVector<Square *>(2);
 }
 
 const Square *Piece::atSquare() const

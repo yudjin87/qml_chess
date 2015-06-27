@@ -41,17 +41,28 @@ class Piece;
 class GAME_API ChessGame : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
 public:
     explicit ChessGame(QObject *parent = nullptr);
     ~ChessGame();
 
+    bool isRunning() const;
+
 public slots:
-    void createGame(Chess::Chessboard* onBoard);
+    void start(Chess::Chessboard* onBoard);
+    void stop();
+
+signals:
+    void isRunningChanged(bool isRunning);
+
+private:
+    void setIsRunning(bool isRunning);
 
 private:
     Chessboard* m_board;
     QVector<Piece*> m_piecesOnBoard;
     QVector<Piece*> m_killedPieces;
+    bool m_isRunning;
 };
 
 } // namespace Chess

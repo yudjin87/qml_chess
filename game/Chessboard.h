@@ -63,11 +63,12 @@ public slots:
     int size() const;
 
     void putPiece(Square* square, Piece* piece);
+    void removePiece(Piece* piece);
     Chess::Piece* takePiece(Square* square);
 
 signals:
     void pieceAdded(Chess::Piece* piece);
-    void pieceRemoved(Piece* piece);
+    void pieceRemoved(Chess::Piece* piece);
 
 private:
     QVector<Square*> m_squares;

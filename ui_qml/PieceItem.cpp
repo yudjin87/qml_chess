@@ -68,6 +68,13 @@ void PieceItem::setPiece(Chess::Piece* piece)
         return;
     }
 
+    m_chessPiece = piece;
+    if (m_chessPiece == nullptr)
+    {
+        update();
+        return;
+    }
+
     const QString pieceType = Chess::toString(piece->type()).toLower();
     const QString pieceColor = Chess::toString(piece->color()).toLower();
     const QString path = QString(":/ui_imgs/images/%1_%2.svg").arg(pieceType).arg(pieceColor);
@@ -77,7 +84,6 @@ void PieceItem::setPiece(Chess::Piece* piece)
         return;
     }
 
-    m_chessPiece = piece;
     emit pieceChanged(piece);
     update();
 }

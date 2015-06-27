@@ -55,7 +55,6 @@ public:
 
     Position position() const;
 
-    Piece* piece();
     const Piece* piece() const;
 
     void setPiece(Piece& piece);
@@ -65,6 +64,7 @@ public:
 
 public slots:
     int index() const;
+    Chess::Piece* piece();
 
     Chess::Color color() const; // TODO: property
     QString toStr() const; // TODO: toString() prints address...

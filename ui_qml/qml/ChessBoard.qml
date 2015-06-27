@@ -15,8 +15,13 @@ Item {
     Connections {
         target: chessBoard
         onPieceAdded: {
-            console.log("Added: " + piece.atSquare().toStr())
+            //console.log("Added: " + piece.atSquare().toStr())
             repeater.itemAt(mapIndex(piece.atSquare().index())).piece = piece
+        }
+
+        onPieceRemoved: {
+            //console.log("Added: " + piece.atSquare().toStr())
+            repeater.itemAt(mapIndex(piece.atSquare().index())).piece = null
         }
     }
 
@@ -75,17 +80,23 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: true
 
-                        onEntered: {
-                            chessCell.color = "red"
+                        onEntered: {                            
+                            var square = chessBoard.squareByIdex(mapIndex(index));
+                            var piece = square.piece()
+                            if (piece !== null)
+                            {
+                                chessCell.color = "red"
+                                console.log("Piece: " + piece.atSquare().toStr())
+                            }
                         }
 
                         onExited: {
-                            chessCell.color = chessBoard.squareByIdex(mapIndex(index)).color() === 0 ? "#D18B47" : "#FFCE9E"
+                            var square = chessBoard.squareByIdex(mapIndex(index));
+                            chessCell.color = square.color() === 0 ? "#D18B47" : "#FFCE9E"
                         }
 
                         onClicked: {
                             console.log("Hello" + chessBoard.squareByIdex(mapIndex(index)).toStr())
-                            game.createGame(chessBoard);
                         }
                     }
                 }

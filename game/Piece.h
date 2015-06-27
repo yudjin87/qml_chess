@@ -33,6 +33,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <QtCore/QVector>
 
 namespace Chess
 {
@@ -44,7 +45,8 @@ class GAME_API Piece : public QObject
 {
     Q_OBJECT
 public:
-    Piece(const PieceType type, const Color color, Chessboard* parent);
+    Piece(const PieceType type, const Color color, Chessboard* board, QObject *parent = nullptr);
+    ~Piece();
 
     QString toString() const;
 
@@ -58,6 +60,8 @@ public:
 
 public slots:
     Chess::Square* atSquare();
+
+    QVector<Chess::Square*> possibleMoves();
 
 private:
     const PieceType m_type;
