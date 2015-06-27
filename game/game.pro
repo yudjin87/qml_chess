@@ -25,7 +25,8 @@ SOURCES += Square.cpp \
     Position.cpp \
     Piece.cpp \
     ChessGame.cpp \
-    PieceType.cpp
+    PieceType.cpp \
+    SquareList.cpp
 
 HEADERS += \
     Square.h \
@@ -38,4 +39,5 @@ HEADERS += \
     Constants.h \
     Piece.h \
     ChessGame.h \
-    PieceType.h
+    PieceType.h \
+    SquareList.h

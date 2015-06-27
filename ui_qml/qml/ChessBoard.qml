@@ -9,6 +9,13 @@ Item {
         return 64 - ((base + 1)* 8) + mod8;
     }
 
+    function repaintBoard() {
+        for (var i = 0; i < 64; ++i) {
+            repeater.itemAt(i).color =
+                    chessBoard.squareByIdex(mapIndex(i)).color() === 0 ? "#D18B47" : "#FFCE9E"
+        }
+    }
+
     id: root
     property int cellSize: width / 8
 
@@ -40,6 +47,7 @@ Item {
                 width: root.cellSize;
                 height: root.cellSize;
                 property alias piece: pieceItem.piece
+                property alias color: chessCell.color
 
                 Rectangle {
                     id: chessCell
@@ -91,12 +99,27 @@ Item {
                         }
 
                         onExited: {
-                            var square = chessBoard.squareByIdex(mapIndex(index));
-                            chessCell.color = square.color() === 0 ? "#D18B47" : "#FFCE9E"
+                            //var square = chessBoard.squareByIdex(mapIndex(index));
+                            repaintBoard(); // TODO: too expensive
+                            //chessCell.color = square.color() === 0 ? "#D18B47" : "#FFCE9E"
                         }
 
                         onClicked: {
-                            console.log("Hello" + chessBoard.squareByIdex(mapIndex(index)).toStr())
+                            var square = chessBoard.squareByIdex(mapIndex(index));
+                            var piece = square.piece()
+                            if (piece === null)
+                            {
+                                return;
+                            }
+
+                            //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
+                            console.log("Hello " + piece.possibleMoves().length)
+                            for (var i = 0; i < piece.possibleMoves().length; ++i)
+                            {
+                                var s = piece.possibleMoves().at(i);
+                                console.log("     " + s.toStr());
+                                repeater.itemAt(mapIndex(s.index())).color = "#800000FF"
+                            }
                         }
                     }
                 }

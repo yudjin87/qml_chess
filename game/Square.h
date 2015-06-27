@@ -104,4 +104,5 @@ private:
 };
 
 } // namespace Chess
+
 #endif // SQUARE_H

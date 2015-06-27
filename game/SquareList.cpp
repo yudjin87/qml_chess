@@ -24,54 +24,50 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef PIECE_H
-#define PIECE_H
-
-#include "game/game_api.h"
-#include "game/Color.h"
-#include "game/PieceType.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QList>
+#include "game/SquareList.h"
 
 namespace Chess
 {
 
-class Chessboard;
-class Square;
-class SquareList;
-
-class GAME_API Piece : public QObject
+SquareList::SquareList(QObject *parent)
+    : QObject(parent)
+    , m_squares()
 {
-    Q_OBJECT
-public:
-    Piece(const PieceType type, const Color color, Chessboard* board, QObject *parent = nullptr);
-    ~Piece();
+}
 
-    QString toString() const;
+Square *SquareList::at(const int index)
+{
+    return const_cast<Square*>(const_cast<const SquareList*>(this)->at(index));
+}
 
-    PieceType type() const;
-    Color color() const;
+const Square *SquareList::at(const int index) const
+{
+    if (index < 0 || m_squares.size() <= index)
+    {
+        return nullptr;
+    }
 
-    Chessboard *board();
-    const Chessboard *board() const;
+    return m_squares[index];
+}
 
-    const Chess::Square* atSquare() const;
+void SquareList::append(Square *square)
+{
+    m_squares.append(square);
+}
 
-public slots:
-    Chess::Square* atSquare();
+int SquareList::length() const
+{
+    return m_squares.size();
+}
 
-    // TODO: problems with QQmlListProperty
-    Chess::SquareList* possibleMoves();
+void SquareList::clear()
+{
+    m_squares.clear();
+}
 
-private:
-    const PieceType m_type;
-    const Color m_color;
-    Chessboard* m_board;
-    SquareList* m_possibleMoves;
-};
+int SquareList::size() const
+{
+    return m_squares.size();
+}
 
 } // namespace Chess
-
-#endif // PIECE_H

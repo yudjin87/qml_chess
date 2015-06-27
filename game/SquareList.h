@@ -24,54 +24,41 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef PIECE_H
-#define PIECE_H
+#ifndef SQUARELIST_H
+#define SQUARELIST_H
 
 #include "game/game_api.h"
-#include "game/Color.h"
-#include "game/PieceType.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QString>
 #include <QtCore/QList>
 
 namespace Chess
 {
 
-class Chessboard;
 class Square;
-class SquareList;
 
-class GAME_API Piece : public QObject
+class GAME_API SquareList : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int length READ length)
 public:
-    Piece(const PieceType type, const Color color, Chessboard* board, QObject *parent = nullptr);
-    ~Piece();
+    explicit SquareList(QObject *parent = nullptr);
 
-    QString toString() const;
+    const Chess::Square* at(const int index) const;
 
-    PieceType type() const;
-    Color color() const;
+    void append(Chess::Square* square);
 
-    Chessboard *board();
-    const Chessboard *board() const;
-
-    const Chess::Square* atSquare() const;
+    int length() const;
+    void clear();
 
 public slots:
-    Chess::Square* atSquare();
-
-    // TODO: problems with QQmlListProperty
-    Chess::SquareList* possibleMoves();
+    int size() const;
+    Chess::Square* at(const int index);
 
 private:
-    const PieceType m_type;
-    const Color m_color;
-    Chessboard* m_board;
-    SquareList* m_possibleMoves;
+    QList<Square*> m_squares;
 };
 
 } // namespace Chess
 
-#endif // PIECE_H
+#endif // SQUARELIST_H
