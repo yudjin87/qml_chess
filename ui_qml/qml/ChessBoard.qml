@@ -1,7 +1,13 @@
 import QtQuick 2.4
 import ChessUi 1.0
 
+
 Item {
+    function mapIndex(i) {
+        var mod8 = i % 8;
+        var base = Math.floor(i / 8);
+        return 64 - ((base + 1)* 8) + mod8;
+    }
 
     id: root
     property int cellSize: width / 8
@@ -10,7 +16,7 @@ Item {
         target: chessBoard
         onPieceAdded: {
             console.log("Added: " + piece.atSquare().toStr())
-            repeater.itemAt(piece.atSquare().index()).piece = piece
+            repeater.itemAt(mapIndex(piece.atSquare().index())).piece = piece
         }
     }
 
@@ -34,7 +40,7 @@ Item {
                     id: chessCell
 //                    property PieceItem pieceItem: null
                     anchors.fill: parent
-                    color: chessBoard.squareByIdex(index).color() === 0 ? "#D18B47" : "#FFCE9E"
+                    color: chessBoard.squareByIdex(mapIndex(index)).color() === 0 ? "#D18B47" : "#FFCE9E"
                     //color: chessBoard.squareByIdex(index).color() === 0 ? "black" : "white"
                     border.color: "black";
                     border.width: 1
@@ -57,20 +63,13 @@ Item {
 
 
                 Text {
-                    function calc() {
-                        var i = index;
-
-                        return i;//64 - ((i % 8) + 1) * 8 + (i % 8);
-                    }
-
-                    id: tName
-                    text: calc() + ": " + chessBoard.squareByIdex(index).toStr()
+                    id: squareLabel
+                    text: index + ": " + chessBoard.squareByIdex(mapIndex(index)).toStr()
                 }
 
-                //transparent item for mouse handle
+                // transparent item for mouse handle
                 Item {
                     anchors.fill: parent
-                    //z: 100
                     MouseArea {
                         id: mouseSquareArea
                         anchors.fill: parent
@@ -81,11 +80,11 @@ Item {
                         }
 
                         onExited: {
-                            chessCell.color = chessBoard.squareByIdex(index).color() === 0 ? "#FFCE9E" : "#D18B47"
+                            chessCell.color = chessBoard.squareByIdex(mapIndex(index)).color() === 0 ? "#D18B47" : "#FFCE9E"
                         }
 
                         onClicked: {
-                            console.log("Hello" + chessBoard.squareByIdex(index).toStr())
+                            console.log("Hello" + chessBoard.squareByIdex(mapIndex(index)).toStr())
                             game.createGame(chessBoard);
                         }
                     }

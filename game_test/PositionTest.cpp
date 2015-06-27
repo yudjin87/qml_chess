@@ -99,6 +99,13 @@ void PositionTest::preIncrementTest()
     QVERIFY(++h8 == Chess::Position(Chess::Position::A1()));
 }
 
+int transform(int index)
+{
+    const int mod8 = index % 8;
+    const int base = index / 8;
+    return 64 - ((base + 1)* 8) + mod8;
+}
+
 void PositionTest::loopTest()
 {
     int counter = 1;
@@ -108,4 +115,14 @@ void PositionTest::loopTest()
     }
 
     QCOMPARE(counter, 64);
+
+    QVERIFY(transform(0) == 56);
+    QVERIFY(transform(1) == 57);
+    QVERIFY(transform(8) == 48);
+    QVERIFY(transform(62) == 6);
+
+    QVERIFY(transform(56) == 0);
+    QVERIFY(transform(57) == 1);
+    QVERIFY(transform(48) == 8);
+    QVERIFY(transform(6) == 62);
 }
