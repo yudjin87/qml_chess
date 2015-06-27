@@ -28,6 +28,8 @@
 #define PIECE_H
 
 #include "game/game_api.h"
+#include "game/Color.h"
+#include "game/PieceType.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
@@ -35,15 +37,31 @@
 namespace Chess
 {
 
+class Chessboard;
+class Square;
+
 class GAME_API Piece : public QObject
 {
     Q_OBJECT
 public:
-    Piece(QObject* parent = nullptr);
+    Piece(const PieceType type, const Color color, Chessboard* parent);
 
     QString toString() const;
 
+    PieceType type() const;
+    Color color() const;
+
+    Chessboard *board();
+    const Chessboard *board() const;
+
+public slots:
+    Chess::Square* atSquare();
+    const Chess::Square* atSquare() const;
+
 private:
+    const PieceType m_type;
+    const Color m_color;
+    Chessboard* m_board;
 };
 
 } // namespace Chess

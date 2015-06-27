@@ -49,21 +49,24 @@ class GAME_API Chessboard : public QObject
 public:
     explicit Chessboard(QObject *parent = nullptr);
 
-public:
-    Square* squareAt(const Position& pos);
     const Square* squareAt(const Position& pos) const;
-
-    Square* squareByIdex(const int index);
     const Square* squareByIdex(const int index) const;
+    void putPiece(const Position& pos, Piece* piece);
+
+    Square* findSquare(Piece* piece);
+    const Square* findSquare(Piece* piece) const;
+
+public slots:
+    Chess::Square* squareAt(const Position& pos);
+    Chess::Square* squareByIdex(const int index);
 
     int size() const;
 
-    void putPiece(const Position& pos, Piece* piece);
     void putPiece(Square* square, Piece* piece);
-    Piece* takePiece(Square* square);
+    Chess::Piece* takePiece(Square* square);
 
 signals:
-    void pieceAdded(Piece* piece);
+    void pieceAdded(Chess::Piece* piece);
     void pieceRemoved(Piece* piece);
 
 private:

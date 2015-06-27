@@ -89,6 +89,23 @@ void Chessboard::putPiece(const Position &pos, Piece *piece)
     putPiece(square, piece);
 }
 
+Square *Chessboard::findSquare(Piece *piece)
+{
+    return const_cast<Square*>(const_cast<const Chessboard*>(this)->findSquare(piece));
+}
+
+const Square *Chessboard::findSquare(Piece *piece) const
+{
+    const auto byPiece = [&piece](const Square* s) { return s->piece() == piece;};
+    const auto it = std::find_if(std::begin(m_squares), std::end(m_squares), byPiece);
+    if (it == std::end(m_squares))
+    {
+        return nullptr;
+    }
+
+    return *it;
+}
+
 void Chessboard::putPiece(Square *square, Piece *piece)
 {
     Q_ASSERT(square != nullptr && "Null pointer is not allowed!");
@@ -101,6 +118,12 @@ void Chessboard::putPiece(Square *square, Piece *piece)
     m_piecesOnBoard.push_back(piece);
     square->setPiece(*piece);
     emit pieceAdded(piece);
+}
+
+Piece *Chessboard::takePiece(Square *square)
+{
+    (void)square;
+    return nullptr;
 }
 
 } // namespace Chess

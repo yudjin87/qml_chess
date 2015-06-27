@@ -24,50 +24,24 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/Piece.h"
-#include "game/Chessboard.h"
-#include "game/Square.h"
+#include "game/PieceType.h"
 
 namespace Chess
 {
 
-Piece::Piece(const PieceType type, const Color color, Chessboard *parent)
-    : QObject(parent)
-    , m_type(type)
-    , m_color(color)
-    , m_board(parent)
+QString toString(const Chess::PieceType piecetype)
 {
-    Q_ASSERT(parent != nullptr && "Null pointer is not allowed!");
-}
+    switch (piecetype)
+    {
+    case PieceType::Pawn: return "Pawn";
+    case PieceType::Knight: return "Knight";
+    case PieceType::Bishop: return "Bishop";
+    case PieceType::Rook: return "Rook";
+    case PieceType::Queen: return "Queen";
+    case PieceType::King: return "King";
+    }
 
-PieceType Piece::type() const
-{
-    return m_type;
-}
-
-Color Piece::color() const
-{
-    return m_color;
-}
-
-Chessboard *Piece::board()
-{
-    return m_board;
-}
-
-const Chessboard *Piece::board() const
-{
-    return m_board;
-}
-
-Square *Piece::atSquare()
-{
-    return m_board->findSquare(this);
-}
-
-const Square *Piece::atSquare() const
-{
-    return m_board->findSquare(this);
+    return "INVALID PieceType";
 }
 
 } // namespace Chess
