@@ -38,6 +38,7 @@ Piece::Piece(const PieceType type, const Color color, Chessboard *board, IMoveme
     , m_color(color)
     , m_board(board)
     , m_movementRule(rule)
+    , m_wasMoved(false)
 {
     Q_ASSERT(board != nullptr && "Null pointer is not allowed!");
     Q_ASSERT(rule != nullptr && "Null pointer is not allowed!");
@@ -76,13 +77,23 @@ Square *Piece::atSquare()
 
 QList<Square *> Piece::possibleMoves()
 {
-    const QList<Square *> moves = m_movementRule->findMoves(atSquare());
+    const QList<Square *> moves = m_movementRule->findMoves(*this);
     return moves;
 }
 
 const Square *Piece::atSquare() const
 {
     return m_board->findSquare(this);
+}
+
+bool Piece::wasMoved() const
+{
+    return m_wasMoved;
+}
+
+void Piece::markAsMoved()
+{
+    m_wasMoved = true;
 }
 
 } // namespace Chess

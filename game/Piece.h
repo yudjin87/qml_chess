@@ -61,9 +61,13 @@ public:
 
     const Chess::Square* atSquare() const;
 
+    bool wasMoved() const;
+    void markAsMoved();
+
 public slots:
     Chess::Square* atSquare();
     QList<Square *> possibleMoves();
+
 
 signals:
     void colorChanged(Chess::Color color);
@@ -73,6 +77,7 @@ private:
     const Color m_color;
     Chessboard* m_board;
     IMovementRule* m_movementRule;
+    bool m_wasMoved;
 };
 
 } // namespace Chess

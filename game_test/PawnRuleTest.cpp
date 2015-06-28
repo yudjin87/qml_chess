@@ -41,8 +41,11 @@ PawnRuleTest::PawnRuleTest(QObject *parent)
 void PawnRuleTest::shouldReturnMovesForInitialPosition()
 {
     Chess::Chessboard board;
-    Chess::PawnRule rule(board, Chess::Color::White);
-    QList<Chess::Square*> moves = rule.findMoves(Chess::Position::E2());
+    Chess::PawnRule* rule = new Chess::PawnRule(board, Chess::Color::White);
+    Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
+    board.putPiece(Chess::Position::E2(), &piece);
+
+    QList<Chess::Square*> moves = rule->findMoves(piece);
     QCOMPARE(moves.size(), 2);
 
     QCOMPARE(moves[0]->position(), Chess::Position::E3());
@@ -52,8 +55,11 @@ void PawnRuleTest::shouldReturnMovesForInitialPosition()
 void PawnRuleTest::shouldReturnMovesForInitialPositionForBlack()
 {
     Chess::Chessboard board;
-    Chess::PawnRule rule(board, Chess::Color::Black);
-    QList<Chess::Square*> moves = rule.findMoves(Chess::Position::E7());
+    Chess::PawnRule* rule = new Chess::PawnRule(board, Chess::Color::Black);
+    Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::Black, &board, rule);
+    board.putPiece(Chess::Position::E7(), &piece);
+
+    QList<Chess::Square*> moves = rule->findMoves(piece);
     QCOMPARE(moves.size(), 2);
 
     QCOMPARE(moves[0]->position(), Chess::Position::E6());
@@ -63,8 +69,12 @@ void PawnRuleTest::shouldReturnMovesForInitialPositionForBlack()
 void PawnRuleTest::shouldReturnMoveForNonInitialPosition()
 {
     Chess::Chessboard board;
-    Chess::PawnRule rule(board, Chess::Color::White);
-    QList<Chess::Square*> moves = rule.findMoves(Chess::Position::E3());
+    Chess::PawnRule* rule = new Chess::PawnRule(board, Chess::Color::White);
+    Chess::Piece movedPiece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
+    movedPiece.markAsMoved();
+    board.putPiece(Chess::Position::E3(), &movedPiece);
+
+    QList<Chess::Square*> moves = rule->findMoves(movedPiece);
     QCOMPARE(moves.size(), 1);
 
     QCOMPARE(moves[0]->position(), Chess::Position::E4());
@@ -73,11 +83,13 @@ void PawnRuleTest::shouldReturnMoveForNonInitialPosition()
 void PawnRuleTest::shouldReturnEmptyListIfMovementIsNotPossible()
 {
     Chess::Chessboard board;
-    Chess::PawnRule *rule = new Chess::PawnRule(board, Chess::Color::White);
-    Chess::Piece blockedPiece(Chess::PieceType::Pawn, Chess::Color::Black, &board, rule);
+    Chess::Piece blockedPiece(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
     board.putPiece(Chess::Position::E4(), &blockedPiece);
 
-    QList<Chess::Square*> moves = rule->findMoves(Chess::Position::E3());
+    Chess::PawnRule *rule = new Chess::PawnRule(board, Chess::Color::White); // TODO: use factory
+    Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
+    board.putPiece(Chess::Position::E3(), &piece);
+    QList<Chess::Square*> moves = rule->findMoves(piece);
     QCOMPARE(moves.size(), 0);
 }
 

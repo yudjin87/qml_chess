@@ -36,15 +36,14 @@ namespace Chess
 {
 
 class Square;
-class Position;
+class Piece;
 
 class GAME_API IMovementRule : public QObject
 {
 public:
     IMovementRule(QObject *parent = nullptr) : QObject(parent) {}
 
-    virtual QList<Square*> findMoves(const Position& currentPosition) const = 0;
-    virtual QList<Square*> findMoves(Square* currentPosition) const = 0;
+    virtual QList<Square*> findMoves(Piece& forPiece) const = 0;
 };
 
 } // namespace Chess

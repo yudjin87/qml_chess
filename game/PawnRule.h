@@ -29,7 +29,6 @@
 
 #include "game/IMovementRule.h"
 #include "game/Color.h"
-#include "game/Rank.h"
 
 namespace Chess
 {
@@ -41,11 +40,9 @@ class GAME_API PawnRule : public IMovementRule
 public:
     PawnRule(Chessboard& board, const Color color, QObject* parent = nullptr);
 
-    QList<Square*> findMoves(const Position& currentPosition) const override;
-    QList<Square*> findMoves(Square* currentPosition) const override;
+    QList<Square*> findMoves(Piece& forPiece) const override;
 
 private:
-    Rank initialRank() const;
     Square* nextMovement(Square* basePosition) const;
 
 private:

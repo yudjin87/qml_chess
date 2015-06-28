@@ -26,7 +26,7 @@
 
 #include "game/PawnRule.h"
 #include "game/Chessboard.h"
-#include "game/Position.h"
+#include "game/Piece.h"
 #include "game/Square.h"
 
 #include <QtCore/QDebug>
@@ -41,19 +41,15 @@ PawnRule::PawnRule(Chessboard &board, const Color color, QObject* parent)
 {
 }
 
-QList<Square *> PawnRule::findMoves(const Position &currentPosition) const
+QList<Square *> PawnRule::findMoves(Piece &forPiece) const
 {
-    return findMoves(m_board.squareAt(currentPosition));
-}
-
-QList<Square *> PawnRule::findMoves(Square *currentPosition) const
-{
+    Square *currentPosition = forPiece.atSquare();
     Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
-    QList<Square *> result;
 
+    QList<Square *> result;
     if (!m_board.contains(currentPosition))
     {
-        qWarning() << "currentPosition doesn't belong to specifiedd board";
+        qWarning() << "currentPosition doesn't belong to specified board";
         return result;
     }
 
@@ -63,12 +59,14 @@ QList<Square *> PawnRule::findMoves(Square *currentPosition) const
         return result;
     }
 
-    if (shortMovement->isEmpty())
+    if (!shortMovement->isEmpty())
     {
-        result.push_back(shortMovement); // TODO: check for possible check
+        return result;
     }
 
-    if (currentPosition->rank() != initialRank())
+    result.push_back(shortMovement); // TODO: check for possible check
+
+    if (forPiece.wasMoved())
     {
         // This pawn was already moved, so long movement is not possible
         return result;
@@ -86,11 +84,6 @@ QList<Square *> PawnRule::findMoves(Square *currentPosition) const
     }
 
     return result;
-}
-
-Rank PawnRule::initialRank() const
-{
-    return (m_color == Color::White) ? Rank::R2 : Rank::R7;
 }
 
 Square *PawnRule::nextMovement(Square *basePosition) const
