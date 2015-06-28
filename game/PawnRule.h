@@ -24,55 +24,35 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/SquareList.h"
+#ifndef PAWNRULE_H
+#define PAWNRULE_H
+
+#include "game/IMovementRule.h"
+#include "game/Color.h"
+#include "game/Rank.h"
 
 namespace Chess
 {
 
-SquareList::SquareList(QObject *parent)
-    : QObject(parent)
-    , m_squares()
-{
-}
+class Chessboard;
 
-Square *SquareList::at(const int index)
+class GAME_API PawnRule : public IMovementRule
 {
-    return const_cast<Square*>(const_cast<const SquareList*>(this)->at(index));
-}
+public:
+    PawnRule(Chessboard& board, const Color color, QObject* parent = nullptr);
 
-const Square *SquareList::at(const int index) const
-{
-    if (index < 0 || m_squares.size() <= index)
-    {
-        return nullptr;
-    }
+    QList<Square*> findMoves(const Position& currentPosition) const override;
+    QList<Square*> findMoves(Square* currentPosition) const override;
 
-    return m_squares[index];
-}
+private:
+    Rank initialRank() const;
+    Square* nextMovement(Square* basePosition) const;
 
-void SquareList::append(Square *square)
-{
-    m_squares.append(square);
-}
-
-int SquareList::length() const
-{
-    return m_squares.size();
-}
-
-void SquareList::clear()
-{
-    m_squares.clear();
-}
-
-void SquareList::reset(const QList<Square *> &squares)
-{
-    m_squares = squares;
-}
-
-int SquareList::size() const
-{
-    return m_squares.size();
-}
+private:
+    const Color m_color;
+    Chessboard& m_board;
+};
 
 } // namespace Chess
+
+#endif // PAWNRULE_H

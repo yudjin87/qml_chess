@@ -56,6 +56,8 @@ public:
     Square* findSquare(const Piece* piece);
     const Square* findSquare(const Piece* piece) const;
 
+    bool contains(const Square* square) const;
+
 public slots:
     Chess::Square* squareAt(const Position& pos);
     Chess::Square* squareByIdex(const int index);

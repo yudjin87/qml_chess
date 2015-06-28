@@ -24,9 +24,10 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "ChessboardTest.h"
-#include "SquareTest.h"
-#include "PositionTest.h"
+#include "game_test/ChessboardTest.h"
+#include "game_test/SquareTest.h"
+#include "game_test/PositionTest.h"
+#include "game_test/PawnRuleTest.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtTest/QtTest>
@@ -43,6 +44,9 @@ int main(int argc, char *argv[])
 
     PositionTest positionTest;
     QTest::qExec(&positionTest, argc, argv);
+
+    PawnRuleTest pawnRuleTest;
+    QTest::qExec(&pawnRuleTest, argc, argv);
 
     return 0;
 }

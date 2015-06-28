@@ -24,55 +24,29 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/SquareList.h"
+#ifndef IMOVEMENTRULE_H
+#define IMOVEMENTRULE_H
+
+#include "game/game_api.h"
+
+#include <QtCore/QList>
+#include <QtCore/QObject>
 
 namespace Chess
 {
 
-SquareList::SquareList(QObject *parent)
-    : QObject(parent)
-    , m_squares()
-{
-}
+class Square;
+class Position;
 
-Square *SquareList::at(const int index)
+class GAME_API IMovementRule : public QObject
 {
-    return const_cast<Square*>(const_cast<const SquareList*>(this)->at(index));
-}
+public:
+    IMovementRule(QObject *parent = nullptr) : QObject(parent) {}
 
-const Square *SquareList::at(const int index) const
-{
-    if (index < 0 || m_squares.size() <= index)
-    {
-        return nullptr;
-    }
-
-    return m_squares[index];
-}
-
-void SquareList::append(Square *square)
-{
-    m_squares.append(square);
-}
-
-int SquareList::length() const
-{
-    return m_squares.size();
-}
-
-void SquareList::clear()
-{
-    m_squares.clear();
-}
-
-void SquareList::reset(const QList<Square *> &squares)
-{
-    m_squares = squares;
-}
-
-int SquareList::size() const
-{
-    return m_squares.size();
-}
+    virtual QList<Square*> findMoves(const Position& currentPosition) const = 0;
+    virtual QList<Square*> findMoves(Square* currentPosition) const = 0;
+};
 
 } // namespace Chess
+
+#endif // IMOVEMENTRULE_H

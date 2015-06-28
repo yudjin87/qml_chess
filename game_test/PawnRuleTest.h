@@ -24,55 +24,22 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/SquareList.h"
+#ifndef PAWNRULETEST_H
+#define PAWNRULETEST_H
 
-namespace Chess
+#include <QtCore/QObject>
+
+class PawnRuleTest : public QObject
 {
+    Q_OBJECT
+public:
+    explicit PawnRuleTest(QObject *parent = nullptr);
 
-SquareList::SquareList(QObject *parent)
-    : QObject(parent)
-    , m_squares()
-{
-}
+private slots:
+    void shouldReturnMovesForInitialPosition();
+    void shouldReturnMovesForInitialPositionForBlack();
+    void shouldReturnMoveForNonInitialPosition();
+    void shouldReturnEmptyListIfMovementIsNotPossible();
+};
 
-Square *SquareList::at(const int index)
-{
-    return const_cast<Square*>(const_cast<const SquareList*>(this)->at(index));
-}
-
-const Square *SquareList::at(const int index) const
-{
-    if (index < 0 || m_squares.size() <= index)
-    {
-        return nullptr;
-    }
-
-    return m_squares[index];
-}
-
-void SquareList::append(Square *square)
-{
-    m_squares.append(square);
-}
-
-int SquareList::length() const
-{
-    return m_squares.size();
-}
-
-void SquareList::clear()
-{
-    m_squares.clear();
-}
-
-void SquareList::reset(const QList<Square *> &squares)
-{
-    m_squares = squares;
-}
-
-int SquareList::size() const
-{
-    return m_squares.size();
-}
-
-} // namespace Chess
+#endif // PAWNRULETEST_H

@@ -38,6 +38,7 @@
 namespace Chess
 {
 
+class IMovementRule;
 class Chessboard;
 class Square;
 class SquareList;
@@ -46,7 +47,7 @@ class GAME_API Piece : public QObject
 {
     Q_OBJECT
 public:
-    Piece(const PieceType type, const Color color, Chessboard* board, QObject *parent = nullptr);
+    Piece(const PieceType type, const Color color, Chessboard* board, IMovementRule* rule, QObject *parent = nullptr);
     ~Piece();
 
     QString toString() const;
@@ -70,6 +71,7 @@ private:
     const Color m_color;
     Chessboard* m_board;
     SquareList* m_possibleMoves;
+    IMovementRule* m_movementRule;
 };
 
 } // namespace Chess

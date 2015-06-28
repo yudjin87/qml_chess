@@ -15,17 +15,19 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-LIBS += -L$${DESTDIR}/../bin -lgame
+LIBS += -L$${DESTDIR}/ -lgame
 
 SOURCES += main.cpp \
     SquareTest.cpp \
     PositionTest.cpp \
-    ChessboardTest.cpp
+    ChessboardTest.cpp \
+    PawnRuleTest.cpp
 
 HEADERS += \
     SquareTest.h \
     PositionTest.h \
-    ChessboardTest.h
+    ChessboardTest.h \
+    PawnRuleTest.h
 
 
 win32-msvc* {

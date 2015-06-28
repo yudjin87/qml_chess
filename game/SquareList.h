@@ -50,6 +50,7 @@ public:
 
     int length() const;
     void clear();
+    void reset(const QList<Square*>& squares);
 
 public slots:
     int size() const;

@@ -106,6 +106,18 @@ const Square *Chessboard::findSquare(const Piece *piece) const
     return *it;
 }
 
+bool Chessboard::contains(const Square *square) const
+{
+    if (square == nullptr)
+    {
+        return false;
+    }
+
+    // m_squares.contains(square) doesn't work, since "'const' Square *"
+    const auto it = std::find(std::begin(m_squares), std::end(m_squares), square);
+    return it != std::end(m_squares);
+}
+
 void Chessboard::putPiece(Square *square, Piece *piece)
 {
     Q_ASSERT(square != nullptr && "Null pointer is not allowed!");

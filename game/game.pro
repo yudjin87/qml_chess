@@ -26,7 +26,8 @@ SOURCES += Square.cpp \
     Piece.cpp \
     ChessGame.cpp \
     PieceType.cpp \
-    SquareList.cpp
+    SquareList.cpp \
+    PawnRule.cpp
 
 HEADERS += \
     Square.h \
@@ -40,4 +41,6 @@ HEADERS += \
     Piece.h \
     ChessGame.h \
     PieceType.h \
-    SquareList.h
+    SquareList.h \
+    IMovementRule.h \
+    PawnRule.h
