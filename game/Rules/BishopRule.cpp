@@ -24,7 +24,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/BishopRule.h"
+#include "game/Rules/BishopRule.h"
 #include "game/Chessboard.h"
 #include "game/Piece.h"
 #include "game/Square.h"

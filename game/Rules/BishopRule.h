@@ -24,27 +24,32 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef IGAMEMOVESREGISTRY
-#define IGAMEMOVESREGISTRY
+#ifndef BISHOPRULE_H
+#define BISHOPRULE_H
 
-#include "game/game_api.h"
-#include "game/IMoveCommand.h"
+#include "game/Rules/IMovementRule.h"
 
 namespace Chess
 {
 
-class IMoveCommand;
+class Chessboard;
 
-class GAME_API IGameMovesRegistry
+class GAME_API BishopRule : public IMovementRule
 {
 public:
-    IGameMovesRegistry() = default;
-    virtual ~IGameMovesRegistry() = default;
+    BishopRule(Chessboard& board, QObject* parent = nullptr);
 
-    virtual void commit(IMoveCommand::UPtr newMove) = 0;
+    QList<Square*> findMoves(Piece& forPiece) const override;
+    QList<Square*> findAttacks(Piece& forPiece) const override;
+
+private:
+    typedef Square*(Square::*DirectionFunc)();
+    Square* nextMovement(Square* base, DirectionFunc dirFunc) const;
+
+private:
+    Chessboard& m_board;
 };
 
 } // namespace Chess
 
-#endif // IGAMEMOVESREGISTRY
-
+#endif // BISHOPRULE_H

@@ -24,20 +24,20 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef BISHOPRULE_H
-#define BISHOPRULE_H
+#ifndef KINGRULE_H
+#define KINGRULE_H
 
-#include "game/IMovementRule.h"
+#include "game/Rules/IMovementRule.h"
 
 namespace Chess
 {
 
 class Chessboard;
 
-class GAME_API BishopRule : public IMovementRule
+class GAME_API KingRule : public IMovementRule
 {
 public:
-    BishopRule(Chessboard& board, QObject* parent = nullptr);
+    KingRule(Chessboard& board, QObject* parent = nullptr);
 
     QList<Square*> findMoves(Piece& forPiece) const override;
     QList<Square*> findAttacks(Piece& forPiece) const override;
@@ -52,4 +52,4 @@ private:
 
 } // namespace Chess
 
-#endif // BISHOPRULE_H
+#endif // KINGRULE_H

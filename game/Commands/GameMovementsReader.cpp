@@ -24,9 +24,9 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/GameMovementsReader.h"
-#include "game/AttackCommand.h"
-#include "game/MovementCommand.h"
+#include "game/Commands/GameMovementsReader.h"
+#include "game/Commands/AttackCommand.h"
+#include "game/Commands/MovementCommand.h"
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>

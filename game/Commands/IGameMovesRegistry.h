@@ -24,27 +24,27 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GAMEMOVEMENTSWRITER_H
-#define GAMEMOVEMENTSWRITER_H
+#ifndef IGAMEMOVESREGISTRY
+#define IGAMEMOVESREGISTRY
 
-#include"game/IMoveCommand.h"
-
-#include <QtCore/QByteArray>
-
-#include <vector>
+#include "game/game_api.h"
+#include "game/Commands/IMoveCommand.h"
 
 namespace Chess
 {
 
-class GameMovementsWriter
+class IMoveCommand;
+
+class GAME_API IGameMovesRegistry
 {
 public:
-    GameMovementsWriter();
+    IGameMovesRegistry() = default;
+    virtual ~IGameMovesRegistry() = default;
 
-    QByteArray write(const std::vector<IMoveCommand::UPtr> &performedCmnds);
+    virtual void commit(IMoveCommand::UPtr newMove) = 0;
 };
 
 } // namespace Chess
 
+#endif // IGAMEMOVESREGISTRY
 
-#endif // GAMEMOVEMENTSWRITER_H

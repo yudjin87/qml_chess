@@ -18,32 +18,38 @@
  * Lesser General Public License for more details.
 
  * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, read to the
+ * Public License along with this library; if not, write to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef GAMEMOVEMENTSREADER_H
-#define GAMEMOVEMENTSREADER_H
+#ifndef ROOKRULE_H
+#define ROOKRULE_H
 
-#include"game/IMoveCommand.h"
-
-#include <QtCore/QByteArray>
-
-#include <vector>
+#include "game/Rules/IMovementRule.h"
 
 namespace Chess
 {
 
-class GameMovementsReader
+class Chessboard;
+
+class GAME_API RookRule : public IMovementRule
 {
 public:
-    GameMovementsReader();
+    RookRule(Chessboard& board, QObject* parent = nullptr);
 
-    std::vector<IMoveCommand::UPtr> read(const QByteArray &loadStream);
+    QList<Square*> findMoves(Piece& forPiece) const override;
+    QList<Square*> findAttacks(Piece& forPiece) const override;
+
+private:
+    typedef Square*(Square::*DirectionFunc)();
+    Square* nextMovement(Square* base, DirectionFunc dirFunc) const;
+
+private:
+    Chessboard& m_board;
 };
 
 } // namespace Chess
 
-#endif // GAMEMOVEMENTSREADER_H
+#endif // ROOKRULE_H

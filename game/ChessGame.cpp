@@ -26,18 +26,18 @@
 
 #include "game/ChessGame.h"
 #include "game/Chessboard.h"
-#include "game/IMoveCommand.h"
 #include "game/Piece.h"
 #include "game/Position.h"
 #include "game/Player.h"
-#include "game/PawnRule.h"
-#include "game/KnightRule.h"
-#include "game/BishopRule.h"
-#include "game/RookRule.h"
-#include "game/QueenRule.h"
-#include "game/KingRule.h"
-#include "game/GameMovementsWriter.h"
-#include "game/GameMovementsReader.h"
+#include "game/Commands/GameMovementsWriter.h"
+#include "game/Commands/GameMovementsReader.h"
+#include "game/Commands/IMoveCommand.h"
+#include "game/Rules/PawnRule.h"
+#include "game/Rules/KnightRule.h"
+#include "game/Rules/BishopRule.h"
+#include "game/Rules/RookRule.h"
+#include "game/Rules/QueenRule.h"
+#include "game/Rules/KingRule.h"
 
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>

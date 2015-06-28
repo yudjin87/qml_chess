@@ -26,11 +26,11 @@
 
 #include "game/Player.h"
 #include "game/Piece.h"
-#include "game/IGameMovesRegistry.h"
 #include "game/Square.h"
 #include "game/SquareList.h"
-#include "game/AttackCommand.h"
-#include "game/MovementCommand.h"
+#include "game/Commands/IGameMovesRegistry.h"
+#include "game/Commands/AttackCommand.h"
+#include "game/Commands/MovementCommand.h"
 
 #include <QtCore/QDebug>
 

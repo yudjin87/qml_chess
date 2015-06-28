@@ -24,50 +24,34 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef ATTACKCOMMAND_H
-#define ATTACKCOMMAND_H
+#ifndef PAWNRULE_H
+#define PAWNRULE_H
 
-#include "game/IMoveCommand.h"
-#include "game/Position.h"
+#include "game/Rules/IMovementRule.h"
+#include "game/Color.h"
 
 namespace Chess
 {
 
-class Square;
+class Chessboard;
 
-class GAME_API AttackCommand : public IMoveCommand
+class GAME_API PawnRule : public IMovementRule
 {
 public:
-    typedef std::unique_ptr<AttackCommand> UPtr;
-    static const char* NAME;
+    PawnRule(Chessboard& board, QObject* parent = nullptr);
 
-public:
-    AttackCommand();
-    AttackCommand(const Position& to, const Position& from);
-
-    template<class... TArgs>
-    static AttackCommand::UPtr create(TArgs&&... args)
-    {
-        return AttackCommand::UPtr(new AttackCommand(std::forward<TArgs>(args)...));
-    }
-
-    void redo(Chessboard& board) override;
-    void undo(Chessboard& board) override;
-
-    QJsonObject write() const override;
-    bool load(const QJsonObject move) override;
-
-    QString name() const override;
-
-    void setDestinationSquare(const Position& to);
-    void setFromSquare(const Position& from);
+    QList<Square*> findMoves(Piece& forPiece) const override;
+    QList<Square*> findAttacks(Piece& forPiece) const override;
 
 private:
-    Position m_to;
-    Position m_from;
+    Square* nextMovement(const Color ownColor, Square* basePosition) const;
+    Square* nextRightAttack(const Color ownColor, Square* basePosition) const;
+    Square *nextLeftAttack(const Color ownColor, Square* basePosition) const;
+
+private:
+    Chessboard& m_board;
 };
 
 } // namespace Chess
 
-
-#endif // ATTACKCOMMAND_H
+#endif // PAWNRULE_H

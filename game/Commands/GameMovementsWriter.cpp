@@ -24,7 +24,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/GameMovementsWriter.h"
+#include "game/Commands/GameMovementsWriter.h"
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>

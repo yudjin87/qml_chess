@@ -18,53 +18,32 @@
  * Lesser General Public License for more details.
 
  * You should have received a copy of the GNU Lesser General
- * Public License along with this library; if not, write to the
+ * Public License along with this library; if not, read to the
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef MOVEMENTCOMMAND_H
-#define MOVEMENTCOMMAND_H
+#ifndef GAMEMOVEMENTSREADER_H
+#define GAMEMOVEMENTSREADER_H
 
-#include "game/IMoveCommand.h"
-#include "game/Position.h"
+#include"game/Commands/IMoveCommand.h"
+
+#include <QtCore/QByteArray>
+
+#include <vector>
 
 namespace Chess
 {
 
-class GAME_API MovementCommand : public IMoveCommand
+class GameMovementsReader
 {
 public:
-    typedef std::unique_ptr<MovementCommand> UPtr;
-    static const char* NAME;
+    GameMovementsReader();
 
-public:
-    MovementCommand();
-    MovementCommand(const Position& to, const Position& from);
-
-    template<class... TArgs>
-    static MovementCommand::UPtr create(TArgs&&... args)
-    {
-        return MovementCommand::UPtr(new MovementCommand(std::forward<TArgs>(args)...));
-    }
-
-    void redo(Chessboard& board) override;
-    void undo(Chessboard& board) override;
-
-    QString name() const override;
-
-    QJsonObject write() const override;
-    bool load(const QJsonObject move) override;
-
-    void setDestinationSquare(const Position& to);
-    void setFromSquare(const Position& from);
-
-private:
-    Position m_to;
-    Position m_from;
+    std::vector<IMoveCommand::UPtr> read(const QByteArray &loadStream);
 };
 
 } // namespace Chess
 
-#endif // MOVEMENTCOMMAND_H
+#endif // GAMEMOVEMENTSREADER_H

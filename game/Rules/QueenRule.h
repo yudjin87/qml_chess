@@ -24,29 +24,27 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef PAWNRULE_H
-#define PAWNRULE_H
+#ifndef QUEENRULE_H
+#define QUEENRULE_H
 
-#include "game/IMovementRule.h"
-#include "game/Color.h"
+#include "game/Rules/IMovementRule.h"
 
 namespace Chess
 {
 
 class Chessboard;
 
-class GAME_API PawnRule : public IMovementRule
+class GAME_API QueenRule : public IMovementRule
 {
 public:
-    PawnRule(Chessboard& board, QObject* parent = nullptr);
+    QueenRule(Chessboard& board, QObject* parent = nullptr);
 
     QList<Square*> findMoves(Piece& forPiece) const override;
     QList<Square*> findAttacks(Piece& forPiece) const override;
 
 private:
-    Square* nextMovement(const Color ownColor, Square* basePosition) const;
-    Square* nextRightAttack(const Color ownColor, Square* basePosition) const;
-    Square *nextLeftAttack(const Color ownColor, Square* basePosition) const;
+    typedef Square*(Square::*DirectionFunc)();
+    Square* nextMovement(Square* base, DirectionFunc dirFunc) const;
 
 private:
     Chessboard& m_board;
@@ -54,4 +52,4 @@ private:
 
 } // namespace Chess
 
-#endif // PAWNRULE_H
+#endif // QUEENRULE_H

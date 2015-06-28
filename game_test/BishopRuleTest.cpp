@@ -25,8 +25,8 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "game_test/BishopRuleTest.h"
-#include <game/BishopRule.h>
-#include <game/PawnRule.h>
+#include <game/Rules/BishopRule.h>
+#include <game/Rules/PawnRule.h>
 #include <game/Chessboard.h>
 #include <game/Position.h>
 #include <game/Square.h>

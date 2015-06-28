@@ -28,8 +28,8 @@
 #define CHESSGAME_H
 
 #include "game/game_api.h"
-#include "game/IGameMovesRegistry.h"
 #include "game/GameMode.h"
+#include "game/Commands/IGameMovesRegistry.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>

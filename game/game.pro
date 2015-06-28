@@ -27,18 +27,18 @@ SOURCES += Square.cpp \
     ChessGame.cpp \
     PieceType.cpp \
     SquareList.cpp \
-    PawnRule.cpp \
     Player.cpp \
-    MovementCommand.cpp \
-    BishopRule.cpp \
-    AttackCommand.cpp \
-    KnightRule.cpp \
     GameMode.cpp \
-    GameMovementsWriter.cpp \
-    GameMovementsReader.cpp \
-    RookRule.cpp \
-    QueenRule.cpp \
-    KingRule.cpp
+    Commands/GameMovementsWriter.cpp \
+    Commands/GameMovementsReader.cpp \
+    Commands/AttackCommand.cpp \
+    Commands/MovementCommand.cpp \
+    Rules/PawnRule.cpp \
+    Rules/KnightRule.cpp \
+    Rules/BishopRule.cpp \
+    Rules/RookRule.cpp \
+    Rules/QueenRule.cpp \
+    Rules/KingRule.cpp
 
 HEADERS += \
     Square.h \
@@ -53,18 +53,18 @@ HEADERS += \
     ChessGame.h \
     PieceType.h \
     SquareList.h \
-    IMovementRule.h \
-    PawnRule.h \
     Player.h \
-    IMoveCommand.h \
-    MovementCommand.h \
-    IGameMovesRegistry.h \
-    BishopRule.h \
-    AttackCommand.h \
-    KnightRule.h \
     GameMode.h \
-    GameMovementsWriter.h \
-    GameMovementsReader.h \
-    RookRule.h \
-    QueenRule.h \
-    KingRule.h
+    Commands/GameMovementsWriter.h \
+    Commands/GameMovementsReader.h \
+    Commands/IGameMovesRegistry.h \
+    Commands/IMoveCommand.h \
+    Commands/AttackCommand.h \
+    Commands/MovementCommand.h \
+    Rules/IMovementRule.h \
+    Rules/PawnRule.h \
+    Rules/KnightRule.h \
+    Rules/BishopRule.h \
+    Rules/RookRule.h \
+    Rules/QueenRule.h \
+    Rules/KingRule.h

@@ -24,32 +24,50 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef ROOKRULE_H
-#define ROOKRULE_H
+#ifndef ATTACKCOMMAND_H
+#define ATTACKCOMMAND_H
 
-#include "game/IMovementRule.h"
+#include "game/Commands/IMoveCommand.h"
+#include "game/Position.h"
 
 namespace Chess
 {
 
-class Chessboard;
+class Square;
 
-class GAME_API RookRule : public IMovementRule
+class GAME_API AttackCommand : public IMoveCommand
 {
 public:
-    RookRule(Chessboard& board, QObject* parent = nullptr);
+    typedef std::unique_ptr<AttackCommand> UPtr;
+    static const char* NAME;
 
-    QList<Square*> findMoves(Piece& forPiece) const override;
-    QList<Square*> findAttacks(Piece& forPiece) const override;
+public:
+    AttackCommand();
+    AttackCommand(const Position& to, const Position& from);
+
+    template<class... TArgs>
+    static AttackCommand::UPtr create(TArgs&&... args)
+    {
+        return AttackCommand::UPtr(new AttackCommand(std::forward<TArgs>(args)...));
+    }
+
+    void redo(Chessboard& board) override;
+    void undo(Chessboard& board) override;
+
+    QJsonObject write() const override;
+    bool load(const QJsonObject move) override;
+
+    QString name() const override;
+
+    void setDestinationSquare(const Position& to);
+    void setFromSquare(const Position& from);
 
 private:
-    typedef Square*(Square::*DirectionFunc)();
-    Square* nextMovement(Square* base, DirectionFunc dirFunc) const;
-
-private:
-    Chessboard& m_board;
+    Position m_to;
+    Position m_from;
 };
 
 } // namespace Chess
 
-#endif // ROOKRULE_H
+
+#endif // ATTACKCOMMAND_H

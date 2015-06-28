@@ -24,38 +24,47 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef KNIGHTRULE_H
-#define KNIGHTRULE_H
+#ifndef MOVEMENTCOMMAND_H
+#define MOVEMENTCOMMAND_H
 
-#include "game/IMovementRule.h"
+#include "game/Commands/IMoveCommand.h"
+#include "game/Position.h"
 
 namespace Chess
 {
 
-class Chessboard;
-
-class GAME_API KnightRule : public IMovementRule
+class GAME_API MovementCommand : public IMoveCommand
 {
 public:
-    KnightRule(Chessboard& board, QObject* parent = nullptr);
+    typedef std::unique_ptr<MovementCommand> UPtr;
+    static const char* NAME;
 
-    QList<Square*> findMoves(Piece& forPiece) const override;
-    QList<Square*> findAttacks(Piece& forPiece) const override;
+public:
+    MovementCommand();
+    MovementCommand(const Position& to, const Position& from);
+
+    template<class... TArgs>
+    static MovementCommand::UPtr create(TArgs&&... args)
+    {
+        return MovementCommand::UPtr(new MovementCommand(std::forward<TArgs>(args)...));
+    }
+
+    void redo(Chessboard& board) override;
+    void undo(Chessboard& board) override;
+
+    QString name() const override;
+
+    QJsonObject write() const override;
+    bool load(const QJsonObject move) override;
+
+    void setDestinationSquare(const Position& to);
+    void setFromSquare(const Position& from);
 
 private:
-    Square* leftLeftTop(Square* current) const;
-    Square* leftTopTop(Square* current) const;
-    Square* rightTopTop(Square* current) const;
-    Square* rightRightTop(Square* current) const;
-    Square* rightRightBot(Square* current) const;
-    Square* rightBotBot(Square* current) const;
-    Square* leftBotBot(Square* current) const;
-    Square* leftLeftBot(Square* current) const;
-
-private:
-    Chessboard& m_board;
+    Position m_to;
+    Position m_from;
 };
 
 } // namespace Chess
 
-#endif // KNIGHTRULE_H
+#endif // MOVEMENTCOMMAND_H

@@ -26,7 +26,7 @@
 
 #include "game/Piece.h"
 #include "game/Chessboard.h"
-#include "game/IMovementRule.h"
+#include "game/Rules/IMovementRule.h"
 #include "game/Square.h"
 
 namespace Chess
