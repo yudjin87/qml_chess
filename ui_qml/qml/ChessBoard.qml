@@ -20,6 +20,7 @@ Item {
     property int cellSize: width / 8
 
     Connections {
+        id: boardConnection
         target: game.board
         onPieceAdded: {
             //console.log("Added: " + piece.atSquare().toStr())
@@ -94,7 +95,7 @@ Item {
                             if (piece !== null)
                             {
                                 //chessCell.color = "red"
-                                console.log("Piece: " + piece.atSquare().toStr())
+                                //console.log("Piece: " + piece.atSquare().toStr())
                             }
                         }
 
@@ -107,8 +108,8 @@ Item {
                         onClicked: {
                             var square = game.board.squareByIdex(mapIndex(index));
                             var piece = square.piece();
-                            repaintBoard(); // TODO: too expensive
 
+                            repaintBoard(); // TODO: too expensive
                             if (game.activePlayer.selectedPiece === null) { // TODO: use some state in JS
                                 if (piece === null)
                                     return;
@@ -123,10 +124,10 @@ Item {
 
                                 var moves = game.activePlayer.availableMovements;
                                 //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
-                                console.log("Hello " + moves.length)
+                                //console.log("Hello " + moves.length)
                                 for (var i = 0; i < moves.length; ++i) {
                                     var s = moves.at(i);
-                                    console.log("     " + s.toStr());
+                                    //console.log("     " + s.toStr());
                                     repeater.itemAt(mapIndex(s.index())).color = "#220000FF"
                                 }
                             }
@@ -134,10 +135,29 @@ Item {
                                 var availableMovements = game.activePlayer.availableMovements;
                                 if (!availableMovements.contains(square))
                                 {
+                                    if (piece === null)
+                                        return;
+
+                                    if (piece.color !== game.activePlayer.color)
+                                        return;
+
+                                    chessCell.color = "#800000FF"
+
+                                    if (!game.activePlayer.selectPiece(piece))
+                                        return;
+
+                                    var moves2 = game.activePlayer.availableMovements;
+                                    //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
+                                    //console.log("Hello " + moves.length)
+                                    for (var i = 0; i < moves2.length; ++i) {
+                                        var s = moves2.at(i);
+                                        //console.log("     " + s.toStr());
+                                        repeater.itemAt(mapIndex(s.index())).color = "#220000FF"
+                                    }
                                     return;
                                 }
 
-                                console.log("Move to " + square.toStr())
+                                //console.log("Move to " + square.toStr())
                                 game.activePlayer.moveTo(square);
                             }
                         }

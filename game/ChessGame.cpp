@@ -79,6 +79,10 @@ const Chessboard *ChessGame::board() const
 
 void ChessGame::start()
 {
+    stop();
+
+    qDebug() << "Game: Starting";
+
     m_playerWhite.reset(new Player(Color::White, *this));
     m_playerBlack.reset(new Player(Color::Black, *this));
     setActivePlayer(m_playerWhite.get());
@@ -168,6 +172,7 @@ void ChessGame::stop()
         return;
     }
 
+    qDebug() << "Game: Stopping";
     m_performedCmnds.clear();
 
     for (Piece* p : m_piecesOnBoard)
@@ -215,7 +220,7 @@ Player *ChessGame::nextTurnPlayer()
 void ChessGame::nextTurn()
 {
     Player *nextPlayer = nextTurnPlayer();
-    qDebug() << "Next turn: " << toString(nextPlayer->color());
+    qDebug() << "Game: Next turn: " << toString(nextPlayer->color());
     setActivePlayer(nextPlayer);
 }
 

@@ -29,6 +29,8 @@
 #include "game/Square.h"
 #include "game/Piece.h"
 
+#include <QtCore/QDebug>
+
 namespace Chess
 {
 
@@ -56,6 +58,7 @@ void MovementCommand::redo(Chessboard &board)
     m_movedPiece->markAsMoved(); // TODO: save prev. state
     board.removePiece(m_movedPiece);
     board.putPiece(m_to, m_movedPiece);
+    qDebug() << "Move: " << Chess::toString(m_movedPiece->type()) << " " << m_from->toStr() << ":" << m_to->toStr();
 }
 
 void MovementCommand::undo(Chessboard &board)

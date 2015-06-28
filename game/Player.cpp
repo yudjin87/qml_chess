@@ -79,6 +79,7 @@ bool Player::selectPiece(Piece* piece)
 {
     if (piece == nullptr)
     {
+        qDebug() << "Player: nothing to select";
         setSelectedPiece(nullptr);
         m_availableMovements->clear();
         availableMovementsChanged(m_availableMovements);
@@ -87,11 +88,14 @@ bool Player::selectPiece(Piece* piece)
 
     if (piece->color() != color())
     {
+        qDebug() << "Player: wrong color";
         setSelectedPiece(nullptr);
         m_availableMovements->clear();
         availableMovementsChanged(m_availableMovements);
         return false;
     }
+
+    qDebug() << "Player: piece " << piece->toString() << " was selected";
 
     setSelectedPiece(piece);
     const QList<Square*> moves = piece->possibleMoves();

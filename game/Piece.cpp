@@ -50,6 +50,11 @@ Piece::~Piece()
 {
 }
 
+QString Piece::toString() const
+{
+    return QString("%1 %2").arg(Chess::toString(m_type)).arg(atSquare()->toStr());
+}
+
 PieceType Piece::type() const
 {
     return m_type;
