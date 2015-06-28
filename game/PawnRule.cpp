@@ -86,6 +86,35 @@ QList<Square *> PawnRule::findMoves(Piece &forPiece) const
     return result;
 }
 
+QList<Square *> PawnRule::findAttacks(Piece &forPiece) const
+{
+    Square *currentPosition = forPiece.atSquare();
+    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
+
+    QList<Square *> result;
+    Square* rightAttack = nextRightAttack(currentPosition);
+    if (rightAttack != nullptr && !rightAttack->isEmpty())
+    {
+        const Piece* piece = rightAttack->piece();
+        if (piece->color() != m_color)
+        {
+            result.push_back(rightAttack);
+        }
+    }
+
+    Square* leftAttack = nextLeftAttack(currentPosition);
+    if (leftAttack != nullptr && !leftAttack->isEmpty())
+    {
+        const Piece* piece = leftAttack->piece();
+        if (piece->color() != m_color)
+        {
+            result.push_back(leftAttack);
+        }
+    }
+
+    return result;
+}
+
 Square *PawnRule::nextMovement(Square *basePosition) const
 {
     if (m_color == Color::White)
@@ -94,6 +123,26 @@ Square *PawnRule::nextMovement(Square *basePosition) const
     }
 
     return basePosition->bottom();
+}
+
+Square *PawnRule::nextRightAttack(Square *basePosition) const
+{
+    if (m_color == Color::White)
+    {
+        return basePosition->topRight();
+    }
+
+    return basePosition->bottomLeft();
+}
+
+Square *PawnRule::nextLeftAttack(Square *basePosition) const
+{
+    if (m_color == Color::White)
+    {
+        return basePosition->topLeft();
+    }
+
+    return basePosition->bottomRight();
 }
 
 } // namespace Chess

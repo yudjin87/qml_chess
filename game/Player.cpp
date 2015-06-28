@@ -43,6 +43,7 @@ Player::Player(const Color color, IGameMovesRegistry &movesRegistry, QObject *pa
     , m_name("Player " + Chess::toString(color))
     , m_selectedPiece(nullptr)
     , m_availableMovements(new SquareList(this))
+    , m_availableAttacks(new SquareList(this))
 {
 }
 
@@ -66,6 +67,11 @@ SquareList *Player::availableMovements()
     return m_availableMovements;
 }
 
+SquareList *Player::availableAttacks()
+{
+    return m_availableAttacks;
+}
+
 void Player::setName(QString name)
 {
     if (m_name == name)
@@ -83,6 +89,11 @@ bool Player::selectPiece(Piece* piece)
         setSelectedPiece(nullptr);
         m_availableMovements->clear();
         availableMovementsChanged(m_availableMovements);
+
+        // TODO: simplify
+        m_availableAttacks->clear();
+        availableAttacksChanged(m_availableAttacks);
+
         return false;
     }
 
@@ -92,6 +103,9 @@ bool Player::selectPiece(Piece* piece)
         setSelectedPiece(nullptr);
         m_availableMovements->clear();
         availableMovementsChanged(m_availableMovements);
+
+        m_availableAttacks->clear();
+        availableAttacksChanged(m_availableAttacks);
         return false;
     }
 
@@ -101,6 +115,10 @@ bool Player::selectPiece(Piece* piece)
     const QList<Square*> moves = piece->possibleMoves();
     m_availableMovements->reset(moves);
     availableMovementsChanged(m_availableMovements);
+
+    const QList<Square*> attacks = piece->possibleAttacks();
+    m_availableAttacks->reset(attacks);
+    availableAttacksChanged(m_availableAttacks);
     return true;
 }
 

@@ -41,9 +41,12 @@ public:
     PawnRule(Chessboard& board, const Color color, QObject* parent = nullptr);
 
     QList<Square*> findMoves(Piece& forPiece) const override;
+    QList<Square*> findAttacks(Piece& forPiece) const override;
 
 private:
     Square* nextMovement(Square* basePosition) const;
+    Square* nextRightAttack(Square* basePosition) const;
+    Square *nextLeftAttack(Square* basePosition) const;
 
 private:
     const Color m_color;

@@ -39,25 +39,25 @@ BishopRuleTest::BishopRuleTest(QObject *parent)
 {
 }
 
-//     A   B   C   D   E   G   G   F   H
-//   ┌───┬───┬───┬───┬───┬───┬───┬───┬───┐
-// 8 │ x │   │   │   │   │   │ x │   │   │  8
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 7 │   │ x │   │   │   │ x │   │   │   │  7
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 6 │   │   │ x │   │ x │   │   │   │   │  6
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 5 │   │   │   │ B │   │   │   │   │   │  5
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 4 │   │   │ x │   │ x │   │   │   │   │  4
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 3 │   │ x │   │   │   │ x │   │   │   │  3
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 2 │ x │   │   │   │   │   │ x │   │   │  2
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 1 │   │   │   │   │   │   │   │ x │   │  1
-//   └───┴───┴───┴───┴───┴───┴───┴───┴───┘
-//     A   B   C   D   E   G   G   F   H
+//     A   B   C   D   E   F   G   H
+//   ┌───┬───┬───┬───┬───┬───┬───┬───┐
+// 8 │ x │   │   │   │   │   │   │   │  8
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 7 │   │ x │   │   │   │ x │   │   │  7
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 6 │   │   │ x │   │ x │   │   │   │  6
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 5 │   │   │   │ B │   │   │   │   │  5
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 4 │   │   │ x │   │ x │   │   │   │  4
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 3 │   │ x │   │   │   │ x │   │   │  3
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 2 │ x │   │   │   │   │   │   │   │  2
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 1 │   │   │   │   │   │   │ x │   │  1
+//   └───┴───┴───┴───┴───┴───┴───┴───┘
+//     A   B   C   D   E   F   G   H
 //
 void BishopRuleTest::shouldFindAllPossibleMovesOnEmptyBoard()
 {
@@ -73,42 +73,41 @@ void BishopRuleTest::shouldFindAllPossibleMovesOnEmptyBoard()
     //    QCOMPARE(moves[1]->position(), Chess::Position::E4());
 }
 
-//     A   B   C   D   E   G   G   F   H
-//   ┌───┬───┬───┬───┬───┬───┬───┬───┬───┐
-// 8 │   │   │   │   │   │   │   │   │   │  8
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 7 │   │   │ P │   │   │   │ P │   │   │  7
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 6 │   │   │   │ x │   │ x │   │   │   │  6
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 5 │   │   │   │   │ B │   │   │   │   │  5
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 4 │   │   │   │ P │   │ x │   │   │   │  4
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 3 │   │   │   │   │   │   │ x │   │   │  3
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 2 │   │   │   │   │   │   │   │ x │   │  2
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 1 │   │   │   │   │   │   │   │   │ P │  1
-//   └───┴───┴───┴───┴───┴───┴───┴───┴───┘
-//     A   B   C   D   E   G   G   F   H
+//     A   B   C   D   E   F   G   H
+//   ┌───┬───┬───┬───┬───┬───┬───┬───┐
+// 8 │   │   │   │   │   │   │   │   │  8
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 7 │   │   │ P │   │   │   │ P │   │  7
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 6 │   │   │   │ x │   │ x │   │   │  6
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 5 │   │   │   │   │ B │   │   │   │  5
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 4 │   │   │   │ x │   │ P │   │   │  4
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 3 │   │   │ x │   │   │   │   │   │  3
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 2 │   │ x │   │   │   │   │   │   │  2
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 1 │ P │   │   │   │   │   │   │   │  1
+//   └───┴───┴───┴───┴───┴───┴───┴───┘
+//     A   B   C   D   E   F   G   H
 //
-
 void BishopRuleTest::shouldFindAllPossibleMovesOnFilledBoard()
 {
     Chess::Chessboard board;
 
-    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board, Chess::Color::White));
+    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
     board.putPiece(Chess::Position::C7(), &pawn1);
 
     Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board, Chess::Color::White));
-    board.putPiece(Chess::Position::D4(), &pawn2);
+    board.putPiece(Chess::Position::F4(), &pawn2);
 
     Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
     board.putPiece(Chess::Position::G7(), &pawn3);
 
     Chess::Piece pawn4(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
-    board.putPiece(Chess::Position::H1(), &pawn4);
+    board.putPiece(Chess::Position::A1(), &pawn4);
 
     Chess::BishopRule* rule = new Chess::BishopRule(board);
     Chess::Piece piece(Chess::PieceType::Bishop, Chess::Color::White, &board, rule);
@@ -118,23 +117,67 @@ void BishopRuleTest::shouldFindAllPossibleMovesOnFilledBoard()
     QCOMPARE(moves.size(), 5);
 }
 
-//     A   B   C   D   E   G   G   F   H
-//   ┌───┬───┬───┬───┬───┬───┬───┬───┬───┐
-// 8 │   │   │   │   │   │   │   │   │   │  8
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 7 │   │   │   │   │   │   │   │   │   │  7
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 6 │   │   │   │   │   │   │   │   │   │  6
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 5 │   │   │   │   │   │   │   │   │   │  5
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 4 │   │   │   │   │   │   │   │   │   │  4
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 3 │   │   │   │   │   │   │   │   │   │  3
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 2 │   │   │   │   │   │   │   │   │   │  2
-//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
-// 1 │   │   │   │   │   │   │   │   │   │  1
-//   └───┴───┴───┴───┴───┴───┴───┴───┴───┘
-//     A   B   C   D   E   G   G   F   H
+//     A   B   C   D   E   F   G   H
+//   ┌───┬───┬───┬───┬───┬───┬───┬───┐
+// 8 │   │   │   │   │   │   │   │   │  8
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 7 │   │   │ A │   │   │   │ A │   │  7
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 6 │   │   │   │ x │   │ x │   │   │  6
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 5 │   │   │   │   │ B │   │   │   │  5
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 4 │   │   │   │ x │   │ o │   │   │  4
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 3 │   │   │ x │   │   │   │   │   │  3
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 2 │   │ x │   │   │   │   │   │   │  2
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 1 │ A │   │   │   │   │   │   │   │  1
+//   └───┴───┴───┴───┴───┴───┴───┴───┘
+//     A   B   C   D   E   F   G   H
+//
+void BishopRuleTest::shouldFindAllPossibleAttacksOnBoard()
+{
+    Chess::Chessboard board;
+
+    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    board.putPiece(Chess::Position::C7(), &pawn1);
+
+    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board, Chess::Color::White));
+    board.putPiece(Chess::Position::F4(), &pawn2);
+
+    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    board.putPiece(Chess::Position::G7(), &pawn3);
+
+    Chess::Piece pawn4(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    board.putPiece(Chess::Position::A1(), &pawn4);
+
+    Chess::BishopRule* rule = new Chess::BishopRule(board);
+    Chess::Piece piece(Chess::PieceType::Bishop, Chess::Color::White, &board, rule);
+    board.putPiece(Chess::Position::E5(), &piece);
+
+    QList<Chess::Square*> attacks = rule->findAttacks(piece);
+    QCOMPARE(attacks.size(), 3);
+}
+
+//     A   B   C   D   E   F   G   H
+//   ┌───┬───┬───┬───┬───┬───┬───┬───┐
+// 8 │   │   │   │   │   │   │   │   │  8
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 7 │   │   │   │   │   │   │   │   │  7
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 6 │   │   │   │   │   │   │   │   │  6
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 5 │   │   │   │   │   │   │   │   │  5
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 4 │   │   │   │   │   │   │   │   │  4
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 3 │   │   │   │   │   │   │   │   │  3
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 2 │   │   │   │   │   │   │   │   │  2
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 1 │   │   │   │   │   │   │   │   │  1
+//   └───┴───┴───┴───┴───┴───┴───┴───┘
+//     A   B   C   D   E   F   G   H
 //

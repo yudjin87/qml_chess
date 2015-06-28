@@ -40,6 +40,7 @@ public:
     BishopRule(Chessboard& board, QObject* parent = nullptr);
 
     QList<Square*> findMoves(Piece& forPiece) const override;
+    QList<Square*> findAttacks(Piece& forPiece) const override;
 
 private:
     typedef Square*(Square::*DirectionFunc)();

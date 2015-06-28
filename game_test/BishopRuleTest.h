@@ -38,6 +38,7 @@ public:
 private slots:
     void shouldFindAllPossibleMovesOnEmptyBoard();
     void shouldFindAllPossibleMovesOnFilledBoard();
+    void shouldFindAllPossibleAttacksOnBoard();
 };
 
 #endif // BISHOPRULETEST_H

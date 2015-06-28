@@ -93,3 +93,38 @@ void PawnRuleTest::shouldReturnEmptyListIfMovementIsNotPossible()
     QCOMPARE(moves.size(), 0);
 }
 
+//     A   B   C   D   E   G   G   F   H
+//   ┌───┬───┬───┬───┬───┬───┬───┬───┬───┐
+// 8 │   │   │   │   │   │   │   │   │   │  8
+//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
+// 7 │   │   │   │   │   │   │   │   │   │  7
+//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
+// 6 │   │   │   │   │   │   │   │   │   │  6
+//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
+// 5 │   │   │   │ P │   │   │   │   │   │  5
+//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
+// 4 │   │   │   │   │ P │   │   │   │   │  4
+//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
+// 3 │   │   │   │   │   │   │   │   │   │  3
+//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
+// 2 │   │   │   │   │   │   │   │   │   │  2
+//   ├───┼───┼───┼───┼───┼───┼───┼───┼───┤
+// 1 │   │   │   │   │   │   │   │   │   │  1
+//   └───┴───┴───┴───┴───┴───┴───┴───┴───┘
+//     A   B   C   D   E   G   G   F   H
+//
+
+void PawnRuleTest::shouldReturnAttacks()
+{
+    Chess::Chessboard board;
+    Chess::Piece enemyPiece(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    board.putPiece(Chess::Position::D5(), &enemyPiece);
+
+    Chess::PawnRule *rule = new Chess::PawnRule(board, Chess::Color::White);
+    Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
+    board.putPiece(Chess::Position::E4(), &piece);
+    QList<Chess::Square*> attacks = rule->findAttacks(piece);
+    QCOMPARE(attacks.size(), 1);
+    QCOMPARE(attacks[0]->position(), Chess::Position::D5());
+}
+

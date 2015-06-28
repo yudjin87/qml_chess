@@ -135,6 +135,13 @@ Item {
                                 //console.log("     " + s.toStr());
                                 repeater.itemAt(mapIndex(s.index())).color = "#220000FF"
                             }
+
+                            var attacks = game.activePlayer.availableAttacks;
+                            for (i = 0; i < attacks.length; ++i) {
+                                 s = attacks.at(i);
+                                repeater.itemAt(mapIndex(s.index())).color = "#80FF0000"
+                            }
+
                         }
                     }
                 }

@@ -44,6 +44,7 @@ public:
     IMovementRule(QObject *parent = nullptr) : QObject(parent) {}
 
     virtual QList<Square*> findMoves(Piece& forPiece) const = 0;
+    virtual QList<Square*> findAttacks(Piece& forPiece) const = 0;
 };
 
 } // namespace Chess

@@ -86,6 +86,11 @@ QList<Square *> Piece::possibleMoves()
     return moves;
 }
 
+QList<Square *> Piece::possibleAttacks()
+{
+    return m_movementRule->findAttacks(*this);
+}
+
 const Square *Piece::atSquare() const
 {
     return m_board->findSquare(this);

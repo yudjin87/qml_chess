@@ -40,6 +40,7 @@ private slots:
     void shouldReturnMovesForInitialPositionForBlack();
     void shouldReturnMoveForNonInitialPosition();
     void shouldReturnEmptyListIfMovementIsNotPossible();
+    void shouldReturnAttacks();
 };
 
 #endif // PAWNRULETEST_H

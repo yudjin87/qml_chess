@@ -67,7 +67,7 @@ public:
 public slots:
     Chess::Square* atSquare();
     QList<Square *> possibleMoves();
-
+    QList<Square *> possibleAttacks();
 
 signals:
     void colorChanged(Chess::Color color);

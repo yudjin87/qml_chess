@@ -83,6 +83,93 @@ QList<Square *> BishopRule::findMoves(Piece &forPiece) const
     return result;
 }
 
+QList<Square *> BishopRule::findAttacks(Piece &forPiece) const
+{
+    Square *currentPosition = forPiece.atSquare();
+    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
+
+    QList<Square *> result; // TODO: base class
+    if (!m_board.contains(currentPosition))
+    {
+        qWarning() << "currentPosition doesn't belong to specified board";
+        return result;
+    }
+
+    Square* bottomLeft = nextMovement(currentPosition, &Square::bottomLeft);
+    while ((bottomLeft != nullptr))
+    {
+        if (bottomLeft->isEmpty())
+        {
+            bottomLeft = nextMovement(bottomLeft, &Square::bottomLeft);
+            continue;
+        }
+
+        const Piece* piece = bottomLeft->piece();
+        if (piece->color() != forPiece.color())
+        {
+            result.push_back(bottomLeft);
+            break;
+        }
+        bottomLeft = nextMovement(bottomLeft, &Square::bottomLeft);
+    }
+
+    Square* topLeft = nextMovement(currentPosition, &Square::topLeft);
+    while ((topLeft != nullptr))
+    {
+        if (topLeft->isEmpty())
+        {
+            topLeft = nextMovement(topLeft, &Square::topLeft);
+            continue;
+        }
+
+        const Piece* piece = topLeft->piece();
+        if (piece->color() != forPiece.color())
+        {
+            result.push_back(topLeft);
+            break;
+        }
+        topLeft = nextMovement(topLeft, &Square::topLeft);
+    }
+
+    Square* bottomRight = nextMovement(currentPosition, &Square::bottomRight);
+    while ((bottomRight != nullptr))
+    {
+        if (bottomRight->isEmpty())
+        {
+            bottomRight = nextMovement(bottomRight, &Square::bottomRight);
+            continue;
+        }
+
+        const Piece* piece = bottomRight->piece();
+        if (piece->color() != forPiece.color())
+        {
+            result.push_back(bottomRight);
+            break;
+        }
+        bottomRight = nextMovement(bottomRight, &Square::bottomRight);
+    }
+
+    Square* topRight = nextMovement(currentPosition, &Square::topRight);
+    while ((topRight != nullptr))
+    {
+        if (topRight->isEmpty())
+        {
+            topRight = nextMovement(topRight, &Square::topRight);
+            continue;
+        }
+
+        const Piece* piece = topRight->piece();
+        if (piece->color() != forPiece.color())
+        {
+            result.push_back(topRight);
+            break;
+        }
+        topRight = nextMovement(topRight, &Square::topRight);
+    }
+
+    return result;
+}
+
 Square *BishopRule::nextMovement(Square *base, BishopRule::DirectionFunc dirFunc) const
 {
     Square* next = (base->*dirFunc)();
