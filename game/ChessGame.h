@@ -34,6 +34,7 @@
 #include <QtCore/QVector>
 
 #include <memory>
+#include <vector>
 
 namespace Chess
 {
@@ -70,7 +71,7 @@ signals:
     void boardChanged(Chess::Chessboard* board);
 
 private:
-    void commit(IMoveCommand* newMove) override;
+    void commit(IMoveCommand::UPtr newMove) override;
 
     void setIsRunning(bool isRunning);
     void setActivePlayer(Player* activePlayer);
@@ -85,6 +86,7 @@ private:
     std::unique_ptr<Player> m_playerWhite;
     std::unique_ptr<Player> m_playerBlack;
     Player* m_playerActive;
+    std::vector<IMoveCommand::UPtr> m_performedCmnds;
 };
 
 } // namespace Chess

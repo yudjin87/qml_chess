@@ -115,8 +115,8 @@ void Player::moveTo(Square *square)
         return;
     }
 
-    MovementCommand* moveCmd = new MovementCommand(*square, *m_selectedPiece, this);
-    m_movesRegistry.commit(moveCmd);
+    MovementCommand::UPtr moveCmd = MovementCommand::create(*square, *m_selectedPiece);
+    m_movesRegistry.commit(std::move(moveCmd));
 
     setSelectedPiece(nullptr);
     m_availableMovements->clear();

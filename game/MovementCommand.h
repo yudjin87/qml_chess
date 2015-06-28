@@ -38,8 +38,17 @@ class Piece;
 class GAME_API MovementCommand : public IMoveCommand
 {
 public:
-    MovementCommand(QObject *parent = nullptr);
-    MovementCommand(Square& to, Piece& movedPiece, QObject *parent = nullptr);
+    typedef std::unique_ptr<MovementCommand> UPtr;
+
+public:
+    MovementCommand();
+    MovementCommand(Square& to, Piece& movedPiece);
+
+    template<class... TArgs>
+    static MovementCommand::UPtr create(TArgs&&... args)
+    {
+        return MovementCommand::UPtr(new MovementCommand(std::forward<TArgs>(args)...));
+    }
 
     void redo(Chessboard& board) override;
     void undo(Chessboard& board) override;

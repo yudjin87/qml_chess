@@ -32,16 +32,16 @@
 namespace Chess
 {
 
-MovementCommand::MovementCommand(QObject *parent)
-    : IMoveCommand(parent)
+MovementCommand::MovementCommand()
+    : IMoveCommand()
     , m_to(nullptr)
     , m_from(nullptr)
     , m_movedPiece(nullptr)
 {
 }
 
-MovementCommand::MovementCommand(Square &to, Piece &movedPiece, QObject *parent)
-    : IMoveCommand(parent)
+MovementCommand::MovementCommand(Square &to, Piece &movedPiece)
+    : IMoveCommand()
     , m_to(&to)
     , m_from(nullptr)
     , m_movedPiece(&movedPiece)
@@ -53,6 +53,7 @@ void MovementCommand::redo(Chessboard &board)
     Q_ASSERT(m_to->isEmpty() && "Runtime error: square is not empty. AttackCommand should be used");
     m_from = m_movedPiece->atSquare();
 
+    m_movedPiece->markAsMoved(); // TODO: save prev. state
     board.removePiece(m_movedPiece);
     board.putPiece(m_to, m_movedPiece);
 }

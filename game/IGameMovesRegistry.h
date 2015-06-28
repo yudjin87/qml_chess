@@ -28,6 +28,7 @@
 #define IGAMEMOVESREGISTRY
 
 #include "game/game_api.h"
+#include "game/IMoveCommand.h"
 
 namespace Chess
 {
@@ -40,7 +41,7 @@ public:
     IGameMovesRegistry() = default;
     virtual ~IGameMovesRegistry() = default;
 
-    virtual void commit(IMoveCommand* newMove) = 0;
+    virtual void commit(IMoveCommand::UPtr newMove) = 0;
 };
 
 } // namespace Chess

@@ -29,7 +29,7 @@
 
 #include "game/game_api.h"
 
-#include <QtCore/QObject>
+#include <memory>
 
 namespace Chess
 {
@@ -37,10 +37,14 @@ namespace Chess
 class Chessboard;
 class Piece;
 
-class GAME_API IMoveCommand : public QObject
+class GAME_API IMoveCommand
 {
 public:
-    IMoveCommand(QObject *parent = nullptr) : QObject(parent) {}
+    typedef std::unique_ptr<IMoveCommand> UPtr;
+
+public:
+    IMoveCommand() = default;
+    virtual ~IMoveCommand() = default;
 
     virtual void redo(Chessboard& board) = 0;
     virtual void undo(Chessboard& board) = 0;

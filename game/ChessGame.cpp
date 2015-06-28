@@ -47,6 +47,7 @@ ChessGame::ChessGame(QObject *parent)
     , m_playerWhite(nullptr)
     , m_playerBlack(nullptr)
     , m_playerActive(nullptr)
+    , m_performedCmnds()
 {
 }
 
@@ -167,6 +168,8 @@ void ChessGame::stop()
         return;
     }
 
+    m_performedCmnds.clear();
+
     for (Piece* p : m_piecesOnBoard)
     {
         m_board->removePiece(p);
@@ -216,11 +219,11 @@ void ChessGame::nextTurn()
     setActivePlayer(nextPlayer);
 }
 
-void ChessGame::commit(IMoveCommand *newMove)
+void ChessGame::commit(IMoveCommand::UPtr newMove)
 {
     Q_ASSERT(newMove != nullptr && "Null pointer is not allowed");
-    newMove->setParent(this);
     newMove->redo(*m_board);
+    m_performedCmnds.push_back(std::move(newMove));
     nextTurn();
 }
 
