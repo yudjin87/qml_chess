@@ -45,6 +45,8 @@ class Square;
 class GAME_API Piece : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(Chess::Color color READ color NOTIFY colorChanged)
+
 public:
     Piece(const PieceType type, const Color color, Chessboard* board, IMovementRule* rule, QObject *parent = nullptr);
     ~Piece();
@@ -61,8 +63,10 @@ public:
 
 public slots:
     Chess::Square* atSquare();
-
     QList<Square *> possibleMoves();
+
+signals:
+    void colorChanged(Chess::Color color);
 
 private:
     const PieceType m_type;

@@ -26,12 +26,14 @@
 
 #include "game/ChessGame.h"
 #include "game/Chessboard.h"
+#include "game/IMoveCommand.h"
 #include "game/Piece.h"
 #include "game/Position.h"
 #include "game/PawnRule.h"
 #include "game/Player.h"
 
 #include <QtCore/QtAlgorithms>
+#include <QtCore/QDebug>
 
 namespace Chess
 {
@@ -200,6 +202,26 @@ void ChessGame::setActivePlayer(Player *activePlayer)
 
     m_playerActive = activePlayer;
     emit activePlayerChanged(activePlayer);
+}
+
+Player *ChessGame::nextTurnPlayer()
+{
+    return (m_playerActive->color() == Color::White) ? m_playerBlack.get() : m_playerWhite.get();
+}
+
+void ChessGame::nextTurn()
+{
+    Player *nextPlayer = nextTurnPlayer();
+    qDebug() << "Next turn: " << toString(nextPlayer->color());
+    setActivePlayer(nextPlayer);
+}
+
+void ChessGame::commit(IMoveCommand *newMove)
+{
+    Q_ASSERT(newMove != nullptr && "Null pointer is not allowed");
+    newMove->setParent(this);
+    newMove->redo(*m_board);
+    nextTurn();
 }
 
 } // namespace Chess

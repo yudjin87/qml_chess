@@ -28,6 +28,7 @@
 #define CHESSGAME_H
 
 #include "game/game_api.h"
+#include "game/IGameMovesRegistry.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>
@@ -40,8 +41,9 @@ namespace Chess
 class Chessboard;
 class Piece;
 class Player;
+class Square;
 
-class GAME_API ChessGame : public QObject
+class GAME_API ChessGame : public QObject, private IGameMovesRegistry
 {
     Q_OBJECT
     Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
@@ -68,8 +70,12 @@ signals:
     void boardChanged(Chess::Chessboard* board);
 
 private:
+    void commit(IMoveCommand* newMove) override;
+
     void setIsRunning(bool isRunning);
     void setActivePlayer(Player* activePlayer);
+    Player* nextTurnPlayer();
+    void nextTurn();
 
 private:
     Chessboard* m_board;

@@ -70,6 +70,11 @@ void SquareList::reset(const QList<Square *> &squares)
     m_squares = squares;
 }
 
+bool SquareList::contains(Square *square) const
+{
+    return m_squares.contains(square);
+}
+
 int SquareList::size() const
 {
     return m_squares.size();

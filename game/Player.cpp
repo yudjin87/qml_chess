@@ -26,18 +26,23 @@
 
 #include "game/Player.h"
 #include "game/Piece.h"
+#include "game/IGameMovesRegistry.h"
 #include "game/Square.h"
 #include "game/SquareList.h"
+#include "game/MovementCommand.h"
+
+#include <QtCore/QDebug>
 
 namespace Chess
 {
 
-Player::Player(const Color color, ChessGame &game, QObject *parent)
+Player::Player(const Color color, IGameMovesRegistry &movesRegistry, QObject *parent)
     : QObject(parent)
     , m_color(color)
-    , m_game(game)
-    , m_name(Chess::toString(color))
-    , m_possibleMoves(new SquareList(this))
+    , m_movesRegistry(movesRegistry)
+    , m_name("Player " + Chess::toString(color))
+    , m_selectedPiece(nullptr)
+    , m_availableMovements(new SquareList(this))
 {
 }
 
@@ -51,6 +56,16 @@ QString Player::name() const
     return m_name;
 }
 
+Piece *Player::selectedPiece()
+{
+    return m_selectedPiece;
+}
+
+SquareList *Player::availableMovements()
+{
+    return m_availableMovements;
+}
+
 void Player::setName(QString name)
 {
     if (m_name == name)
@@ -60,27 +75,63 @@ void Player::setName(QString name)
     emit nameChanged(name);
 }
 
-SquareList *Player::selectPiece(Square *atSquare)
+bool Player::selectPiece(Piece* piece)
 {
-    Piece* piece = atSquare->piece();
     if (piece == nullptr)
     {
-        m_possibleMoves->clear();
-        availableMovementsChanged(m_possibleMoves);
-        return m_possibleMoves;
+        setSelectedPiece(nullptr);
+        m_availableMovements->clear();
+        availableMovementsChanged(m_availableMovements);
+        return false;
     }
 
     if (piece->color() != color())
     {
-        m_possibleMoves->clear();
-        availableMovementsChanged(m_possibleMoves);
-        return m_possibleMoves;
+        setSelectedPiece(nullptr);
+        m_availableMovements->clear();
+        availableMovementsChanged(m_availableMovements);
+        return false;
     }
 
+    setSelectedPiece(piece);
     const QList<Square*> moves = piece->possibleMoves();
-    m_possibleMoves->reset(moves);
-    availableMovementsChanged(m_possibleMoves);
-    return m_possibleMoves;
+    m_availableMovements->reset(moves);
+    availableMovementsChanged(m_availableMovements);
+    return true;
+}
+
+void Player::moveTo(Square *square)
+{
+    Q_ASSERT(square != nullptr && "Logic error: Null pointer is not allowed");
+    if (m_selectedPiece == nullptr)
+    {
+        qWarning() << "Piece wasn't selected - movement is aborted";
+        return;
+    }
+
+    if (!m_availableMovements->contains(square))
+    {
+        qWarning() << "Trying to move to illegal position. Aborted";
+        return;
+    }
+
+    MovementCommand* moveCmd = new MovementCommand(*square, *m_selectedPiece, this);
+    m_movesRegistry.commit(moveCmd);
+
+    setSelectedPiece(nullptr);
+    m_availableMovements->clear();
+    availableMovementsChanged(m_availableMovements);
+}
+
+void Player::setSelectedPiece(Piece *selectedPiece)
+{
+    if (selectedPiece == m_selectedPiece)
+    {
+        return;
+    }
+
+    m_selectedPiece = selectedPiece;
+    emit selectedPieceChanged(m_selectedPiece);
 }
 
 

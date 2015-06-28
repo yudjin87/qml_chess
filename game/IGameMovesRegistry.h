@@ -24,44 +24,26 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef SQUARELIST_H
-#define SQUARELIST_H
+#ifndef IGAMEMOVESREGISTRY
+#define IGAMEMOVESREGISTRY
 
 #include "game/game_api.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QList>
 
 namespace Chess
 {
 
-class Square;
+class IMoveCommand;
 
-class GAME_API SquareList : public QObject
+class GAME_API IGameMovesRegistry
 {
-    Q_OBJECT
-    Q_PROPERTY(int length READ length)
 public:
-    explicit SquareList(QObject *parent = nullptr);
+    IGameMovesRegistry() = default;
+    virtual ~IGameMovesRegistry() = default;
 
-    const Chess::Square* at(const int index) const;
-
-    void append(Chess::Square* square);
-
-    int length() const;
-    void clear();
-    void reset(const QList<Square*>& squares);
-
-
-public slots:
-    int size() const;
-    Chess::Square* at(const int index);
-    bool contains(Chess::Square* square) const;
-
-private:
-    QList<Square*> m_squares;
+    virtual void commit(IMoveCommand* newMove) = 0;
 };
 
 } // namespace Chess
 
-#endif // SQUARELIST_H
+#endif // IGAMEMOVESREGISTRY
+

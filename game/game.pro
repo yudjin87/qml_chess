@@ -28,7 +28,8 @@ SOURCES += Square.cpp \
     PieceType.cpp \
     SquareList.cpp \
     PawnRule.cpp \
-    Player.cpp
+    Player.cpp \
+    MovementCommand.cpp
 
 HEADERS += \
     Square.h \
@@ -45,4 +46,7 @@ HEADERS += \
     SquareList.h \
     IMovementRule.h \
     PawnRule.h \
-    Player.h
+    Player.h \
+    IMoveCommand.h \
+    MovementCommand.h \
+    IGameMovesRegistry.h

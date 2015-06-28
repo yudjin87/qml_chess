@@ -24,44 +24,41 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef SQUARELIST_H
-#define SQUARELIST_H
+#ifndef MOVEMENTCOMMAND_H
+#define MOVEMENTCOMMAND_H
 
-#include "game/game_api.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QList>
+#include "game/IMoveCommand.h"
 
 namespace Chess
 {
 
 class Square;
+class Piece;
 
-class GAME_API SquareList : public QObject
+class GAME_API MovementCommand : public IMoveCommand
 {
-    Q_OBJECT
-    Q_PROPERTY(int length READ length)
 public:
-    explicit SquareList(QObject *parent = nullptr);
+    MovementCommand(QObject *parent = nullptr);
+    MovementCommand(Square& to, Piece& movedPiece, QObject *parent = nullptr);
 
-    const Chess::Square* at(const int index) const;
+    void redo(Chessboard& board) override;
+    void undo(Chessboard& board) override;
 
-    void append(Chess::Square* square);
+    void setDestinationSquare(Square& to);
+    void setMovedPiece(Piece& movedPiece);
 
-    int length() const;
-    void clear();
-    void reset(const QList<Square*>& squares);
+    Square &destinationSquare();
+    const Square &destinationSquare() const;
 
-
-public slots:
-    int size() const;
-    Chess::Square* at(const int index);
-    bool contains(Chess::Square* square) const;
+    Piece &movedPiece();
+    const Piece &movedPiece() const;
 
 private:
-    QList<Square*> m_squares;
+    Square* m_to;
+    Square* m_from;
+    Piece* m_movedPiece;
 };
 
 } // namespace Chess
 
-#endif // SQUARELIST_H
+#endif // MOVEMENTCOMMAND_H

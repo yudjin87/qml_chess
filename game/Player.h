@@ -36,34 +36,49 @@ namespace Chess
 {
 
 class Square;
+class Piece;
 class SquareList;
-class ChessGame;
+class IGameMovesRegistry;
 
 class GAME_API Player : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(Chess::Color color READ color NOTIFY colorChanged)
+    Q_PROPERTY(Chess::Piece* selectedPiece READ selectedPiece NOTIFY selectedPieceChanged)
+    Q_PROPERTY(Chess::SquareList* availableMovements READ availableMovements NOTIFY availableMovementsChanged)
 public:
-    explicit Player(const Color color, ChessGame& game, QObject *parent = nullptr);
+    explicit Player(const Color color, IGameMovesRegistry& movesRegistry, QObject *parent = nullptr);
 
     Color color() const;
     QString name() const;
+
+    Chess::Piece* selectedPiece();
+
+    Chess::SquareList* availableMovements();
 
 public slots:
     void setName(QString name);
 
     // TODO: problems with QQmlListProperty
-    Chess::SquareList* selectPiece(Chess::Square* atSquare);
+    bool selectPiece(Chess::Piece* piece);
+    void moveTo(Chess::Square* square);
 
 signals:
     void nameChanged(QString name);
+    void colorChanged(Chess::Color color);
     void availableMovementsChanged(Chess::SquareList* availableMovements);
+    void selectedPieceChanged(Chess::Piece* selectedPiece);
+
+private:
+    void setSelectedPiece(Piece* selectedPiece);
 
 private:
     const Color m_color;
-    ChessGame& m_game;
+    IGameMovesRegistry& m_movesRegistry;
     QString m_name;
-    SquareList* m_possibleMoves;
+    Chess::Piece* m_selectedPiece;
+    Chess::SquareList* m_availableMovements;
 };
 
 } // namespace Chess

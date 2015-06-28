@@ -93,33 +93,53 @@ Item {
                             var piece = square.piece()
                             if (piece !== null)
                             {
-                                chessCell.color = "red"
+                                //chessCell.color = "red"
                                 console.log("Piece: " + piece.atSquare().toStr())
                             }
                         }
 
                         onExited: {
                             //var square = chessBoard.squareByIdex(mapIndex(index));
-                            repaintBoard(); // TODO: too expensive
+                           // repaintBoard(); // TODO: too expensive
                             //chessCell.color = square.color() === 0 ? "#D18B47" : "#FFCE9E"
                         }
 
                         onClicked: {
                             var square = game.board.squareByIdex(mapIndex(index));
-                            var piece = square.piece()
-                            if (piece === null)
-                            {
-                                return;
-                            }
+                            var piece = square.piece();
+                            repaintBoard(); // TODO: too expensive
 
-                            //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
-//                            console.log("Hello " + piece.possibleMoves().length)
-//                            for (var i = 0; i < piece.possibleMoves().length; ++i)
-//                            {
-//                                var s = piece.possibleMoves().at(i);
-//                                console.log("     " + s.toStr());
-//                                repeater.itemAt(mapIndex(s.index())).color = "#800000FF"
-//                            }
+                            if (game.activePlayer.selectedPiece === null) { // TODO: use some state in JS
+                                if (piece === null)
+                                    return;
+
+                                if (piece.color !== game.activePlayer.color)
+                                    return;
+
+                                chessCell.color = "#800000FF"
+
+                                if (!game.activePlayer.selectPiece(piece))
+                                    return;
+
+                                var moves = game.activePlayer.availableMovements;
+                                //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
+                                console.log("Hello " + moves.length)
+                                for (var i = 0; i < moves.length; ++i) {
+                                    var s = moves.at(i);
+                                    console.log("     " + s.toStr());
+                                    repeater.itemAt(mapIndex(s.index())).color = "#220000FF"
+                                }
+                            }
+                            else {
+                                var availableMovements = game.activePlayer.availableMovements;
+                                if (!availableMovements.contains(square))
+                                {
+                                    return;
+                                }
+
+                                console.log("Move to " + square.toStr())
+                                game.activePlayer.moveTo(square);
+                            }
                         }
                     }
                 }
