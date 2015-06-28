@@ -28,7 +28,6 @@
 #include "game/Chessboard.h"
 #include "game/IMovementRule.h"
 #include "game/Square.h"
-#include "game/SquareList.h"
 
 namespace Chess
 {
@@ -38,7 +37,6 @@ Piece::Piece(const PieceType type, const Color color, Chessboard *board, IMoveme
     , m_type(type)
     , m_color(color)
     , m_board(board)
-    , m_possibleMoves(new SquareList(this))
     , m_movementRule(rule)
 {
     Q_ASSERT(board != nullptr && "Null pointer is not allowed!");
@@ -76,11 +74,10 @@ Square *Piece::atSquare()
     return m_board->findSquare(this);
 }
 
-SquareList* Piece::possibleMoves()
+QList<Square *> Piece::possibleMoves()
 {
     const QList<Square *> moves = m_movementRule->findMoves(atSquare());
-    m_possibleMoves->reset(moves);
-    return m_possibleMoves;
+    return moves;
 }
 
 const Square *Piece::atSquare() const

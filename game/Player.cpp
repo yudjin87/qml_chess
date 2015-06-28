@@ -25,6 +25,9 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "game/Player.h"
+#include "game/Piece.h"
+#include "game/Square.h"
+#include "game/SquareList.h"
 
 namespace Chess
 {
@@ -34,6 +37,7 @@ Player::Player(const Color color, ChessGame &game, QObject *parent)
     , m_color(color)
     , m_game(game)
     , m_name(Chess::toString(color))
+    , m_possibleMoves(new SquareList(this))
 {
 }
 
@@ -54,6 +58,29 @@ void Player::setName(QString name)
 
     m_name = name;
     emit nameChanged(name);
+}
+
+SquareList *Player::selectPiece(Square *atSquare)
+{
+    Piece* piece = atSquare->piece();
+    if (piece == nullptr)
+    {
+        m_possibleMoves->clear();
+        availableMovementsChanged(m_possibleMoves);
+        return m_possibleMoves;
+    }
+
+    if (piece->color() != color())
+    {
+        m_possibleMoves->clear();
+        availableMovementsChanged(m_possibleMoves);
+        return m_possibleMoves;
+    }
+
+    const QList<Square*> moves = piece->possibleMoves();
+    m_possibleMoves->reset(moves);
+    availableMovementsChanged(m_possibleMoves);
+    return m_possibleMoves;
 }
 
 

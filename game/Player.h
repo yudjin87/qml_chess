@@ -35,6 +35,8 @@
 namespace Chess
 {
 
+class Square;
+class SquareList;
 class ChessGame;
 
 class GAME_API Player : public QObject
@@ -45,19 +47,23 @@ public:
     explicit Player(const Color color, ChessGame& game, QObject *parent = nullptr);
 
     Color color() const;
-
     QString name() const;
 
 public slots:
     void setName(QString name);
 
+    // TODO: problems with QQmlListProperty
+    Chess::SquareList* selectPiece(Chess::Square* atSquare);
+
 signals:
     void nameChanged(QString name);
+    void availableMovementsChanged(Chess::SquareList* availableMovements);
 
 private:
     const Color m_color;
     ChessGame& m_game;
     QString m_name;
+    SquareList* m_possibleMoves;
 };
 
 } // namespace Chess

@@ -113,13 +113,13 @@ Item {
                             }
 
                             //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
-                            console.log("Hello " + piece.possibleMoves().length)
-                            for (var i = 0; i < piece.possibleMoves().length; ++i)
-                            {
-                                var s = piece.possibleMoves().at(i);
-                                console.log("     " + s.toStr());
-                                repeater.itemAt(mapIndex(s.index())).color = "#800000FF"
-                            }
+//                            console.log("Hello " + piece.possibleMoves().length)
+//                            for (var i = 0; i < piece.possibleMoves().length; ++i)
+//                            {
+//                                var s = piece.possibleMoves().at(i);
+//                                console.log("     " + s.toStr());
+//                                repeater.itemAt(mapIndex(s.index())).color = "#800000FF"
+//                            }
                         }
                     }
                 }

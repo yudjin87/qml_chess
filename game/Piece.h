@@ -41,7 +41,6 @@ namespace Chess
 class IMovementRule;
 class Chessboard;
 class Square;
-class SquareList;
 
 class GAME_API Piece : public QObject
 {
@@ -63,14 +62,12 @@ public:
 public slots:
     Chess::Square* atSquare();
 
-    // TODO: problems with QQmlListProperty
-    Chess::SquareList* possibleMoves();
+    QList<Square *> possibleMoves();
 
 private:
     const PieceType m_type;
     const Color m_color;
     Chessboard* m_board;
-    SquareList* m_possibleMoves;
     IMovementRule* m_movementRule;
 };
 

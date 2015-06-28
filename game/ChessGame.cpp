@@ -174,6 +174,10 @@ void ChessGame::stop()
     m_piecesOnBoard.clear();
 
     setIsRunning(false);
+
+    m_playerWhite.reset();
+    m_playerBlack.reset();
+    setActivePlayer(nullptr);
 }
 
 void ChessGame::setIsRunning(bool isRunning)
