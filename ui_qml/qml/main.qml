@@ -17,6 +17,17 @@ ApplicationWindow {
         game.stop();
     }
 
+    FileDialog {
+        id: fileOpenDialog
+        title: qsTr("Choose chess file to load:")
+        folder: "."
+        selectExisting: true
+        nameFilters: [ "QML Chess files (*.chess)", "All files (*)" ]
+        onAccepted: {
+            game.load(fileOpenDialog.fileUrl)
+        }
+    }
+
     Connections {
         id: gameConnection
         target: game
@@ -66,8 +77,7 @@ ApplicationWindow {
 
                 text: qsTr("Load")
                 onClicked: {
-                    // fileOpenDialog.open()
-                    game.load();
+                    fileOpenDialog.open()
                 }
             }
 
@@ -95,12 +105,12 @@ ApplicationWindow {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 //enabled: !chessController.gameRunning && chessController.movesNumber > 0
-                enabled: true
+                enabled: saveFileName.text.length > 0
                 text: qsTr("Save")
-//                onClicked: {
-//                    if (saveFileName.text != "")
-//                        chessController.saveGame(saveFileName.text)
-//                }
+                onClicked: {
+                    if (saveFileName.text != "")
+                        game.save(saveFileName.text)
+                }
             }
             //}
 

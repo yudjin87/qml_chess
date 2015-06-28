@@ -80,13 +80,30 @@ QString AttackCommand::name() const
 
 bool AttackCommand::load(const QJsonObject move)
 {
-    (void) move;
-    return false;
+    const QString fromStr = move.value("from").toString();
+    const QString toStr = move.value("to").toString();
+    bool ok = false;
+    m_from = Position::fromString(fromStr, &ok);
+    if (!ok)
+    {
+        return false;
+    }
+
+    m_to = Position::fromString(toStr, &ok);
+    if (!ok)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 QJsonObject AttackCommand::write() const
 {
+    // TODO: move to base
     QJsonObject me;
+    me.insert("from", QJsonValue(m_from.toString()));
+    me.insert("to", QJsonValue(m_to.toString()));
     return me;
 }
 

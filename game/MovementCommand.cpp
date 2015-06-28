@@ -84,8 +84,22 @@ QJsonObject MovementCommand::write() const
 
 bool MovementCommand::load(const QJsonObject move)
 {
-    (void) move;
-    return false;
+    const QString fromStr = move.value("from").toString();
+    const QString toStr = move.value("to").toString();
+    bool ok = false;
+    m_from = Position::fromString(fromStr, &ok);
+    if (!ok)
+    {
+        return false;
+    }
+
+    m_to = Position::fromString(toStr, &ok);
+    if (!ok)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void MovementCommand::setDestinationSquare(const Position &to)

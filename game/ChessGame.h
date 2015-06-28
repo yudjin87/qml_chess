@@ -33,6 +33,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>
+#include <QtCore/QUrl>
 
 #include <memory>
 #include <vector>
@@ -69,7 +70,8 @@ public slots:
     void start();
     void stop();
     void save(QString fileName);
-    void load();
+    void load(QString fileName);
+    void load(const QUrl & fileName);
 
 signals:
     void isRunningChanged(bool isRunning);

@@ -33,7 +33,14 @@
 #include "game/PawnRule.h"
 #include "game/KnightRule.h"
 #include "game/BishopRule.h"
+#include "game/GameMovementsWriter.h"
+#include "game/GameMovementsReader.h"
 
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QByteArray>
+#include <QtCore/QTextStream>
 #include <QtCore/QtAlgorithms>
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
@@ -202,20 +209,51 @@ void ChessGame::stop()
 
 void ChessGame::save(QString fileName)
 {
-    QFile file(fileName);
+    QFileInfo info(fileName);
+    if (info.suffix().isEmpty() || info.suffix() != "chess")
+    {
+        info = fileName + ".chess";
+    }
+
+    qDebug() << "Saving to" << info.absoluteFilePath();
+
+    QFile file(info.absoluteFilePath());
+
     if(!file.open(QIODevice::WriteOnly))
     {
-        qWarning() << "Can't open file" << fileName << "for writting";
+        qWarning() << "Can't open file" << info.absoluteFilePath() << "for writting";
         return;
     }
 
-    file.close();
+    QTextStream out(&file);
+    GameMovementsWriter writer;
+    QByteArray savedDoc = writer.write(m_performedCmnds);
+
+    out << savedDoc;
 }
 
-void ChessGame::load()
+void ChessGame::load(QString fileName)
 {
     setMode(GameMode::Replay);
     qDebug() << "Game: Starting, mode" << Chess::toString(m_mode);
+
+    QFile file(fileName);
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qWarning() << "Can't open file" << fileName << "for reading";
+        return;
+    }
+
+    QByteArray savedDov = file.readAll();
+    GameMovementsReader reader;
+    m_performedCmnds = reader.read(savedDov);
+
+    qDebug() << m_performedCmnds.size() << "commands were read";
+}
+
+void ChessGame::load(const QUrl &fileName)
+{
+    return load(fileName.toLocalFile());
 }
 
 void ChessGame::setMode(GameMode mode)

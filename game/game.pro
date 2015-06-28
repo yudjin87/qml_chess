@@ -33,7 +33,9 @@ SOURCES += Square.cpp \
     BishopRule.cpp \
     AttackCommand.cpp \
     KnightRule.cpp \
-    GameMode.cpp
+    GameMode.cpp \
+    GameMovementsWriter.cpp \
+    GameMovementsReader.cpp
 
 HEADERS += \
     Square.h \
@@ -57,4 +59,6 @@ HEADERS += \
     BishopRule.h \
     AttackCommand.h \
     KnightRule.h \
-    GameMode.h
+    GameMode.h \
+    GameMovementsWriter.h \
+    GameMovementsReader.h
