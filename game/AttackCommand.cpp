@@ -38,33 +38,29 @@ AttackCommand::AttackCommand()
     : IMoveCommand()
     , m_to(nullptr)
     , m_from(nullptr)
-    , m_movedPiece(nullptr)
-    , m_attackedPiece(nullptr)
 {
 }
 
-AttackCommand::AttackCommand(Square &to, Piece &movedPiece)
+AttackCommand::AttackCommand(Square &to, Square &from)
     : IMoveCommand()
     , m_to(&to)
-    , m_from(nullptr)
-    , m_movedPiece(&movedPiece)
-    , m_attackedPiece(nullptr)
+    , m_from(&from)
 {
 }
 
 void AttackCommand::redo(Chessboard &board)
 {
     Q_ASSERT(!m_to->isEmpty() && "Runtime error: square is empty. MoveCommand should be used");
-    m_from = m_movedPiece->atSquare();
+    Q_ASSERT(!m_from->isEmpty() && "Runtime error: square is empty");
 
-    m_movedPiece->markAsMoved(); // TODO: save prev. state
-    board.removePiece(m_movedPiece);
+    Piece* movedePiece = m_from->piece();
+    movedePiece->markAsMoved(); // TODO: save prev. state
+    board.removePiece(movedePiece);
 
-    m_attackedPiece = m_to->piece();
-
-    board.removePiece(m_attackedPiece);
-    board.putPiece(m_to, m_movedPiece);
-    qDebug() << "Attack: " << Chess::toString(m_movedPiece->type()) << " " << m_from->toStr() << ":" << m_to->toStr();
+    Piece* attackedPiece = m_to->piece();
+    board.removePiece(attackedPiece);
+    board.putPiece(m_to, movedePiece);
+    qDebug() << "Attack: " << Chess::toString(movedePiece->type()) << " " << m_from->toStr() << ":" << m_to->toStr();
 }
 
 void AttackCommand::undo(Chessboard &board)
@@ -72,14 +68,15 @@ void AttackCommand::undo(Chessboard &board)
     (void)board;
 }
 
+QJsonObject AttackCommand::write() const
+{
+    QJsonObject me;
+    return me;
+}
+
 void AttackCommand::setDestinationSquare(Square &to)
 {
     m_to = &to;
-}
-
-void AttackCommand::setMovedPiece(Piece &movedPiece)
-{
-    m_movedPiece = &movedPiece;
 }
 
 Square &AttackCommand::destinationSquare()
@@ -92,14 +89,14 @@ const Square &AttackCommand::destinationSquare() const
     return *m_to;
 }
 
-Piece &AttackCommand::movedPiece()
+Square *AttackCommand::from()
 {
-    return *m_movedPiece;
+    return m_from;
 }
 
-const Piece &AttackCommand::movedPiece() const
+const Square *AttackCommand::from() const
 {
-    return *m_movedPiece;
+    return m_from;
 }
 
 } // namespace Chess

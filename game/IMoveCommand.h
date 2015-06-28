@@ -28,6 +28,7 @@
 #define IMOVECOMMAND
 
 #include "game/game_api.h"
+#include <QtCore/QJsonObject>
 
 #include <memory>
 
@@ -48,6 +49,8 @@ public:
 
     virtual void redo(Chessboard& board) = 0;
     virtual void undo(Chessboard& board) = 0;
+
+    virtual QJsonObject write() const = 0;
 };
 
 } // namespace Chess

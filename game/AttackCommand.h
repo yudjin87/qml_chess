@@ -33,7 +33,6 @@ namespace Chess
 {
 
 class Square;
-class Piece;
 
 class GAME_API AttackCommand : public IMoveCommand
 {
@@ -42,7 +41,7 @@ public:
 
 public:
     AttackCommand();
-    AttackCommand(Square& to, Piece& movedPiece);
+    AttackCommand(Square& to, Square& from);
 
     template<class... TArgs>
     static AttackCommand::UPtr create(TArgs&&... args)
@@ -53,20 +52,20 @@ public:
     void redo(Chessboard& board) override;
     void undo(Chessboard& board) override;
 
+    QJsonObject write() const override;
+
     void setDestinationSquare(Square& to);
-    void setMovedPiece(Piece& movedPiece);
+    void setFromSquare(Square& from);
 
     Square &destinationSquare();
     const Square &destinationSquare() const;
 
-    Piece &movedPiece();
-    const Piece &movedPiece() const;
+    Square *from();
+    const Square *from() const;
 
 private:
     Square* m_to;
     Square* m_from;
-    Piece* m_movedPiece;
-    Piece* m_attackedPiece;
 };
 
 } // namespace Chess
