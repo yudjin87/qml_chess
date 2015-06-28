@@ -126,3 +126,79 @@ void PositionTest::loopTest()
     QVERIFY(transform(48) == 8);
     QVERIFY(transform(6) == 62);
 }
+
+void PositionTest::shouldParseFromString()
+{
+    bool ok = false;
+    QVERIFY(Chess::Position::A1() == Chess::Position::fromString("A1", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::A2() == Chess::Position::fromString("A2", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::A3() == Chess::Position::fromString("A3", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::A4() == Chess::Position::fromString("A4", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::A5() == Chess::Position::fromString("A5", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::A6() == Chess::Position::fromString("A6", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::A7() == Chess::Position::fromString("A7", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::A8() == Chess::Position::fromString("A8", &ok)); QVERIFY(ok);
+
+    QVERIFY(Chess::Position::B1() == Chess::Position::fromString("B1", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::B2() == Chess::Position::fromString("B2", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::B3() == Chess::Position::fromString("B3", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::B4() == Chess::Position::fromString("B4", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::B5() == Chess::Position::fromString("B5", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::B6() == Chess::Position::fromString("B6", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::B7() == Chess::Position::fromString("B7", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::B8() == Chess::Position::fromString("B8", &ok)); QVERIFY(ok);
+
+    QVERIFY(Chess::Position::C1() == Chess::Position::fromString("C1", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::C2() == Chess::Position::fromString("C2", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::C3() == Chess::Position::fromString("C3", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::C4() == Chess::Position::fromString("C4", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::C5() == Chess::Position::fromString("C5", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::C6() == Chess::Position::fromString("C6", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::C7() == Chess::Position::fromString("C7", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::C8() == Chess::Position::fromString("C8", &ok)); QVERIFY(ok);
+
+    QVERIFY(Chess::Position::D1() == Chess::Position::fromString("D1", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::D2() == Chess::Position::fromString("D2", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::D3() == Chess::Position::fromString("D3", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::D4() == Chess::Position::fromString("D4", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::D5() == Chess::Position::fromString("D5", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::D6() == Chess::Position::fromString("D6", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::D7() == Chess::Position::fromString("D7", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::D8() == Chess::Position::fromString("D8", &ok)); QVERIFY(ok);
+
+    QVERIFY(Chess::Position::E1() == Chess::Position::fromString("E1", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::E2() == Chess::Position::fromString("E2", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::E3() == Chess::Position::fromString("E3", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::E4() == Chess::Position::fromString("E4", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::E5() == Chess::Position::fromString("E5", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::E6() == Chess::Position::fromString("E6", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::E7() == Chess::Position::fromString("E7", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::E8() == Chess::Position::fromString("E8", &ok)); QVERIFY(ok);
+
+    QVERIFY(Chess::Position::F1() == Chess::Position::fromString("F1", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::F2() == Chess::Position::fromString("F2", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::F3() == Chess::Position::fromString("F3", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::F4() == Chess::Position::fromString("F4", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::F5() == Chess::Position::fromString("F5", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::F6() == Chess::Position::fromString("F6", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::F7() == Chess::Position::fromString("F7", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::F8() == Chess::Position::fromString("F8", &ok)); QVERIFY(ok);
+
+    QVERIFY(Chess::Position::G1() == Chess::Position::fromString("G1", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::G2() == Chess::Position::fromString("G2", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::G3() == Chess::Position::fromString("G3", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::G4() == Chess::Position::fromString("G4", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::G5() == Chess::Position::fromString("G5", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::G6() == Chess::Position::fromString("G6", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::G7() == Chess::Position::fromString("G7", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::G8() == Chess::Position::fromString("G8", &ok)); QVERIFY(ok);
+
+    QVERIFY(Chess::Position::H1() == Chess::Position::fromString("H1", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::H2() == Chess::Position::fromString("H2", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::H3() == Chess::Position::fromString("H3", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::H4() == Chess::Position::fromString("H4", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::H5() == Chess::Position::fromString("H5", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::H6() == Chess::Position::fromString("H6", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::H7() == Chess::Position::fromString("H7", &ok)); QVERIFY(ok);
+    QVERIFY(Chess::Position::H8() == Chess::Position::fromString("H8", &ok)); QVERIFY(ok);
+}

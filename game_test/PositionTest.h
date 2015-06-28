@@ -41,6 +41,7 @@ private slots:
     void operatorLessTest();
     void preIncrementTest();
     void loopTest();
+    void shouldParseFromString();
 };
 
 #endif // POSITIONTEST_H

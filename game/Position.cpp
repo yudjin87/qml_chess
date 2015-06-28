@@ -27,6 +27,8 @@
 #include "game/Position.h"
 #include "game/Constants.h"
 
+#include <QtCore/QDebug>
+
 namespace Chess
 {
 
@@ -39,6 +41,48 @@ Position::Position(const File file, const Rank rank)
     : m_file(file)
     , m_rank(rank)
 {
+}
+
+Position Position::fromString(const QString &string, bool *error)
+{
+    if (string.size() != 2)
+    {
+        qWarning() << "Invalid position size" << string.size();
+        if (error) *error = false;
+        return Position::A1();
+    }
+
+    // TODO: use Qt enums for parsing...
+
+    const QChar fileChar = string[0];
+    const int file = fileChar.toLatin1() - 'A';
+    if (file < 0 || static_cast<int>(File::H) < file)
+    {
+        qWarning() << "Invalid file" << string[0];
+        if (error) *error = false;
+        return Position::A1();
+    }
+
+    const QString rankLetter = string[1];
+
+    bool ok = false;
+    const int rank = rankLetter.toInt(&ok) - 1;
+    if (!ok)
+    {
+        qWarning() << "Invalid rank" << rankLetter;
+        if (error) *error = false;
+        return Position::A1();
+    }
+
+    if (rank < 0 || static_cast<int>(Rank::R8) < rank)
+    {
+        qWarning() << "Invalid file" << string[0];
+        if (error) *error = false;
+        return Position::A1();
+    }
+
+    if (error) *error = true;
+    return Position(static_cast<File>(file), static_cast<Rank>(rank));
 }
 
 Position Position::operator++(int)

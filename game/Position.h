@@ -43,6 +43,8 @@ class GAME_API Position
 public:
     Position(const File file, const Rank rank);
 
+    static Position fromString(const QString& string, bool *error);
+
     static Position A1() { return Position(File::A, Rank::R1); }
     static Position A2() { return Position(File::A, Rank::R2); }
     static Position A3() { return Position(File::A, Rank::R3); }
