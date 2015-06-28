@@ -97,16 +97,16 @@ void BishopRuleTest::shouldFindAllPossibleMovesOnFilledBoard()
 {
     Chess::Chessboard board;
 
-    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::C7(), &pawn1);
 
-    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board, Chess::Color::White));
+    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::F4(), &pawn2);
 
-    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::G7(), &pawn3);
 
-    Chess::Piece pawn4(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn4(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::A1(), &pawn4);
 
     Chess::BishopRule* rule = new Chess::BishopRule(board);
@@ -141,16 +141,16 @@ void BishopRuleTest::shouldFindAllPossibleAttacksOnBoard()
 {
     Chess::Chessboard board;
 
-    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::C7(), &pawn1);
 
-    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board, Chess::Color::White));
+    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::F4(), &pawn2);
 
-    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::G7(), &pawn3);
 
-    Chess::Piece pawn4(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn4(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::A1(), &pawn4);
 
     Chess::BishopRule* rule = new Chess::BishopRule(board);

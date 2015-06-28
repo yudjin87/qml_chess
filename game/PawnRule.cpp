@@ -34,10 +34,9 @@
 namespace Chess
 {
 
-PawnRule::PawnRule(Chessboard &board, const Color color, QObject* parent)
+PawnRule::PawnRule(Chessboard &board, QObject* parent)
     : IMovementRule(parent)
     , m_board(board)
-    , m_color(color)
 {
 }
 
@@ -53,7 +52,7 @@ QList<Square *> PawnRule::findMoves(Piece &forPiece) const
         return result;
     }
 
-    Square* shortMovement = nextMovement(currentPosition);
+    Square* shortMovement = nextMovement(forPiece.color(), currentPosition);
     if (shortMovement == nullptr)
     {
         return result;
@@ -72,7 +71,7 @@ QList<Square *> PawnRule::findMoves(Piece &forPiece) const
         return result;
     }
 
-    Square* longMovement = nextMovement(shortMovement);
+    Square* longMovement = nextMovement(forPiece.color(), shortMovement);
     if (longMovement == nullptr)
     {
         return result;
@@ -92,21 +91,21 @@ QList<Square *> PawnRule::findAttacks(Piece &forPiece) const
     Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
 
     QList<Square *> result;
-    Square* rightAttack = nextRightAttack(currentPosition);
+    Square* rightAttack = nextRightAttack(forPiece.color(), currentPosition);
     if (rightAttack != nullptr && !rightAttack->isEmpty())
     {
         const Piece* piece = rightAttack->piece();
-        if (piece->color() != m_color)
+        if (piece->color() != forPiece.color())
         {
             result.push_back(rightAttack);
         }
     }
 
-    Square* leftAttack = nextLeftAttack(currentPosition);
+    Square* leftAttack = nextLeftAttack(forPiece.color(), currentPosition);
     if (leftAttack != nullptr && !leftAttack->isEmpty())
     {
         const Piece* piece = leftAttack->piece();
-        if (piece->color() != m_color)
+        if (piece->color() != forPiece.color())
         {
             result.push_back(leftAttack);
         }
@@ -115,9 +114,9 @@ QList<Square *> PawnRule::findAttacks(Piece &forPiece) const
     return result;
 }
 
-Square *PawnRule::nextMovement(Square *basePosition) const
+Square *PawnRule::nextMovement(const Color ownColor, Square *basePosition) const
 {
-    if (m_color == Color::White)
+    if (ownColor == Color::White)
     {
         return basePosition->top();
     }
@@ -125,9 +124,9 @@ Square *PawnRule::nextMovement(Square *basePosition) const
     return basePosition->bottom();
 }
 
-Square *PawnRule::nextRightAttack(Square *basePosition) const
+Square *PawnRule::nextRightAttack(const Color ownColor, Square *basePosition) const
 {
-    if (m_color == Color::White)
+    if (ownColor == Color::White)
     {
         return basePosition->topRight();
     }
@@ -135,9 +134,9 @@ Square *PawnRule::nextRightAttack(Square *basePosition) const
     return basePosition->bottomLeft();
 }
 
-Square *PawnRule::nextLeftAttack(Square *basePosition) const
+Square *PawnRule::nextLeftAttack(const Color ownColor, Square *basePosition) const
 {
-    if (m_color == Color::White)
+    if (ownColor == Color::White)
     {
         return basePosition->topLeft();
     }

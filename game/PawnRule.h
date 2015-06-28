@@ -38,18 +38,17 @@ class Chessboard;
 class GAME_API PawnRule : public IMovementRule
 {
 public:
-    PawnRule(Chessboard& board, const Color color, QObject* parent = nullptr);
+    PawnRule(Chessboard& board, QObject* parent = nullptr);
 
     QList<Square*> findMoves(Piece& forPiece) const override;
     QList<Square*> findAttacks(Piece& forPiece) const override;
 
 private:
-    Square* nextMovement(Square* basePosition) const;
-    Square* nextRightAttack(Square* basePosition) const;
-    Square *nextLeftAttack(Square* basePosition) const;
+    Square* nextMovement(const Color ownColor, Square* basePosition) const;
+    Square* nextRightAttack(const Color ownColor, Square* basePosition) const;
+    Square *nextLeftAttack(const Color ownColor, Square* basePosition) const;
 
 private:
-    const Color m_color;
     Chessboard& m_board;
 };
 

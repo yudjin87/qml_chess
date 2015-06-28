@@ -41,7 +41,7 @@ PawnRuleTest::PawnRuleTest(QObject *parent)
 void PawnRuleTest::shouldReturnMovesForInitialPosition()
 {
     Chess::Chessboard board;
-    Chess::PawnRule* rule = new Chess::PawnRule(board, Chess::Color::White);
+    Chess::PawnRule* rule = new Chess::PawnRule(board);
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E2(), &piece);
 
@@ -55,7 +55,7 @@ void PawnRuleTest::shouldReturnMovesForInitialPosition()
 void PawnRuleTest::shouldReturnMovesForInitialPositionForBlack()
 {
     Chess::Chessboard board;
-    Chess::PawnRule* rule = new Chess::PawnRule(board, Chess::Color::Black);
+    Chess::PawnRule* rule = new Chess::PawnRule(board);
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::Black, &board, rule);
     board.putPiece(Chess::Position::E7(), &piece);
 
@@ -69,7 +69,7 @@ void PawnRuleTest::shouldReturnMovesForInitialPositionForBlack()
 void PawnRuleTest::shouldReturnMoveForNonInitialPosition()
 {
     Chess::Chessboard board;
-    Chess::PawnRule* rule = new Chess::PawnRule(board, Chess::Color::White);
+    Chess::PawnRule* rule = new Chess::PawnRule(board);
     Chess::Piece movedPiece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
     movedPiece.markAsMoved();
     board.putPiece(Chess::Position::E3(), &movedPiece);
@@ -83,10 +83,10 @@ void PawnRuleTest::shouldReturnMoveForNonInitialPosition()
 void PawnRuleTest::shouldReturnEmptyListIfMovementIsNotPossible()
 {
     Chess::Chessboard board;
-    Chess::Piece blockedPiece(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece blockedPiece(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::E4(), &blockedPiece);
 
-    Chess::PawnRule *rule = new Chess::PawnRule(board, Chess::Color::White); // TODO: use factory
+    Chess::PawnRule *rule = new Chess::PawnRule(board); // TODO: use factory
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E3(), &piece);
     QList<Chess::Square*> moves = rule->findMoves(piece);
@@ -117,10 +117,10 @@ void PawnRuleTest::shouldReturnEmptyListIfMovementIsNotPossible()
 void PawnRuleTest::shouldReturnAttacks()
 {
     Chess::Chessboard board;
-    Chess::Piece enemyPiece(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece enemyPiece(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::D5(), &enemyPiece);
 
-    Chess::PawnRule *rule = new Chess::PawnRule(board, Chess::Color::White);
+    Chess::PawnRule *rule = new Chess::PawnRule(board);
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E4(), &piece);
     QList<Chess::Square*> attacks = rule->findAttacks(piece);

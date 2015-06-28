@@ -94,13 +94,13 @@ void KnightRuleTest::shouldFindAllPossibleMovesOnFilledBoard()
 {
     Chess::Chessboard board;
 
-    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::E2(), &pawn1);
 
-    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board, Chess::Color::White));
+    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::B5(), &pawn2);
 
-    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::F5(), &pawn3);
 
     Chess::KnightRule* rule = new Chess::KnightRule(board);
@@ -135,13 +135,13 @@ void KnightRuleTest::shouldFindAllPossibleAttacksOnBoard()
 {
     Chess::Chessboard board;
 
-    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::E2(), &pawn1);
 
-    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board, Chess::Color::White));
+    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::B5(), &pawn2);
 
-    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board, Chess::Color::Black));
+    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::F5(), &pawn3);
 
     Chess::KnightRule* rule = new Chess::KnightRule(board);
