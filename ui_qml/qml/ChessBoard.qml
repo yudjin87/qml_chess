@@ -12,7 +12,7 @@ Item {
     function repaintBoard() {
         for (var i = 0; i < 64; ++i) {
             repeater.itemAt(i).color =
-                    chessBoard.squareByIdex(mapIndex(i)).color() === 0 ? "#D18B47" : "#FFCE9E"
+                    game.board.squareByIdex(mapIndex(i)).color() === 0 ? "#D18B47" : "#FFCE9E"
         }
     }
 
@@ -20,7 +20,7 @@ Item {
     property int cellSize: width / 8
 
     Connections {
-        target: chessBoard
+        target: game.board
         onPieceAdded: {
             //console.log("Added: " + piece.atSquare().toStr())
             repeater.itemAt(mapIndex(piece.atSquare().index())).piece = piece
@@ -53,7 +53,7 @@ Item {
                     id: chessCell
 //                    property PieceItem pieceItem: null
                     anchors.fill: parent
-                    color: chessBoard.squareByIdex(mapIndex(index)).color() === 0 ? "#D18B47" : "#FFCE9E"
+                    color: game.board.squareByIdex(mapIndex(index)).color() === 0 ? "#D18B47" : "#FFCE9E"
                     //color: chessBoard.squareByIdex(index).color() === 0 ? "black" : "white"
                     border.color: "black";
                     border.width: 1
@@ -77,7 +77,7 @@ Item {
 
                 Text {
                     id: squareLabel
-                    text: index + ": " + chessBoard.squareByIdex(mapIndex(index)).toStr()
+                    text: index + ": " + game.board.squareByIdex(mapIndex(index)).toStr()
                 }
 
                 // transparent item for mouse handle
@@ -89,7 +89,7 @@ Item {
                         hoverEnabled: true
 
                         onEntered: {                            
-                            var square = chessBoard.squareByIdex(mapIndex(index));
+                            var square = game.board.squareByIdex(mapIndex(index));
                             var piece = square.piece()
                             if (piece !== null)
                             {
@@ -105,7 +105,7 @@ Item {
                         }
 
                         onClicked: {
-                            var square = chessBoard.squareByIdex(mapIndex(index));
+                            var square = game.board.squareByIdex(mapIndex(index));
                             var piece = square.piece()
                             if (piece === null)
                             {

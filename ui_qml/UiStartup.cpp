@@ -31,6 +31,7 @@
 #include "game/ChessGame.h"
 #include "game/Square.h"
 #include "game/Piece.h"
+#include "game/Player.h"
 #include "game/SquareList.h"
 
 #include <QtCore/QDebug>
@@ -46,8 +47,9 @@ UiStartup::UiStartup(QObject *parent)
 {
     // TODO: move to static function
     qmlRegisterUncreatableType<Chess::ChessGame>("Chess", 1, 0, "ChessGame", "Use 'game' object");
-    qmlRegisterUncreatableType<Chess::Chessboard>("Chess", 1, 0, "Chessboard", "Use 'chessBoard' object");
+    qmlRegisterUncreatableType<Chess::Chessboard>("Chess", 1, 0, "Chessboard", "Get it from 'game' object");
     qmlRegisterUncreatableType<Chess::Piece>("Chess", 1, 0, "Piece", "Get it from 'chessBoard' object");
+    qmlRegisterUncreatableType<Chess::Player>("Chess", 1, 0, "Player", "Get it from 'game' object");
     qmlRegisterUncreatableType<Chess::Square>("Chess", 1, 0, "Square", "Get it from 'chessBoard' object");
     qmlRegisterUncreatableType<Chess::SquareList>("Chess", 1, 0, "SquareList", "Get it from 'Piece' object");
 
@@ -70,9 +72,7 @@ bool UiStartup::showQmlWindow()
         return false;
     }
 
-    Chess::Chessboard* board = new Chess::Chessboard(this);
     Chess::ChessGame* game = new Chess::ChessGame(this);
-    qmlcontext->setContextProperty("chessBoard", board);
     qmlcontext->setContextProperty("game", game);
 
     engine->load(QUrl(QStringLiteral("qrc:/ui_qml/qml/main.qml")));

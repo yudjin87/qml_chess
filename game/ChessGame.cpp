@@ -29,6 +29,7 @@
 #include "game/Piece.h"
 #include "game/Position.h"
 #include "game/PawnRule.h"
+#include "game/Player.h"
 
 #include <QtCore/QtAlgorithms>
 
@@ -37,10 +38,13 @@ namespace Chess
 
 ChessGame::ChessGame(QObject *parent)
     : QObject(parent)
-    , m_board(nullptr)
+    , m_board(new Chessboard(this))
     , m_piecesOnBoard()
     , m_killedPieces()
     , m_isRunning(false)
+    , m_playerWhite(nullptr)
+    , m_playerBlack(nullptr)
+    , m_playerActive(nullptr)
 {
 }
 
@@ -55,12 +59,26 @@ bool ChessGame::isRunning() const
     return m_isRunning;
 }
 
-void ChessGame::start(Chessboard *onBoard)
+Player *ChessGame::activePlayer()
 {
-    Q_ASSERT(onBoard != nullptr && "Null pointer is not allowed!");
+    return m_playerActive;
+}
 
-    // TODO: clean up previ game
-    m_board = onBoard;
+Chessboard *ChessGame::board()
+{
+    return m_board;
+}
+
+const Chessboard *ChessGame::board() const
+{
+    return m_board;
+}
+
+void ChessGame::start()
+{
+    m_playerWhite.reset(new Player(Color::White, *this));
+    m_playerBlack.reset(new Player(Color::Black, *this));
+    setActivePlayer(m_playerWhite.get());
 
     // TODO: builder?
     {
@@ -167,6 +185,17 @@ void ChessGame::setIsRunning(bool isRunning)
 
     m_isRunning = isRunning;
     emit isRunningChanged(m_isRunning);
+}
+
+void ChessGame::setActivePlayer(Player *activePlayer)
+{
+    if (m_playerActive == activePlayer)
+    {
+        return;
+    }
+
+    m_playerActive = activePlayer;
+    emit activePlayerChanged(activePlayer);
 }
 
 } // namespace Chess

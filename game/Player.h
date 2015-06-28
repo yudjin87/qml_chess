@@ -24,63 +24,42 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSGAME_H
-#define CHESSGAME_H
+#ifndef PLAYER_H
+#define PLAYER_H
 
 #include "game/game_api.h"
+#include "game/Color.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QVector>
-
-#include <memory>
 
 namespace Chess
 {
 
-class Chessboard;
-class Piece;
-class Player;
+class ChessGame;
 
-class GAME_API ChessGame : public QObject
+class GAME_API Player : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
-    Q_PROPERTY(Chess::Player* activePlayer READ activePlayer NOTIFY activePlayerChanged)
-    Q_PROPERTY(Chess::Chessboard* board READ board NOTIFY boardChanged)
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
 public:
-    explicit ChessGame(QObject *parent = nullptr);
-    ~ChessGame();
+    explicit Player(const Color color, ChessGame& game, QObject *parent = nullptr);
 
-    bool isRunning() const;
+    Color color() const;
 
-    Player* activePlayer();
-
-    Chessboard *board();
-    const Chessboard *board() const;
+    QString name() const;
 
 public slots:
-    void start();
-    void stop();
+    void setName(QString name);
 
 signals:
-    void isRunningChanged(bool isRunning);
-    void activePlayerChanged(Chess::Player* activePlayer);
-    void boardChanged(Chess::Chessboard* board);
+    void nameChanged(QString name);
 
 private:
-    void setIsRunning(bool isRunning);
-    void setActivePlayer(Player* activePlayer);
-
-private:
-    Chessboard* m_board;
-    QVector<Piece*> m_piecesOnBoard;
-    QVector<Piece*> m_killedPieces;
-    bool m_isRunning;
-    std::unique_ptr<Player> m_playerWhite;
-    std::unique_ptr<Player> m_playerBlack;
-    Player* m_playerActive;
+    const Color m_color;
+    ChessGame& m_game;
+    QString m_name;
 };
 
 } // namespace Chess
 
-#endif // CHESSGAME_H
+#endif // PLAYER_H

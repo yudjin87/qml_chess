@@ -5,7 +5,10 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
-    title: chessBoard.size()
+    title: {
+        game.activePlayer === null ? "Start game" : game.activePlayer.name;
+    }
+
     width: 800
     height: 480
     visible: true
@@ -30,7 +33,7 @@ ApplicationWindow {
                     if (game.isRunning)
                         game.stop();
                     else
-                        game.start(chessBoard);
+                        game.start();
                 }
             }
             Button {
