@@ -108,9 +108,8 @@ QList<Square *> BishopRule::findAttacks(Piece &forPiece) const
         if (piece->color() != forPiece.color())
         {
             result.push_back(bottomLeft);
-            break;
         }
-        bottomLeft = nextMovement(bottomLeft, &Square::bottomLeft);
+        break;
     }
 
     Square* topLeft = nextMovement(currentPosition, &Square::topLeft);
@@ -126,9 +125,8 @@ QList<Square *> BishopRule::findAttacks(Piece &forPiece) const
         if (piece->color() != forPiece.color())
         {
             result.push_back(topLeft);
-            break;
         }
-        topLeft = nextMovement(topLeft, &Square::topLeft);
+        break;
     }
 
     Square* bottomRight = nextMovement(currentPosition, &Square::bottomRight);
@@ -144,9 +142,8 @@ QList<Square *> BishopRule::findAttacks(Piece &forPiece) const
         if (piece->color() != forPiece.color())
         {
             result.push_back(bottomRight);
-            break;
         }
-        bottomRight = nextMovement(bottomRight, &Square::bottomRight);
+        break;
     }
 
     Square* topRight = nextMovement(currentPosition, &Square::topRight);
@@ -162,9 +159,8 @@ QList<Square *> BishopRule::findAttacks(Piece &forPiece) const
         if (piece->color() != forPiece.color())
         {
             result.push_back(topRight);
-            break;
         }
-        topRight = nextMovement(topRight, &Square::topRight);
+        break;
     }
 
     return result;
