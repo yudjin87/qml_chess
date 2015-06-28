@@ -29,6 +29,7 @@
 
 #include "game/game_api.h"
 #include "game/IGameMovesRegistry.h"
+#include "game/GameMode.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>
@@ -50,6 +51,7 @@ class GAME_API ChessGame : public QObject, private IGameMovesRegistry
     Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
     Q_PROPERTY(Chess::Player* activePlayer READ activePlayer NOTIFY activePlayerChanged)
     Q_PROPERTY(Chess::Chessboard* board READ board NOTIFY boardChanged)
+    Q_PROPERTY(Chess::GameMode mode READ mode NOTIFY modeChanged)
 public:
     explicit ChessGame(QObject *parent = nullptr);
     ~ChessGame();
@@ -61,20 +63,26 @@ public:
     Chessboard *board();
     const Chessboard *board() const;
 
+    Chess::GameMode mode() const;
+
 public slots:
     void start();
     void stop();
+    void load();
 
 signals:
     void isRunningChanged(bool isRunning);
     void activePlayerChanged(Chess::Player* activePlayer);
     void boardChanged(Chess::Chessboard* board);
 
+    void modeChanged(Chess::GameMode mode);
+
 private:
     void commit(IMoveCommand::UPtr newMove) override;
 
     void setIsRunning(bool isRunning);
     void setActivePlayer(Player* activePlayer);
+    void setMode(Chess::GameMode mode);
     Player* nextTurnPlayer();
     void nextTurn();
 
@@ -83,6 +91,7 @@ private:
     QVector<Piece*> m_piecesOnBoard;
     QVector<Piece*> m_killedPieces;
     bool m_isRunning;
+    Chess::GameMode m_mode;
     std::unique_ptr<Player> m_playerWhite;
     std::unique_ptr<Player> m_playerBlack;
     Player* m_playerActive;

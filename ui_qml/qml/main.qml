@@ -17,6 +17,28 @@ ApplicationWindow {
         game.stop();
     }
 
+    Connections {
+        id: gameConnection
+        target: game
+        onModeChanged: {
+            switch (mode) {
+            case 0:
+                gameControls.visible = false
+                saveLabel.visible = true
+                saveButton.visible = true
+                saveFileName.visible = true
+                break;
+            case 1:
+                gameControls.visible = true
+                saveLabel.visible = false
+                saveButton.visible = false
+                saveFileName.visible = false
+                break;
+            }
+
+        }
+    }
+
     RowLayout {
         anchors.fill: parent
         spacing: 10
@@ -40,26 +62,36 @@ ApplicationWindow {
                 id: loadButton
                 anchors.left: parent.left
                 anchors.right: parent.right
-                //enabled: !chessController.gameRunning
-                enabled: false
+                visible: !game.isRunning;
 
                 text: qsTr("Load")
-//                onClicked: {
-//                    fileOpenDialog.open()
-//                }
+                onClicked: {
+                    // fileOpenDialog.open()
+                    game.load();
+                }
             }
+
+//            Item {
+//                id: saveItem
+//                anchors.left: parent.left
+//                anchors.right: parent.right
+//                visible: ((game.isRunning) && (game.mode === 0))
             Label {
+                id: saveLabel
                 text: qsTr("Enter file name to save:")
+                //visible: game.isRunning
             }
 
             TextField {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 id: saveFileName
+                //visible: game.isRunning
             }
 
             Button {
                 id: saveButton
+                //visible: game.isRunning
                 anchors.left: parent.left
                 anchors.right: parent.right
                 //enabled: !chessController.gameRunning && chessController.movesNumber > 0
@@ -70,11 +102,13 @@ ApplicationWindow {
 //                        chessController.saveGame(saveFileName.text)
 //                }
             }
+            //}
+
             Row {
                 id: gameControls
                 anchors.left: parent.left
                 anchors.right: parent.right
-                visible: false
+                visible: false//game.mode === g
                 Button {
                     id: prevButton
                     text: "<<"

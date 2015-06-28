@@ -57,6 +57,7 @@ UiStartup::UiStartup(QObject *parent)
     qRegisterMetaType<Chess::SquareList*>("Chess::SquareList");
     qRegisterMetaType<Chess::Piece*>("Chess::Piece");
     qRegisterMetaType<Chess::Color>("Chess::Color");
+    qRegisterMetaType<Chess::GameMode>("Chess::GameMode");
 
     qmlRegisterType<UiQml::PieceItem>("ChessUi", 1, 0, "PieceItem");
 }

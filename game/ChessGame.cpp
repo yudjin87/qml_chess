@@ -46,6 +46,7 @@ ChessGame::ChessGame(QObject *parent)
     , m_piecesOnBoard()
     , m_killedPieces()
     , m_isRunning(false)
+    , m_mode(GameMode::HumanVsHuman)
     , m_playerWhite(nullptr)
     , m_playerBlack(nullptr)
     , m_playerActive(nullptr)
@@ -79,11 +80,17 @@ const Chessboard *ChessGame::board() const
     return m_board;
 }
 
+GameMode ChessGame::mode() const
+{
+    return m_mode;
+}
+
 void ChessGame::start()
 {
     stop();
+    setMode(GameMode::HumanVsHuman);
 
-    qDebug() << "Game: Starting";
+    qDebug() << "Game: Starting, mode" << Chess::toString(m_mode);
 
     m_playerWhite.reset(new Player(Color::White, *this));
     m_playerBlack.reset(new Player(Color::Black, *this));
@@ -190,6 +197,21 @@ void ChessGame::stop()
     m_playerWhite.reset();
     m_playerBlack.reset();
     setActivePlayer(nullptr);
+}
+
+void ChessGame::load()
+{
+    setMode(GameMode::Replay);
+    qDebug() << "Game: Starting, mode" << Chess::toString(m_mode);
+}
+
+void ChessGame::setMode(GameMode mode)
+{
+    if (m_mode == mode)
+        return;
+
+    m_mode = mode;
+    emit modeChanged(mode);
 }
 
 void ChessGame::setIsRunning(bool isRunning)
