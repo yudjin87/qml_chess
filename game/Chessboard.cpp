@@ -134,10 +134,10 @@ void Chessboard::putPiece(Square *square, Piece *piece)
 
 void Chessboard::removePiece(Piece *piece)
 {
-    Q_ASSERT(piece != nullptr && "Null pointer is not allowed!");
-
-    // TODO: something smarter, that asserts?
-    Q_ASSERT(m_piecesOnBoard.contains(piece) && "Runtime error - this piece wasn't added");
+    if (!m_piecesOnBoard.contains(piece))
+    {
+        return;
+    }
 
     m_piecesOnBoard.removeOne(piece);
     emit pieceRemoved(piece);

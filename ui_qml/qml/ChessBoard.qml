@@ -115,6 +115,13 @@ Item {
                                 return;
                             }
 
+                            var availableAttacks = game.activePlayer.availableAttacks;
+                            if (availableAttacks.contains(square)) {
+                                game.activePlayer.attack(square);
+                                return;
+                            }
+
+
                             var piece = square.piece();
                             if (piece === null)
                                 return;

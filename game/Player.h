@@ -62,9 +62,9 @@ public:
 public slots:
     void setName(QString name);
 
-    // TODO: problems with QQmlListProperty
     bool selectPiece(Chess::Piece* piece);
     void moveTo(Chess::Square* square);
+    void attack(Chess::Square* square);
 
 signals:
     void nameChanged(QString name);

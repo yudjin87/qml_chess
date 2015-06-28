@@ -29,6 +29,7 @@
 #include "game/IGameMovesRegistry.h"
 #include "game/Square.h"
 #include "game/SquareList.h"
+#include "game/AttackCommand.h"
 #include "game/MovementCommand.h"
 
 #include <QtCore/QDebug>
@@ -143,6 +144,36 @@ void Player::moveTo(Square *square)
     setSelectedPiece(nullptr);
     m_availableMovements->clear();
     availableMovementsChanged(m_availableMovements);
+
+    m_availableAttacks->clear();
+    availableAttacksChanged(m_availableAttacks);
+}
+
+void Player::attack(Square *square)
+{
+    Q_ASSERT(square != nullptr && "Logic error: Null pointer is not allowed");
+    if (m_selectedPiece == nullptr)
+    {
+        qWarning() << "Piece wasn't selected - attack is aborted";
+        return;
+    }
+
+    if (!m_availableAttacks->contains(square))
+    {
+        qWarning() << "Trying to attack illegal position. Aborted";
+        return;
+    }
+
+    AttackCommand::UPtr moveCmd = AttackCommand::create(*square, *m_selectedPiece);
+    m_movesRegistry.commit(std::move(moveCmd));
+
+    // TODO: simplfy....
+    setSelectedPiece(nullptr);
+    m_availableMovements->clear();
+    availableMovementsChanged(m_availableMovements);
+
+    m_availableAttacks->clear();
+    availableAttacksChanged(m_availableAttacks);
 }
 
 void Player::setSelectedPiece(Piece *selectedPiece)

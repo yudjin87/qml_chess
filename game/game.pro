@@ -30,7 +30,8 @@ SOURCES += Square.cpp \
     PawnRule.cpp \
     Player.cpp \
     MovementCommand.cpp \
-    BishopRule.cpp
+    BishopRule.cpp \
+    AttackCommand.cpp
 
 HEADERS += \
     Square.h \
@@ -51,4 +52,5 @@ HEADERS += \
     IMoveCommand.h \
     MovementCommand.h \
     IGameMovesRegistry.h \
-    BishopRule.h
+    BishopRule.h \
+    AttackCommand.h
