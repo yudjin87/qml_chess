@@ -24,37 +24,22 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game_test/ChessboardTest.h"
-#include "game_test/SquareTest.h"
-#include "game_test/PositionTest.h"
-#include "game_test/PawnRuleTest.h"
-#include "game_test/KnightRuleTest.h"
-#include "game_test/BishopRuleTest.h"
+#ifndef KNIGHTRULETEST_H
+#define KNIGHTRULETEST_H
 
-#include <QtCore/QCoreApplication>
-#include <QtTest/QtTest>
+#include <QtCore/QObject>
 
-int main(int argc, char *argv[])
+class KnightRuleTest : public QObject
 {
-    QCoreApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit KnightRuleTest(QObject *parent = nullptr);
 
-    ChessboardTest chessboardTest;
-    QTest::qExec(&chessboardTest, argc, argv);
+private slots:
+    void shouldFindAllPossibleMovesOnEmptyBoard();
+    void shouldFindAllPossibleMovesOnFilledBoard();
+    void shouldFindAllPossibleAttacksOnBoard();
+};
 
-    SquareTest squareTest;
-    QTest::qExec(&squareTest, argc, argv);
 
-    PositionTest positionTest;
-    QTest::qExec(&positionTest, argc, argv);
-
-    PawnRuleTest pawnRuleTest;
-    QTest::qExec(&pawnRuleTest, argc, argv);
-
-    KnightRuleTest knightRuleTest;
-    QTest::qExec(&knightRuleTest, argc, argv);
-
-    BishopRuleTest bishopRuleTest;
-    QTest::qExec(&bishopRuleTest, argc, argv);
-
-    return 0;
-}
+#endif // KNIGHTRULETEST_H

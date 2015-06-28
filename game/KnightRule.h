@@ -24,37 +24,38 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game_test/ChessboardTest.h"
-#include "game_test/SquareTest.h"
-#include "game_test/PositionTest.h"
-#include "game_test/PawnRuleTest.h"
-#include "game_test/KnightRuleTest.h"
-#include "game_test/BishopRuleTest.h"
+#ifndef KNIGHTRULE_H
+#define KNIGHTRULE_H
 
-#include <QtCore/QCoreApplication>
-#include <QtTest/QtTest>
+#include "game/IMovementRule.h"
 
-int main(int argc, char *argv[])
+namespace Chess
 {
-    QCoreApplication a(argc, argv);
 
-    ChessboardTest chessboardTest;
-    QTest::qExec(&chessboardTest, argc, argv);
+class Chessboard;
 
-    SquareTest squareTest;
-    QTest::qExec(&squareTest, argc, argv);
+class GAME_API KnightRule : public IMovementRule
+{
+public:
+    KnightRule(Chessboard& board, QObject* parent = nullptr);
 
-    PositionTest positionTest;
-    QTest::qExec(&positionTest, argc, argv);
+    QList<Square*> findMoves(Piece& forPiece) const override;
+    QList<Square*> findAttacks(Piece& forPiece) const override;
 
-    PawnRuleTest pawnRuleTest;
-    QTest::qExec(&pawnRuleTest, argc, argv);
+private:
+    Square* leftLeftTop(Square* current) const;
+    Square* leftTopTop(Square* current) const;
+    Square* rightTopTop(Square* current) const;
+    Square* rightRightTop(Square* current) const;
+    Square* rightRightBot(Square* current) const;
+    Square* rightBotBot(Square* current) const;
+    Square* leftBotBot(Square* current) const;
+    Square* leftLeftBot(Square* current) const;
 
-    KnightRuleTest knightRuleTest;
-    QTest::qExec(&knightRuleTest, argc, argv);
+private:
+    Chessboard& m_board;
+};
 
-    BishopRuleTest bishopRuleTest;
-    QTest::qExec(&bishopRuleTest, argc, argv);
+} // namespace Chess
 
-    return 0;
-}
+#endif // KNIGHTRULE_H

@@ -126,14 +126,10 @@ Item {
                             if (piece === null)
                                 return;
 
-                            if (piece.color !== game.activePlayer.color)
-                                return;
-
-                            chessCell.color = "#800000FF"
-
                             if (!game.activePlayer.selectPiece(piece))
                                 return;
 
+                            chessCell.color = "#800000FF"
                             var moves = game.activePlayer.availableMovements;
                             //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
                             //console.log("Hello " + moves.length)

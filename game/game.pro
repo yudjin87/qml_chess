@@ -31,7 +31,8 @@ SOURCES += Square.cpp \
     Player.cpp \
     MovementCommand.cpp \
     BishopRule.cpp \
-    AttackCommand.cpp
+    AttackCommand.cpp \
+    KnightRule.cpp
 
 HEADERS += \
     Square.h \
@@ -53,4 +54,5 @@ HEADERS += \
     MovementCommand.h \
     IGameMovesRegistry.h \
     BishopRule.h \
-    AttackCommand.h
+    AttackCommand.h \
+    KnightRule.h

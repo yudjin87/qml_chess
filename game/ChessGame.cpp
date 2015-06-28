@@ -31,6 +31,7 @@
 #include "game/Position.h"
 #include "game/Player.h"
 #include "game/PawnRule.h"
+#include "game/KnightRule.h"
 #include "game/BishopRule.h"
 
 #include <QtCore/QtAlgorithms>
@@ -97,10 +98,10 @@ void ChessGame::start()
         m_board->putPiece(Position::H1(), rook2);
         m_piecesOnBoard.push_back(rook2);
 
-        Piece* knight1 = new Piece(PieceType::Knight, Color::White, m_board, new PawnRule(*m_board, Color::White));
+        Piece* knight1 = new Piece(PieceType::Knight, Color::White, m_board, new KnightRule(*m_board));
         m_board->putPiece(Position::B1(), knight1);
         m_piecesOnBoard.push_back(knight1);
-        Piece* knight2 = new Piece(PieceType::Knight, Color::White, m_board, new PawnRule(*m_board, Color::White));
+        Piece* knight2 = new Piece(PieceType::Knight, Color::White, m_board, new KnightRule(*m_board));
         m_board->putPiece(Position::G1(), knight2);
         m_piecesOnBoard.push_back(knight2);
 
@@ -134,10 +135,10 @@ void ChessGame::start()
         m_board->putPiece(Position::H8(), rook2);
         m_piecesOnBoard.push_back(rook2);
 
-        Piece* knight1 = new Piece(PieceType::Knight, Color::Black, m_board, new PawnRule(*m_board, Color::Black));
+        Piece* knight1 = new Piece(PieceType::Knight, Color::Black, m_board, new KnightRule(*m_board));
         m_board->putPiece(Position::B8(), knight1);
         m_piecesOnBoard.push_back(knight1);
-        Piece* knight2 = new Piece(PieceType::Knight, Color::Black, m_board, new PawnRule(*m_board, Color::Black));
+        Piece* knight2 = new Piece(PieceType::Knight, Color::Black, m_board, new KnightRule(*m_board));
         m_board->putPiece(Position::G8(), knight2);
         m_piecesOnBoard.push_back(knight2);
 
