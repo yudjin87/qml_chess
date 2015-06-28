@@ -24,7 +24,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "ChessboardTest.h"
+#include "game_test/ChessboardTest.h"
 
 #include <game/Position.h>
 #include <game/Chessboard.h>

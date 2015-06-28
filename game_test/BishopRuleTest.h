@@ -24,33 +24,20 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game_test/ChessboardTest.h"
-#include "game_test/SquareTest.h"
-#include "game_test/PositionTest.h"
-#include "game_test/BishopRuleTest.h"
-#include "game_test/PawnRuleTest.h"
+#ifndef BISHOPRULETEST_H
+#define BISHOPRULETEST_H
 
-#include <QtCore/QCoreApplication>
-#include <QtTest/QtTest>
+#include <QtCore/QObject>
 
-int main(int argc, char *argv[])
+class BishopRuleTest : public QObject
 {
-    QCoreApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit BishopRuleTest(QObject *parent = nullptr);
 
-    ChessboardTest chessboardTest;
-    QTest::qExec(&chessboardTest, argc, argv);
+private slots:
+    void shouldFindAllPossibleMovesOnEmptyBoard();
+    void shouldFindAllPossibleMovesOnFilledBoard();
+};
 
-    SquareTest squareTest;
-    QTest::qExec(&squareTest, argc, argv);
-
-    PositionTest positionTest;
-    QTest::qExec(&positionTest, argc, argv);
-
-    PawnRuleTest pawnRuleTest;
-    QTest::qExec(&pawnRuleTest, argc, argv);
-
-    BishopRuleTest bishopRuleTest;
-    QTest::qExec(&bishopRuleTest, argc, argv);
-
-    return 0;
-}
+#endif // BISHOPRULETEST_H

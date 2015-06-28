@@ -24,7 +24,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "PositionTest.h"
+#include "game_test/PositionTest.h"
 #include <game/Position.h>
 #include <QtTest/QtTest>
 

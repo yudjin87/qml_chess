@@ -29,7 +29,8 @@ SOURCES += Square.cpp \
     SquareList.cpp \
     PawnRule.cpp \
     Player.cpp \
-    MovementCommand.cpp
+    MovementCommand.cpp \
+    BishopRule.cpp
 
 HEADERS += \
     Square.h \
@@ -49,4 +50,5 @@ HEADERS += \
     Player.h \
     IMoveCommand.h \
     MovementCommand.h \
-    IGameMovesRegistry.h
+    IGameMovesRegistry.h \
+    BishopRule.h

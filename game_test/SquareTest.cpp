@@ -24,7 +24,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "SquareTest.h"
+#include "game_test/SquareTest.h"
 
 #include <game/Chessboard.h>
 #include <game/Square.h>
@@ -99,12 +99,6 @@ void SquareTest::topLeftTest()
         QVERIFY(sut.topLeft()->file() == Chess::File::A);
         QVERIFY(sut.topLeft()->rank() == Chess::Rank::R2);
     }
-
-    {
-        Chess::Square sut(mock, Chess::Position::C1());
-        QVERIFY(sut.topLeft(2)->file() == Chess::File::A);
-        QVERIFY(sut.topLeft(2)->rank() == Chess::Rank::R3);
-    }
 }
 
 void SquareTest::topTest()
@@ -140,12 +134,6 @@ void SquareTest::topRightTest()
         Chess::Square sut(mock, Chess::Position::B1());
         QVERIFY(sut.topRight()->file() == Chess::File::C);
         QVERIFY(sut.topRight()->rank() == Chess::Rank::R2);
-    }
-
-    {
-        Chess::Square sut(mock, Chess::Position::C1());
-        QVERIFY(sut.topRight(2)->file() == Chess::File::E);
-        QVERIFY(sut.topRight(2)->rank() == Chess::Rank::R3);
     }
 }
 
@@ -208,12 +196,6 @@ void SquareTest::bottomLeftTest()
         QVERIFY(sut.bottomLeft()->file() == Chess::File::A);
         QVERIFY(sut.bottomLeft()->rank() == Chess::Rank::R1);
     }
-
-    {
-        Chess::Square sut(mock, Chess::Position::C3());
-        QVERIFY(sut.bottomLeft(2)->file() == Chess::File::A);
-        QVERIFY(sut.bottomLeft(2)->rank() == Chess::Rank::R1);
-    }
 }
 
 void SquareTest::bottomRightTest()
@@ -229,12 +211,6 @@ void SquareTest::bottomRightTest()
         Chess::Square sut(mock, Chess::Position::B2());
         QVERIFY(sut.bottomRight()->file() == Chess::File::C);
         QVERIFY(sut.bottomRight()->rank() == Chess::Rank::R1);
-    }
-
-    {
-        Chess::Square sut(mock, Chess::Position::C3());
-        QVERIFY(sut.bottomRight(2)->file() == Chess::File::E);
-        QVERIFY(sut.bottomRight(2)->rank() == Chess::Rank::R1);
     }
 }
 

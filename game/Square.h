@@ -73,26 +73,26 @@ public slots:
     Square* left(const int numberOfSquares = 1);
     const Square* left(const int numberOfSquares = 1) const;
 
-    Square* topLeft(const int numberOfSquares = 1);
-    const Square* topLeft(const int numberOfSquares = 1) const;
+    Square* topLeft();
+    const Square* topLeft() const;
 
     Square* top(const int numberOfSquares = 1);
     const Square* top(const int numberOfSquares = 1) const;
 
-    Square* topRight(const int numberOfSquares = 1);
-    const Square* topRight(const int numberOfSquares = 1) const;
+    Square* topRight();
+    const Square* topRight() const;
 
     Square* right(const int numberOfSquares = 1);
     const Square* right(const int numberOfSquares = 1) const;
 
-    Square* bottomRight(const int numberOfSquares = 1);
-    const Square* bottomRight(const int numberOfSquares = 1) const;
+    Square* bottomRight();
+    const Square* bottomRight() const;
 
     Square* bottom(const int numberOfSquares = 1);
     const Square* bottom(const int numberOfSquares = 1) const;
 
-    Square* bottomLeft(const int numberOfSquares = 1);
-    const Square* bottomLeft(const int numberOfSquares = 1) const;
+    Square* bottomLeft();
+    const Square* bottomLeft() const;
 
 signals:
     void colorChanged();

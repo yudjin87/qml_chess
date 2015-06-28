@@ -101,20 +101,20 @@ const Square *Square::left(const int numberOfSquares) const
     return left->left(numberOfSquares - 1);
 }
 
-Square *Square::topLeft(const int numberOfSquares)
+Square *Square::topLeft()
 {
-    return const_cast<Square*>(const_cast<const Square*>(this)->topLeft(numberOfSquares));
+    return const_cast<Square*>(const_cast<const Square*>(this)->topLeft());
 }
 
-const Square *Square::topLeft(const int numberOfSquares) const
+const Square *Square::topLeft() const
 {
-    const Square *topSquare = top(numberOfSquares);
+    const Square *topSquare = top();
     if (topSquare == nullptr)
     {
         return nullptr;
     }
 
-    const Square *topLeft = topSquare->left(numberOfSquares);
+    const Square *topLeft = topSquare->left();
     return topLeft;
 }
 
@@ -140,20 +140,20 @@ const Square *Square::top(const int numberOfSquares) const
     return top->top(numberOfSquares - 1);
 }
 
-Square *Square::topRight(const int numberOfSquares)
+Square *Square::topRight()
 {
-    return const_cast<Square*>(const_cast<const Square*>(this)->topRight(numberOfSquares));
+    return const_cast<Square*>(const_cast<const Square*>(this)->topRight());
 }
 
-const Square *Square::topRight(const int numberOfSquares) const
+const Square *Square::topRight() const
 {
-    const Square *topSquare = top(numberOfSquares);
+    const Square *topSquare = top();
     if (topSquare == nullptr)
     {
         return nullptr;
     }
 
-    const Square *topRight = topSquare->right(numberOfSquares);
+    const Square *topRight = topSquare->right();
     return topRight;
 }
 
@@ -179,20 +179,20 @@ const Square *Square::right(const int numberOfSquares) const
     return right->right(numberOfSquares - 1);
 }
 
-Square *Square::bottomRight(const int numberOfSquares)
+Square *Square::bottomRight()
 {
-    return const_cast<Square*>(const_cast<const Square*>(this)->bottomRight(numberOfSquares));
+    return const_cast<Square*>(const_cast<const Square*>(this)->bottomRight());
 }
 
-const Square *Square::bottomRight(const int numberOfSquares) const
+const Square *Square::bottomRight() const
 {
-    const Square *bottomSquare = bottom(numberOfSquares);
+    const Square *bottomSquare = bottom();
     if (bottomSquare == nullptr)
     {
         return nullptr;
     }
 
-    const Square *bottomRight = bottomSquare->right(numberOfSquares);
+    const Square *bottomRight = bottomSquare->right();
     return bottomRight;
 }
 
@@ -218,20 +218,20 @@ const Square *Square::bottom(const int numberOfSquares) const
     return bottom->bottom(numberOfSquares - 1);
 }
 
-Square *Square::bottomLeft(const int numberOfSquares)
+Square *Square::bottomLeft()
 {
-    return const_cast<Square*>(const_cast<const Square*>(this)->bottomLeft(numberOfSquares));
+    return const_cast<Square*>(const_cast<const Square*>(this)->bottomLeft());
 }
 
-const Square *Square::bottomLeft(const int numberOfSquares) const
+const Square *Square::bottomLeft() const
 {
-    const Square *bottomSquare = bottom(numberOfSquares);
+    const Square *bottomSquare = bottom();
     if (bottomSquare == nullptr)
     {
         return nullptr;
     }
 
-    const Square *bottomLeft = bottomSquare->left(numberOfSquares);
+    const Square *bottomLeft = bottomSquare->left();
     return bottomLeft;
 }
 

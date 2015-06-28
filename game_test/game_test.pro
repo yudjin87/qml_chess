@@ -21,13 +21,15 @@ SOURCES += main.cpp \
     SquareTest.cpp \
     PositionTest.cpp \
     ChessboardTest.cpp \
-    PawnRuleTest.cpp
+    PawnRuleTest.cpp \
+    BishopRuleTest.cpp
 
 HEADERS += \
     SquareTest.h \
     PositionTest.h \
     ChessboardTest.h \
-    PawnRuleTest.h
+    PawnRuleTest.h \
+    BishopRuleTest.h
 
 
 win32-msvc* {
