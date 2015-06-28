@@ -68,6 +68,7 @@ public:
 public slots:
     void start();
     void stop();
+    void save(QString fileName);
     void load();
 
 signals:

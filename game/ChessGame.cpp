@@ -36,6 +36,7 @@
 
 #include <QtCore/QtAlgorithms>
 #include <QtCore/QDebug>
+#include <QtCore/QFile>
 
 namespace Chess
 {
@@ -197,6 +198,18 @@ void ChessGame::stop()
     m_playerWhite.reset();
     m_playerBlack.reset();
     setActivePlayer(nullptr);
+}
+
+void ChessGame::save(QString fileName)
+{
+    QFile file(fileName);
+    if(!file.open(QIODevice::WriteOnly))
+    {
+        qWarning() << "Can't open file" << fileName << "for writting";
+        return;
+    }
+
+    file.close();
 }
 
 void ChessGame::load()
