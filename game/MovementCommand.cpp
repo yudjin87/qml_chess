@@ -34,30 +34,34 @@
 namespace Chess
 {
 
+const char* MovementCommand::NAME = "MovementCommand";
+
 MovementCommand::MovementCommand()
     : IMoveCommand()
-    , m_to(nullptr)
-    , m_from(nullptr)
+    , m_to(Position::A1())
+    , m_from(Position::A1())
 {
 }
 
-MovementCommand::MovementCommand(Square &to, Square &from)
+MovementCommand::MovementCommand(const Position &to, const Position &from)
     : IMoveCommand()
-    , m_to(&to)
-    , m_from(&from)
+    , m_to(to)
+    , m_from(from)
 {
 }
 
 void MovementCommand::redo(Chessboard &board)
 {
-    Q_ASSERT(m_to->isEmpty() && "Runtime error: square is not empty. AttackCommand should be used");
-    Q_ASSERT(!m_from->isEmpty() && "Runtime error: square is empty");
+    Square *to = board.squareAt(m_to);
+    Square *from = board.squareAt(m_from);
+    Q_ASSERT(to->isEmpty() && "Runtime error: square is not empty. AttackCommand should be used");
+    Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
 
-    Piece* movedePiece = m_from->piece();
+    Piece* movedePiece = from->piece();
     movedePiece->markAsMoved(); // TODO: save prev. state
     board.removePiece(movedePiece);
-    board.putPiece(m_to, movedePiece);
-    qDebug() << "Move: " << Chess::toString(movedePiece->type()) << " " << m_from->toStr() << ":" << m_to->toStr();
+    board.putPiece(to, movedePiece);
+    qDebug() << "Move: " << Chess::toString(movedePiece->type()) << " " << from->toStr() << ":" << to->toStr();
 }
 
 void MovementCommand::undo(Chessboard &board)
@@ -65,41 +69,33 @@ void MovementCommand::undo(Chessboard &board)
     (void)board;
 }
 
+QString MovementCommand::name() const
+{
+    return MovementCommand::NAME;
+}
+
 QJsonObject MovementCommand::write() const
 {
     QJsonObject me;
-    me.insert("to", QJsonValue(m_to->position().toString()));
+    me.insert("from", QJsonValue(m_from.toString()));
+    me.insert("to", QJsonValue(m_to.toString()));
     return me;
 }
 
-void MovementCommand::setDestinationSquare(Square &to)
+bool MovementCommand::load(const QJsonObject move)
 {
-    m_to = &to;
+    (void) move;
+    return false;
 }
 
-void MovementCommand::setFromSquare(Square &from)
+void MovementCommand::setDestinationSquare(const Position &to)
 {
-    m_from = &from;
+    m_to = to;
 }
 
-Square &MovementCommand::destinationSquare()
+void MovementCommand::setFromSquare(const Position &from)
 {
-    return *m_to;
-}
-
-const Square &MovementCommand::destinationSquare() const
-{
-    return *m_to;
-}
-
-Square *MovementCommand::from()
-{
-    return m_from;
-}
-
-const Square *MovementCommand::from() const
-{
-    return m_from;
+    m_from = from;
 }
 
 } // namespace Chess

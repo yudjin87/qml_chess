@@ -28,6 +28,7 @@
 #define ATTACKCOMMAND_H
 
 #include "game/IMoveCommand.h"
+#include "game/Position.h"
 
 namespace Chess
 {
@@ -38,10 +39,11 @@ class GAME_API AttackCommand : public IMoveCommand
 {
 public:
     typedef std::unique_ptr<AttackCommand> UPtr;
+    static const char* NAME;
 
 public:
     AttackCommand();
-    AttackCommand(Square& to, Square& from);
+    AttackCommand(const Position& to, const Position& from);
 
     template<class... TArgs>
     static AttackCommand::UPtr create(TArgs&&... args)
@@ -53,19 +55,16 @@ public:
     void undo(Chessboard& board) override;
 
     QJsonObject write() const override;
+    bool load(const QJsonObject move) override;
 
-    void setDestinationSquare(Square& to);
-    void setFromSquare(Square& from);
+    QString name() const override;
 
-    Square &destinationSquare();
-    const Square &destinationSquare() const;
-
-    Square *from();
-    const Square *from() const;
+    void setDestinationSquare(const Position& to);
+    void setFromSquare(const Position& from);
 
 private:
-    Square* m_to;
-    Square* m_from;
+    Position m_to;
+    Position m_from;
 };
 
 } // namespace Chess

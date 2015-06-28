@@ -138,7 +138,7 @@ void Player::moveTo(Square *square)
         return;
     }
 
-    MovementCommand::UPtr moveCmd = MovementCommand::create(*square, *m_selectedPiece->atSquare());
+    MovementCommand::UPtr moveCmd = MovementCommand::create(square->position(), m_selectedPiece->atSquare()->position());
     m_movesRegistry.commit(std::move(moveCmd));
 
     setSelectedPiece(nullptr);
@@ -164,7 +164,7 @@ void Player::attack(Square *square)
         return;
     }
 
-    AttackCommand::UPtr moveCmd = AttackCommand::create(*square, *m_selectedPiece->atSquare());
+    AttackCommand::UPtr moveCmd = AttackCommand::create(square->position(), m_selectedPiece->atSquare()->position());
     m_movesRegistry.commit(std::move(moveCmd));
 
     // TODO: simplfy....

@@ -28,20 +28,20 @@
 #define MOVEMENTCOMMAND_H
 
 #include "game/IMoveCommand.h"
+#include "game/Position.h"
 
 namespace Chess
 {
-
-class Square;
 
 class GAME_API MovementCommand : public IMoveCommand
 {
 public:
     typedef std::unique_ptr<MovementCommand> UPtr;
+    static const char* NAME;
 
 public:
     MovementCommand();
-    MovementCommand(Square& to, Square& from);
+    MovementCommand(const Position& to, const Position& from);
 
     template<class... TArgs>
     static MovementCommand::UPtr create(TArgs&&... args)
@@ -52,20 +52,17 @@ public:
     void redo(Chessboard& board) override;
     void undo(Chessboard& board) override;
 
+    QString name() const override;
+
     QJsonObject write() const override;
+    bool load(const QJsonObject move) override;
 
-    void setDestinationSquare(Square& to);
-    void setFromSquare(Square& from);
-
-    Square &destinationSquare();
-    const Square &destinationSquare() const;
-
-    Square *from();
-    const Square *from() const;
+    void setDestinationSquare(const Position& to);
+    void setFromSquare(const Position& from);
 
 private:
-    Square* m_to;
-    Square* m_from;
+    Position m_to;
+    Position m_from;
 };
 
 } // namespace Chess
