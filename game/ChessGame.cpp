@@ -33,6 +33,9 @@
 #include "game/PawnRule.h"
 #include "game/KnightRule.h"
 #include "game/BishopRule.h"
+#include "game/RookRule.h"
+#include "game/QueenRule.h"
+#include "game/KingRule.h"
 #include "game/GameMovementsWriter.h"
 #include "game/GameMovementsReader.h"
 
@@ -106,13 +109,6 @@ void ChessGame::start()
 
     // TODO: builder?
     {
-        Piece* rook1 = new Piece(PieceType::Rook, Color::White, m_board, new PawnRule(*m_board));
-        m_board->putPiece(Position::A1(), rook1);
-        m_piecesOnBoard.push_back(rook1);
-        Piece* rook2 = new Piece(PieceType::Rook, Color::White, m_board, new PawnRule(*m_board));
-        m_board->putPiece(Position::H1(), rook2);
-        m_piecesOnBoard.push_back(rook2);
-
         Piece* knight1 = new Piece(PieceType::Knight, Color::White, m_board, new KnightRule(*m_board));
         m_board->putPiece(Position::B1(), knight1);
         m_piecesOnBoard.push_back(knight1);
@@ -127,10 +123,17 @@ void ChessGame::start()
         m_board->putPiece(Position::F1(), bishop2);
         m_piecesOnBoard.push_back(bishop2);
 
-        Piece* queen = new Piece(PieceType::Queen, Color::White, m_board, new PawnRule(*m_board));
+        Piece* rook1 = new Piece(PieceType::Rook, Color::White, m_board, new RookRule(*m_board));
+        m_board->putPiece(Position::A1(), rook1);
+        m_piecesOnBoard.push_back(rook1);
+        Piece* rook2 = new Piece(PieceType::Rook, Color::White, m_board, new RookRule(*m_board));
+        m_board->putPiece(Position::H1(), rook2);
+        m_piecesOnBoard.push_back(rook2);
+
+        Piece* queen = new Piece(PieceType::Queen, Color::White, m_board, new QueenRule(*m_board));
         m_board->putPiece(Position::D1(), queen);
         m_piecesOnBoard.push_back(queen);
-        Piece* king = new Piece(PieceType::King, Color::White, m_board, new PawnRule(*m_board));
+        Piece* king = new Piece(PieceType::King, Color::White, m_board, new KingRule(*m_board));
         m_board->putPiece(Position::E1(), king);
         m_piecesOnBoard.push_back(king);
 
@@ -143,13 +146,6 @@ void ChessGame::start()
     }
 
     {
-        Piece* rook1 = new Piece(PieceType::Rook, Color::Black, m_board, new PawnRule(*m_board));
-        m_board->putPiece(Position::A8(), rook1);
-        m_piecesOnBoard.push_back(rook1);
-        Piece* rook2 = new Piece(PieceType::Rook, Color::Black, m_board, new PawnRule(*m_board));
-        m_board->putPiece(Position::H8(), rook2);
-        m_piecesOnBoard.push_back(rook2);
-
         Piece* knight1 = new Piece(PieceType::Knight, Color::Black, m_board, new KnightRule(*m_board));
         m_board->putPiece(Position::B8(), knight1);
         m_piecesOnBoard.push_back(knight1);
@@ -164,10 +160,17 @@ void ChessGame::start()
         m_board->putPiece(Position::F8(), bishop2);
         m_piecesOnBoard.push_back(bishop2);
 
-        Piece* queen = new Piece(PieceType::Queen, Color::Black, m_board, new PawnRule(*m_board));
+        Piece* rook1 = new Piece(PieceType::Rook, Color::Black, m_board, new RookRule(*m_board));
+        m_board->putPiece(Position::A8(), rook1);
+        m_piecesOnBoard.push_back(rook1);
+        Piece* rook2 = new Piece(PieceType::Rook, Color::Black, m_board, new RookRule(*m_board));
+        m_board->putPiece(Position::H8(), rook2);
+        m_piecesOnBoard.push_back(rook2);
+
+        Piece* queen = new Piece(PieceType::Queen, Color::Black, m_board, new QueenRule(*m_board));
         m_board->putPiece(Position::D8(), queen);
         m_piecesOnBoard.push_back(queen);
-        Piece* king = new Piece(PieceType::King, Color::Black, m_board, new PawnRule(*m_board));
+        Piece* king = new Piece(PieceType::King, Color::Black, m_board, new KingRule(*m_board));
         m_board->putPiece(Position::E8(), king);
         m_piecesOnBoard.push_back(king);
 

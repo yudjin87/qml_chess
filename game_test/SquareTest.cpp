@@ -78,11 +78,6 @@ void SquareTest::leftTest()
         Chess::Square sut(mock, Chess::Position::B1());
         QVERIFY(sut.left()->file() == Chess::File::A);
     }
-
-    {
-        Chess::Square sut(mock, Chess::Position::C1());
-        QVERIFY(sut.left(2)->file() == Chess::File::A);
-    }
 }
 
 void SquareTest::topLeftTest()
@@ -113,11 +108,6 @@ void SquareTest::topTest()
     {
         Chess::Square sut(mock, Chess::Position::B1());
         QVERIFY(sut.top()->rank() == Chess::Rank::R2);
-    }
-
-    {
-        Chess::Square sut(mock, Chess::Position::C1());
-        QVERIFY(sut.top(2)->rank() == Chess::Rank::R3);
     }
 }
 
@@ -150,16 +140,6 @@ void SquareTest::rightTest()
         Chess::Square sut(mock, Chess::Position::B1());
         QVERIFY(sut.right()->file() == Chess::File::C);
     }
-
-    {
-        Chess::Square sut(mock, Chess::Position::F1());
-        QVERIFY(sut.right(2)->file() == Chess::File::H);
-    }
-
-    {
-        Chess::Square sut(mock, Chess::Position::G1());
-        QVERIFY(sut.right(2) == nullptr);
-    }
 }
 
 void SquareTest::bottomTest()
@@ -174,11 +154,6 @@ void SquareTest::bottomTest()
     {
         Chess::Square sut(mock, Chess::Position::B7());
         QVERIFY(sut.bottom()->rank() == Chess::Rank::R6);
-    }
-
-    {
-        Chess::Square sut(mock, Chess::Position::C7());
-        QVERIFY(sut.bottom(2)->rank() == Chess::Rank::R5);
     }
 }
 

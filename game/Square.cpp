@@ -79,12 +79,12 @@ Position Square::position() const
     return m_position;
 }
 
-Square *Square::left(const int numberOfSquares)
+Square *Square::left()
 {
-    return const_cast<Square*>(const_cast<const Square*>(this)->left(numberOfSquares));
+    return const_cast<Square*>(const_cast<const Square*>(this)->left());
 }
 
-const Square *Square::left(const int numberOfSquares) const
+const Square *Square::left() const
 {
     if (file() == File::A)
     {
@@ -93,12 +93,7 @@ const Square *Square::left(const int numberOfSquares) const
 
     const Position leftPos(prev(file()), rank());
     const Square *left = m_board.squareAt(leftPos);
-    if (numberOfSquares == 1)
-    {
-        return left;
-    }
-
-    return left->left(numberOfSquares - 1);
+    return left;
 }
 
 Square *Square::topLeft()
@@ -118,12 +113,12 @@ const Square *Square::topLeft() const
     return topLeft;
 }
 
-Square *Square::top(const int numberOfSquares)
+Square *Square::top()
 {
-    return const_cast<Square*>(const_cast<const Square*>(this)->top(numberOfSquares));
+    return const_cast<Square*>(const_cast<const Square*>(this)->top());
 }
 
-const Square *Square::top(const int numberOfSquares) const
+const Square *Square::top() const
 {
     if (rank() == Rank::R8)
     {
@@ -132,12 +127,7 @@ const Square *Square::top(const int numberOfSquares) const
 
     const Position topPos(file(), next(rank()));
     const Square *top = m_board.squareAt(topPos);
-    if (numberOfSquares == 1)
-    {
-        return top;
-    }
-
-    return top->top(numberOfSquares - 1);
+    return top;
 }
 
 Square *Square::topRight()
@@ -157,12 +147,12 @@ const Square *Square::topRight() const
     return topRight;
 }
 
-Square *Square::right(const int numberOfSquares)
+Square *Square::right()
 {
-    return const_cast<Square*>(const_cast<const Square*>(this)->right(numberOfSquares));
+    return const_cast<Square*>(const_cast<const Square*>(this)->right());
 }
 
-const Square *Square::right(const int numberOfSquares) const
+const Square *Square::right() const
 {
     if (file() == File::H)
     {
@@ -171,12 +161,7 @@ const Square *Square::right(const int numberOfSquares) const
 
     const Position rightPos(next(file()), rank());
     const Square *right = m_board.squareAt(rightPos);
-    if (numberOfSquares == 1)
-    {
-        return right;
-    }
-
-    return right->right(numberOfSquares - 1);
+    return right;
 }
 
 Square *Square::bottomRight()
@@ -196,12 +181,12 @@ const Square *Square::bottomRight() const
     return bottomRight;
 }
 
-Square *Square::bottom(const int numberOfSquares)
+Square *Square::bottom()
 {
-    return const_cast<Square*>(const_cast<const Square*>(this)->bottom(numberOfSquares));
+    return const_cast<Square*>(const_cast<const Square*>(this)->bottom());
 }
 
-const Square *Square::bottom(const int numberOfSquares) const
+const Square *Square::bottom() const
 {
     if (rank() == Rank::R1)
     {
@@ -210,12 +195,7 @@ const Square *Square::bottom(const int numberOfSquares) const
 
     const Position bottomPos(file(), prev(rank()));
     const Square *bottom = m_board.squareAt(bottomPos);
-    if (numberOfSquares == 1)
-    {
-        return bottom;
-    }
-
-    return bottom->bottom(numberOfSquares - 1);
+    return bottom;
 }
 
 Square *Square::bottomLeft()

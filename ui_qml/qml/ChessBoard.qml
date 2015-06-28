@@ -90,44 +90,41 @@ Item {
                         hoverEnabled: true
 
                         onEntered: {                            
-                            var square = game.board.squareByIdex(mapIndex(index));
-                            var piece = square.piece()
-                            if (piece !== null)
-                            {
-                                //chessCell.color = "red"
-                                //console.log("Piece: " + piece.atSquare().toStr())
-                            }
                         }
 
                         onExited: {
-                            //var square = chessBoard.squareByIdex(mapIndex(index));
-                           // repaintBoard(); // TODO: too expensive
-                            //chessCell.color = square.color() === 0 ? "#D18B47" : "#FFCE9E"
                         }
 
                         onClicked: {
+                            console.log("onClicked: enter")
                             repaintBoard(); // TODO: too expensive
+                            console.log("repaintBoard finished")
 
                             var square = game.board.squareByIdex(mapIndex(index));
                             var availableMovements = game.activePlayer.availableMovements;
                             if (availableMovements.contains(square)) {
                                 game.activePlayer.moveTo(square);
+                                console.log("onClicked: exit")
                                 return;
                             }
 
                             var availableAttacks = game.activePlayer.availableAttacks;
                             if (availableAttacks.contains(square)) {
                                 game.activePlayer.attack(square);
+                                console.log("onClicked: exit")
                                 return;
                             }
 
-
                             var piece = square.piece();
-                            if (piece === null)
+                            if (piece === null) {
+                                console.log("onClicked: exit")
                                 return;
+                            }
 
-                            if (!game.activePlayer.selectPiece(piece))
+                            if (!game.activePlayer.selectPiece(piece)) {
+                                console.log("onClicked: exit")
                                 return;
+                            }
 
                             chessCell.color = "#800000FF"
                             var moves = game.activePlayer.availableMovements;
@@ -141,7 +138,7 @@ Item {
 
                             var attacks = game.activePlayer.availableAttacks;
                             for (i = 0; i < attacks.length; ++i) {
-                                 s = attacks.at(i);
+                                s = attacks.at(i);
                                 repeater.itemAt(mapIndex(s.index())).color = "#80FF0000"
                             }
 

@@ -35,7 +35,10 @@ SOURCES += Square.cpp \
     KnightRule.cpp \
     GameMode.cpp \
     GameMovementsWriter.cpp \
-    GameMovementsReader.cpp
+    GameMovementsReader.cpp \
+    RookRule.cpp \
+    QueenRule.cpp \
+    KingRule.cpp
 
 HEADERS += \
     Square.h \
@@ -61,4 +64,7 @@ HEADERS += \
     KnightRule.h \
     GameMode.h \
     GameMovementsWriter.h \
-    GameMovementsReader.h
+    GameMovementsReader.h \
+    RookRule.h \
+    QueenRule.h \
+    KingRule.h

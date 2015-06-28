@@ -24,6 +24,9 @@ SOURCES += main.cpp \
     PawnRuleTest.cpp \
     BishopRuleTest.cpp \
     KnightRuleTest.cpp \
+    RookRuleTest.cpp \
+    QueenRuleTest.cpp \
+    KingRuleTest.cpp
 
 HEADERS += \
     SquareTest.h \
@@ -32,6 +35,9 @@ HEADERS += \
     PawnRuleTest.h \
     BishopRuleTest.h \
     KnightRuleTest.h \
+    RookRuleTest.h \
+    QueenRuleTest.h \
+    KingRuleTest.h
 
 
 win32-msvc* {

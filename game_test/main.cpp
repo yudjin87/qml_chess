@@ -30,6 +30,9 @@
 #include "game_test/PawnRuleTest.h"
 #include "game_test/KnightRuleTest.h"
 #include "game_test/BishopRuleTest.h"
+#include "game_test/RookRuleTest.h"
+#include "game_test/QueenRuleTest.h"
+#include "game_test/KingRuleTest.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtTest/QtTest>
@@ -55,6 +58,15 @@ int main(int argc, char *argv[])
 
     BishopRuleTest bishopRuleTest;
     QTest::qExec(&bishopRuleTest, argc, argv);
+
+    RookRuleTest rookRuleTest;
+    QTest::qExec(&rookRuleTest, argc, argv);
+
+    QueenRuleTest queenRuleTest;
+    QTest::qExec(&queenRuleTest, argc, argv);
+
+    KingRuleTest kingRuleTest;
+    QTest::qExec(&kingRuleTest, argc, argv);
 
     return 0;
 }

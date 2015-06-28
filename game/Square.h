@@ -70,26 +70,26 @@ public slots:
     QString toStr() const; // TODO: toString() prints address...
 
     // locations
-    Square* left(const int numberOfSquares = 1);
-    const Square* left(const int numberOfSquares = 1) const;
+    Square* left();
+    const Square* left() const;
 
     Square* topLeft();
     const Square* topLeft() const;
 
-    Square* top(const int numberOfSquares = 1);
-    const Square* top(const int numberOfSquares = 1) const;
+    Square* top();
+    const Square* top() const;
 
     Square* topRight();
     const Square* topRight() const;
 
-    Square* right(const int numberOfSquares = 1);
-    const Square* right(const int numberOfSquares = 1) const;
+    Square* right();
+    const Square* right() const;
 
     Square* bottomRight();
     const Square* bottomRight() const;
 
-    Square* bottom(const int numberOfSquares = 1);
-    const Square* bottom(const int numberOfSquares = 1) const;
+    Square* bottom();
+    const Square* bottom() const;
 
     Square* bottomLeft();
     const Square* bottomLeft() const;
