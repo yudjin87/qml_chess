@@ -41,7 +41,8 @@ SOURCES += Square.cpp \
     Rules/KingRule.cpp \
     Commands/GameMovesRegistry.cpp \
     Commands/CastlingCommand.cpp \
-    Commands/BaseCommand.cpp
+    Commands/BaseCommand.cpp \
+    BoardCreator.cpp
 
 HEADERS += \
     Square.h \
@@ -72,4 +73,5 @@ HEADERS += \
     Rules/KingRule.h \
     Commands/GameMovesRegistry.h \
     Commands/CastlingCommand.h \
-    Commands/BaseCommand.h
+    Commands/BaseCommand.h \
+    BoardCreator.h
