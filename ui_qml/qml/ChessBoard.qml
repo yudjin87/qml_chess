@@ -100,7 +100,7 @@ Item {
                                 return;
 
                             console.log("onClicked: enter")
-                            repaintBoard(); // TODO: too expensive
+                            //repaintBoard(); // TODO: too expensive
                             console.log("repaintBoard finished")
 
                             var square = game.board.squareByIdex(mapIndex(index));
@@ -129,20 +129,20 @@ Item {
                                 return;
                             }
 
-                            chessCell.color = "#800000FF"
+                            //chessCell.color = "#800000FF"
                             var moves = game.activePlayer.availableMovements;
                             //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
                             //console.log("Hello " + moves.length)
                             for (var i = 0; i < moves.length; ++i) {
                                 var s = moves.at(i);
                                 //console.log("     " + s.toStr());
-                                repeater.itemAt(mapIndex(s.index())).color = "#220000FF"
+                                //repeater.itemAt(mapIndex(s.index())).color = "#220000FF"
                             }
 
                             var attacks = game.activePlayer.availableAttacks;
                             for (i = 0; i < attacks.length; ++i) {
                                 s = attacks.at(i);
-                                repeater.itemAt(mapIndex(s.index())).color = "#80FF0000"
+                                //repeater.itemAt(mapIndex(s.index())).color = "#80FF0000"
                             }
 
                         }

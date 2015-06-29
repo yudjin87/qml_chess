@@ -35,6 +35,8 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
+#include <memory>
+
 namespace Chess
 {
 
@@ -46,6 +48,9 @@ class GAME_API Piece : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Chess::Color color READ color NOTIFY colorChanged)
+
+public:
+    typedef std::unique_ptr<Piece> UPtr;
 
 public:
     Piece(const PieceType type, const Color color, Chessboard* board, IMovementRule* rule, QObject *parent = nullptr);

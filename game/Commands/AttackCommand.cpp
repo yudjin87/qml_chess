@@ -59,7 +59,7 @@ bool AttackCommand::redo(Chessboard &board)
         return false;
     }
 
-    if (!from->isEmpty())
+    if (from->isEmpty())
     {
         qCritical() << "Runtime error: square is empty";
         return false;

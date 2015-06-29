@@ -29,11 +29,13 @@
 
 #include "game/game_api.h"
 #include "game/GameMode.h"
+#include "game/Piece.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>
 
 #include <memory>
+#include <vector>
 
 namespace Chess
 {
@@ -96,8 +98,7 @@ private:
 private:
     Chessboard* m_board;
     GameMovesRegistry* m_movesRegistry;
-    QVector<Piece*> m_piecesOnBoard;
-    QVector<Piece*> m_killedPieces;
+    std::vector<Piece::UPtr> m_piecesOnBoard;
     bool m_isRunning;
     Chess::GameMode m_mode;
     std::unique_ptr<Player> m_playerWhite;
