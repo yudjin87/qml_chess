@@ -27,7 +27,7 @@
 #ifndef ATTACKCOMMAND_H
 #define ATTACKCOMMAND_H
 
-#include "game/Commands/IMoveCommand.h"
+#include "game/Commands/BaseCommand.h"
 #include "game/Position.h"
 
 namespace Chess
@@ -35,7 +35,7 @@ namespace Chess
 
 class Square;
 
-class GAME_API AttackCommand : public IMoveCommand
+class GAME_API AttackCommand : public BaseCommand
 {
 public:
     typedef std::unique_ptr<AttackCommand> UPtr;
@@ -54,18 +54,10 @@ public:
     void redo(Chessboard& board) override;
     void undo(Chessboard& board) override;
 
-    QJsonObject write() const override;
-    bool load(const QJsonObject move) override;
-
-    QString name() const override;
     QString toString() const override;
 
-    void setDestinationSquare(const Position& to);
-    void setFromSquare(const Position& from);
-
 private:
-    Position m_to;
-    Position m_from;
+    Piece* m_killedPiece;
 };
 
 } // namespace Chess

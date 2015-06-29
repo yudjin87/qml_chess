@@ -37,23 +37,19 @@ namespace Chess
 const char* CastlingCommand::NAME = "CastlingCommand";
 
 CastlingCommand::CastlingCommand()
-    : IMoveCommand()
-    , m_to(Position::A1())
-    , m_from(Position::A1())
+    : BaseCommand(CastlingCommand::NAME)
 {
 }
 
 CastlingCommand::CastlingCommand(const Position &to, const Position &from)
-    : IMoveCommand()
-    , m_to(to)
-    , m_from(from)
+    : BaseCommand(CastlingCommand::NAME, to, from)
 {
 }
 
 void CastlingCommand::redo(Chessboard &board)
 {
-    Square *to = board.squareAt(m_to);
-    Square *from = board.squareAt(m_from);
+    Square *to = board.squareAt(toSquare());
+    Square *from = board.squareAt(fromSquare());
 
     Q_ASSERT(to->isEmpty() && "Runtime error: square is not empty. AttackCommand should be used");
     Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
@@ -64,53 +60,9 @@ void CastlingCommand::undo(Chessboard &board)
     (void)board;
 }
 
-QString CastlingCommand::name() const
-{
-    return CastlingCommand::NAME;
-}
-
 QString CastlingCommand::toString() const
 {
-    return QString("Castling: from %1 to %2").arg(m_from.toString()).arg(m_to.toString());
-}
-
-bool CastlingCommand::load(const QJsonObject move)
-{
-    const QString fromStr = move.value("from").toString();
-    const QString toStr = move.value("to").toString();
-    bool ok = false;
-    m_from = Position::fromString(fromStr, &ok);
-    if (!ok)
-    {
-        return false;
-    }
-
-    m_to = Position::fromString(toStr, &ok);
-    if (!ok)
-    {
-        return false;
-    }
-
-    return true;
-}
-
-QJsonObject CastlingCommand::write() const
-{
-    // TODO: move to base
-    QJsonObject me;
-    me.insert("from", QJsonValue(m_from.toString()));
-    me.insert("to", QJsonValue(m_to.toString()));
-    return me;
-}
-
-void CastlingCommand::setDestinationSquare(const Position &to)
-{
-    m_to = to;
-}
-
-void CastlingCommand::setFromSquare(const Position &from)
-{
-    m_from = from;
+    return QString("Castling: from %1 to %2").arg(fromSquare().toString()).arg(toSquare().toString());
 }
 
 } // namespace Chess

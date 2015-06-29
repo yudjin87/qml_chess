@@ -40,7 +40,8 @@ SOURCES += Square.cpp \
     Rules/QueenRule.cpp \
     Rules/KingRule.cpp \
     Commands/GameMovesRegistry.cpp \
-    Commands/CastlingCommand.cpp
+    Commands/CastlingCommand.cpp \
+    Commands/BaseCommand.cpp
 
 HEADERS += \
     Square.h \
@@ -70,4 +71,5 @@ HEADERS += \
     Rules/QueenRule.h \
     Rules/KingRule.h \
     Commands/GameMovesRegistry.h \
-    Commands/CastlingCommand.h
+    Commands/CastlingCommand.h \
+    Commands/BaseCommand.h

@@ -37,89 +37,56 @@ namespace Chess
 const char* AttackCommand::NAME = "AttackCommand";
 
 AttackCommand::AttackCommand()
-    : IMoveCommand()
-    , m_to(Position::A1())
-    , m_from(Position::A1())
+    : BaseCommand(AttackCommand::NAME)
+    , m_killedPiece(nullptr)
 {
 }
 
 AttackCommand::AttackCommand(const Position &to, const Position &from)
-    : IMoveCommand()
-    , m_to(to)
-    , m_from(from)
+    : BaseCommand(AttackCommand::NAME, to, from)
+    , m_killedPiece(nullptr)
 {
 }
 
 void AttackCommand::redo(Chessboard &board)
 {
-    Square *to = board.squareAt(m_to);
-    Square *from = board.squareAt(m_from);
+    Square *to = board.squareAt(toSquare());
+    Square *from = board.squareAt(fromSquare());
 
     Q_ASSERT(!to->isEmpty() && "Runtime error: square is empty. MoveCommand should be used");
     Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
 
     Piece* movedePiece = from->piece();
-    movedePiece->markAsMoved(true); // TODO: save prev. state
+    markAsMoved(*movedePiece);
     board.removePiece(movedePiece);
 
-    Piece* attackedPiece = to->piece();
-    board.removePiece(attackedPiece);
+    m_killedPiece = to->piece();
+    board.removePiece(m_killedPiece);
     board.putPiece(to, movedePiece);
     qDebug() << "Attack: " << Chess::toString(movedePiece->type()) << " " << from->toStr() << ":" << to->toStr();
 }
 
 void AttackCommand::undo(Chessboard &board)
 {
-    (void)board;
-}
+    Square *to = board.squareAt(fromSquare());
+    Square *from = board.squareAt(toSquare());
+    Q_ASSERT(to->isEmpty() && "Runtime error: square is not empty");
+    Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
 
-QString AttackCommand::name() const
-{
-    return AttackCommand::NAME;
+    Piece* movedePiece = from->piece();
+    undoMarkingAsMoved(*movedePiece);
+    board.removePiece(movedePiece);
+    board.putPiece(to, movedePiece);
+
+    board.putPiece(from, m_killedPiece);
+    m_killedPiece = nullptr;
+
+    qDebug() << "Attack (Undo): " << Chess::toString(movedePiece->type()) << " " << from->toStr() << ":" << to->toStr();
 }
 
 QString AttackCommand::toString() const
 {
-    return QString("Attack: from %1 to %2").arg(m_from.toString()).arg(m_to.toString());
-}
-
-bool AttackCommand::load(const QJsonObject move)
-{
-    const QString fromStr = move.value("from").toString();
-    const QString toStr = move.value("to").toString();
-    bool ok = false;
-    m_from = Position::fromString(fromStr, &ok);
-    if (!ok)
-    {
-        return false;
-    }
-
-    m_to = Position::fromString(toStr, &ok);
-    if (!ok)
-    {
-        return false;
-    }
-
-    return true;
-}
-
-QJsonObject AttackCommand::write() const
-{
-    // TODO: move to base
-    QJsonObject me;
-    me.insert("from", QJsonValue(m_from.toString()));
-    me.insert("to", QJsonValue(m_to.toString()));
-    return me;
-}
-
-void AttackCommand::setDestinationSquare(const Position &to)
-{
-    m_to = to;
-}
-
-void AttackCommand::setFromSquare(const Position &from)
-{
-    m_from = from;
+    return QString("Attack: from %1 to %2").arg(fromSquare().toString()).arg(toSquare().toString());
 }
 
 } // namespace Chess

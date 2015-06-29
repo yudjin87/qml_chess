@@ -24,37 +24,45 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef MOVEMENTCOMMAND_H
-#define MOVEMENTCOMMAND_H
+#ifndef BASECOMMAND_H
+#define BASECOMMAND_H
 
-#include "game/Commands/BaseCommand.h"
+#include "game/Commands/IMoveCommand.h"
 #include "game/Position.h"
 
 namespace Chess
 {
 
-class GAME_API MovementCommand : public BaseCommand
+class Piece;
+
+class GAME_API BaseCommand : public IMoveCommand
 {
 public:
-    typedef std::unique_ptr<MovementCommand> UPtr;
-    static const char* NAME;
-
-public:
-    MovementCommand();
-    MovementCommand(const Position& to, const Position& from);
-
-    template<class... TArgs>
-    static MovementCommand::UPtr create(TArgs&&... args)
-    {
-        return MovementCommand::UPtr(new MovementCommand(std::forward<TArgs>(args)...));
-    }
-
-    void redo(Chessboard& board) override;
-    void undo(Chessboard& board) override;
-
+    QString name() const override;
     QString toString() const override;
+
+    QJsonObject write() const override;
+    bool load(const QJsonObject move) override;
+
+    void setToSquare(const Position& toSquare);
+    void setFromSquare(const Position& fromSquare);
+
+    Position toSquare() const;
+    Position fromSquare() const;
+
+protected:
+    BaseCommand(const QString &name);
+    BaseCommand(const QString &name, const Position& toSquare, const Position& fromSquare);
+
+    void markAsMoved(Piece& piece);
+    void undoMarkingAsMoved(Piece& piece);
+
+private:
+    const QString m_name;
+    Position m_to;
+    Position m_from;
+    bool m_wasMoved;
 };
 
 } // namespace Chess
-
-#endif // MOVEMENTCOMMAND_H
+#endif // BASECOMMAND_H
