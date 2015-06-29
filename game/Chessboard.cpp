@@ -29,6 +29,7 @@
 #include "game/Position.h"
 #include "game/Piece.h"
 
+#include <QtCore/QDebug>
 #include <algorithm>
 
 namespace Chess
@@ -130,6 +131,7 @@ void Chessboard::putPiece(Square *square, Piece *piece)
     m_piecesOnBoard.push_back(piece);
     square->setPiece(*piece);
     emit pieceAdded(piece);
+    // qDebug() << "Chessboard: piece" << piece->toString() << "was added";
 }
 
 void Chessboard::removePiece(Piece *piece)
@@ -139,15 +141,22 @@ void Chessboard::removePiece(Piece *piece)
         return;
     }
 
-    m_piecesOnBoard.removeOne(piece);
+    //qDebug() << "Chessboard: piece" << piece->toString() << "is removed";
+
     emit pieceRemoved(piece);
     piece->atSquare()->removePiece();
+    m_piecesOnBoard.removeOne(piece);
 }
 
 Piece *Chessboard::takePiece(Square *square)
 {
     (void)square;
     return nullptr;
+}
+
+void Chessboard::clear()
+{
+
 }
 
 } // namespace Chess

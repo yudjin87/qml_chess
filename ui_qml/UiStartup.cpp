@@ -33,6 +33,7 @@
 #include "game/Piece.h"
 #include "game/Player.h"
 #include "game/SquareList.h"
+#include "game/Commands/GameMovesRegistry.h"
 
 #include <QtCore/QDebug>
 #include <QtQml/QQmlApplicationEngine>
@@ -50,12 +51,14 @@ UiStartup::UiStartup(QObject *parent)
     qmlRegisterUncreatableType<Chess::Chessboard>("Chess", 1, 0, "Chessboard", "Get it from 'game' object");
     qmlRegisterUncreatableType<Chess::Piece>("Chess", 1, 0, "Piece", "Get it from 'chessBoard' object");
     qmlRegisterUncreatableType<Chess::Player>("Chess", 1, 0, "Player", "Get it from 'game' object");
+    qmlRegisterUncreatableType<Chess::GameMovesRegistry>("Chess", 1, 0, "GameMovesRegistry", "Get it from 'game' object");
     qmlRegisterUncreatableType<Chess::Square>("Chess", 1, 0, "Square", "Get it from 'chessBoard' object");
     qmlRegisterUncreatableType<Chess::SquareList>("Chess", 1, 0, "SquareList", "Get it from 'Piece' object");
 
+    qRegisterMetaType<Chess::GameMovesRegistry*>("Chess::GameMovesRegistry");
+    qRegisterMetaType<Chess::Piece*>("Chess::Piece");
     qRegisterMetaType<Chess::Square*>("Chess::Square");
     qRegisterMetaType<Chess::SquareList*>("Chess::SquareList");
-    qRegisterMetaType<Chess::Piece*>("Chess::Piece");
     qRegisterMetaType<Chess::Color>("Chess::Color");
     qRegisterMetaType<Chess::GameMode>("Chess::GameMode");
 

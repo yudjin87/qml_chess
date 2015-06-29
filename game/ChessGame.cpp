@@ -29,9 +29,8 @@
 #include "game/Piece.h"
 #include "game/Position.h"
 #include "game/Player.h"
-#include "game/Commands/GameMovementsWriter.h"
-#include "game/Commands/GameMovementsReader.h"
-#include "game/Commands/IMoveCommand.h"
+
+#include "game/Commands/GameMovesRegistry.h"
 #include "game/Rules/PawnRule.h"
 #include "game/Rules/KnightRule.h"
 #include "game/Rules/BishopRule.h"
@@ -39,14 +38,9 @@
 #include "game/Rules/QueenRule.h"
 #include "game/Rules/KingRule.h"
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QDir>
 #include <QtCore/QCoreApplication>
-#include <QtCore/QByteArray>
-#include <QtCore/QTextStream>
 #include <QtCore/QtAlgorithms>
 #include <QtCore/QDebug>
-#include <QtCore/QFile>
 
 namespace Chess
 {
@@ -54,6 +48,7 @@ namespace Chess
 ChessGame::ChessGame(QObject *parent)
     : QObject(parent)
     , m_board(new Chessboard(this))
+    , m_movesRegistry(new GameMovesRegistry(*m_board, this))
     , m_piecesOnBoard()
     , m_killedPieces()
     , m_isRunning(false)
@@ -61,8 +56,9 @@ ChessGame::ChessGame(QObject *parent)
     , m_playerWhite(nullptr)
     , m_playerBlack(nullptr)
     , m_playerActive(nullptr)
-    , m_performedCmnds()
 {
+    connect(m_movesRegistry, &GameMovesRegistry::newMoveDone, this, &ChessGame::nextTurn);
+    connect(m_movesRegistry, &GameMovesRegistry::movesLoaded, this, &ChessGame::onMovesLoaded);
 }
 
 ChessGame::~ChessGame()
@@ -96,6 +92,11 @@ GameMode ChessGame::mode() const
     return m_mode;
 }
 
+GameMovesRegistry *ChessGame::movesRegistry()
+{
+    return m_movesRegistry;
+}
+
 void ChessGame::start()
 {
     stop();
@@ -103,8 +104,89 @@ void ChessGame::start()
 
     qDebug() << "Game: Starting, mode" << Chess::toString(m_mode);
 
-    m_playerWhite.reset(new Player(Color::White, *this));
-    m_playerBlack.reset(new Player(Color::Black, *this));
+    prepareGame();
+
+    setIsRunning(true);
+}
+
+void ChessGame::stop()
+{
+    qDebug() << "Game: Stopping";
+    clear();
+
+    setIsRunning(false);
+}
+
+void ChessGame::save(QString fileName)
+{
+    m_movesRegistry->save(fileName);
+}
+
+void ChessGame::load(QString fileName)
+{
+    clear();
+    m_movesRegistry->load(fileName);
+}
+
+void ChessGame::load(const QUrl &fileName)
+{
+    return load(fileName.toLocalFile());
+}
+
+void ChessGame::onMovesLoaded()
+{
+    setMode(GameMode::Replay);
+    qDebug() << "Game: Starting, mode" << Chess::toString(m_mode);
+    prepareGame();
+}
+
+void ChessGame::setMode(GameMode mode)
+{
+    if (m_mode == mode)
+        return;
+
+    m_mode = mode;
+    emit modeChanged(mode);
+}
+
+void ChessGame::setIsRunning(bool isRunning)
+{
+    if (m_isRunning == isRunning)
+    {
+        return;
+    }
+
+    m_isRunning = isRunning;
+    emit isRunningChanged(m_isRunning);
+}
+
+void ChessGame::setActivePlayer(Player *activePlayer)
+{
+    if (m_playerActive == activePlayer)
+    {
+        return;
+    }
+
+    m_playerActive = activePlayer;
+    emit activePlayerChanged(activePlayer);
+}
+
+Player *ChessGame::nextTurnPlayer()
+{
+    return (m_playerActive->color() == Color::White) ? m_playerBlack.get() : m_playerWhite.get();
+}
+
+void ChessGame::nextTurn()
+{
+    Player *nextPlayer = nextTurnPlayer();
+    qDebug() << "Game: Next turn: " << toString(nextPlayer->color());
+    setActivePlayer(nextPlayer);
+}
+
+void ChessGame::prepareGame()
+{
+    m_playerWhite.reset(new Player(Color::White, *m_movesRegistry));
+    m_playerBlack.reset(new Player(Color::Black, *m_movesRegistry));
     setActivePlayer(m_playerWhite.get());
 
     // TODO: builder?
@@ -181,19 +263,12 @@ void ChessGame::start()
             m_board->putPiece(p, pawn);
         }
     }
-
-    setIsRunning(true);
 }
 
-void ChessGame::stop()
+void ChessGame::clear()
 {
-    if (!m_isRunning)
-    {
-        return;
-    }
-
-    qDebug() << "Game: Stopping";
-    m_performedCmnds.clear();
+    qDebug() << "Game: Clearing";
+    m_movesRegistry->clear();
 
     for (Piece* p : m_piecesOnBoard)
     {
@@ -203,111 +278,9 @@ void ChessGame::stop()
     qDeleteAll(m_piecesOnBoard); // TODO: unique_ptrs
     m_piecesOnBoard.clear();
 
-    setIsRunning(false);
-
     m_playerWhite.reset();
     m_playerBlack.reset();
     setActivePlayer(nullptr);
-}
-
-void ChessGame::save(QString fileName)
-{
-    QFileInfo info(fileName);
-    if (info.suffix().isEmpty() || info.suffix() != "chess")
-    {
-        info = fileName + ".chess";
-    }
-
-    qDebug() << "Saving to" << info.absoluteFilePath();
-
-    QFile file(info.absoluteFilePath());
-
-    if(!file.open(QIODevice::WriteOnly))
-    {
-        qWarning() << "Can't open file" << info.absoluteFilePath() << "for writting";
-        return;
-    }
-
-    QTextStream out(&file);
-    GameMovementsWriter writer;
-    QByteArray savedDoc = writer.write(m_performedCmnds);
-
-    out << savedDoc;
-}
-
-void ChessGame::load(QString fileName)
-{
-    setMode(GameMode::Replay);
-    qDebug() << "Game: Starting, mode" << Chess::toString(m_mode);
-
-    QFile file(fileName);
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        qWarning() << "Can't open file" << fileName << "for reading";
-        return;
-    }
-
-    QByteArray savedDov = file.readAll();
-    GameMovementsReader reader;
-    m_performedCmnds = reader.read(savedDov);
-
-    qDebug() << m_performedCmnds.size() << "commands were read";
-}
-
-void ChessGame::load(const QUrl &fileName)
-{
-    return load(fileName.toLocalFile());
-}
-
-void ChessGame::setMode(GameMode mode)
-{
-    if (m_mode == mode)
-        return;
-
-    m_mode = mode;
-    emit modeChanged(mode);
-}
-
-void ChessGame::setIsRunning(bool isRunning)
-{
-    if (m_isRunning == isRunning)
-    {
-        return;
-    }
-
-    m_isRunning = isRunning;
-    emit isRunningChanged(m_isRunning);
-}
-
-void ChessGame::setActivePlayer(Player *activePlayer)
-{
-    if (m_playerActive == activePlayer)
-    {
-        return;
-    }
-
-    m_playerActive = activePlayer;
-    emit activePlayerChanged(activePlayer);
-}
-
-Player *ChessGame::nextTurnPlayer()
-{
-    return (m_playerActive->color() == Color::White) ? m_playerBlack.get() : m_playerWhite.get();
-}
-
-void ChessGame::nextTurn()
-{
-    Player *nextPlayer = nextTurnPlayer();
-    qDebug() << "Game: Next turn: " << toString(nextPlayer->color());
-    setActivePlayer(nextPlayer);
-}
-
-void ChessGame::commit(IMoveCommand::UPtr newMove)
-{
-    Q_ASSERT(newMove != nullptr && "Null pointer is not allowed");
-    newMove->redo(*m_board);
-    m_performedCmnds.push_back(std::move(newMove));
-    nextTurn();
 }
 
 } // namespace Chess

@@ -58,6 +58,7 @@ public:
     bool load(const QJsonObject move) override;
 
     QString name() const override;
+    QString toString() const override;
 
     void setDestinationSquare(const Position& to);
     void setFromSquare(const Position& from);

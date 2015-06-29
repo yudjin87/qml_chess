@@ -24,60 +24,59 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef CHESSBOARD_H
-#define CHESSBOARD_H
+#ifndef GAMEMOVESREGISTRY_H
+#define GAMEMOVESREGISTRY_H
 
 #include "game/game_api.h"
-#include "game/File.h"
-#include "game/Constants.h"
-#include "game/Rank.h"
+#include "game/Commands/IMoveCommand.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QVector>
+#include <QtCore/QUrl>
+
+#include <vector>
 
 namespace Chess
 {
 
-class Piece;
-class Position;
-class Square;
+class Chessboard;
 
-class GAME_API Chessboard : public QObject
+// QUndoStack with some changes ... and without dependency to QtGUI
+class GAME_API GameMovesRegistry : public QObject
 {
     Q_OBJECT
-
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
+    Q_PROPERTY(bool canRedo READ canRedo NOTIFY canRedoChanged)
+    Q_PROPERTY(bool canUndo READ canUndo NOTIFY canUndoChanged)
 public:
-    explicit Chessboard(QObject *parent = nullptr);
+    explicit GameMovesRegistry(Chessboard& board, QObject *parent = nullptr);
 
-    const Square* squareAt(const Position& pos) const;
-    const Square* squareByIdex(const int index) const;
-    void putPiece(const Position& pos, Piece* piece);
-
-    Square* findSquare(const Piece* piece);
-    const Square* findSquare(const Piece* piece) const;
-
-    bool contains(const Square* square) const;
-
-public slots:
-    Chess::Square* squareAt(const Position& pos);
-    Chess::Square* squareByIdex(const int index);
-
-    int size() const;
-
-    void putPiece(Square* square, Piece* piece);
-    void removePiece(Piece* piece);
-    Chess::Piece* takePiece(Square* square);
+    void push(IMoveCommand::UPtr newMove);
     void clear();
 
+    bool canRedo() const;
+    bool canUndo() const;
+
+    int count() const;
+
+public slots:
+    void save(QString fileName);
+    void load(QString fileName);
+    void redo();
+    void undo();
+
 signals:
-    void pieceAdded(Chess::Piece* piece);
-    void pieceRemoved(Chess::Piece* piece);
+    void newMoveDone();
+    void countChanged(int count);
+    void movesLoaded();
+    void canRedoChanged(bool canRedo);
+    void canUndoChanged(bool canUndo);
 
 private:
-    QVector<Square*> m_squares;
-    QVector<Piece*> m_piecesOnBoard;
+    Chessboard& m_board;
+    std::vector<IMoveCommand::UPtr> m_performedCmnds;
+    std::vector<IMoveCommand::UPtr> m_undoneCmnds;
 };
 
 } // namespace Chess
 
-#endif // CHESSBOARD_H
+#endif // GAMEMOVESREGISTRY_H

@@ -29,29 +29,28 @@
 
 #include "game/game_api.h"
 #include "game/GameMode.h"
-#include "game/Commands/IGameMovesRegistry.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QVector>
-#include <QtCore/QUrl>
 
 #include <memory>
-#include <vector>
 
 namespace Chess
 {
 
 class Chessboard;
+class GameMovesRegistry;
 class Piece;
 class Player;
 class Square;
 
-class GAME_API ChessGame : public QObject, private IGameMovesRegistry
+class GAME_API ChessGame : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool isRunning READ isRunning NOTIFY isRunningChanged)
     Q_PROPERTY(Chess::Player* activePlayer READ activePlayer NOTIFY activePlayerChanged)
     Q_PROPERTY(Chess::Chessboard* board READ board NOTIFY boardChanged)
+    Q_PROPERTY(Chess::GameMovesRegistry* movesRegistry READ movesRegistry NOTIFY movesRegistryChanged)
     Q_PROPERTY(Chess::GameMode mode READ mode NOTIFY modeChanged)
 public:
     explicit ChessGame(QObject *parent = nullptr);
@@ -60,6 +59,7 @@ public:
     bool isRunning() const;
 
     Player* activePlayer();
+    Chess::GameMovesRegistry* movesRegistry();
 
     Chessboard *board();
     const Chessboard *board() const;
@@ -77,20 +77,25 @@ signals:
     void isRunningChanged(bool isRunning);
     void activePlayerChanged(Chess::Player* activePlayer);
     void boardChanged(Chess::Chessboard* board);
-
+    void movesRegistryChanged(Chess::GameMovesRegistry* movesRegistry);
     void modeChanged(Chess::GameMode mode);
 
-private:
-    void commit(IMoveCommand::UPtr newMove) override;
+private slots:
+    void onMovesLoaded();
 
+private:
     void setIsRunning(bool isRunning);
     void setActivePlayer(Player* activePlayer);
     void setMode(Chess::GameMode mode);
     Player* nextTurnPlayer();
     void nextTurn();
 
+    void prepareGame();
+    void clear();
+
 private:
     Chessboard* m_board;
+    GameMovesRegistry* m_movesRegistry;
     QVector<Piece*> m_piecesOnBoard;
     QVector<Piece*> m_killedPieces;
     bool m_isRunning;
@@ -98,7 +103,6 @@ private:
     std::unique_ptr<Player> m_playerWhite;
     std::unique_ptr<Player> m_playerBlack;
     Player* m_playerActive;
-    std::vector<IMoveCommand::UPtr> m_performedCmnds;
 };
 
 } // namespace Chess

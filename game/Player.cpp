@@ -28,7 +28,7 @@
 #include "game/Piece.h"
 #include "game/Square.h"
 #include "game/SquareList.h"
-#include "game/Commands/IGameMovesRegistry.h"
+#include "game/Commands/GameMovesRegistry.h"
 #include "game/Commands/AttackCommand.h"
 #include "game/Commands/MovementCommand.h"
 
@@ -37,7 +37,7 @@
 namespace Chess
 {
 
-Player::Player(const Color color, IGameMovesRegistry &movesRegistry, QObject *parent)
+Player::Player(const Color color, GameMovesRegistry &movesRegistry, QObject *parent)
     : QObject(parent)
     , m_color(color)
     , m_movesRegistry(movesRegistry)
@@ -139,7 +139,7 @@ void Player::moveTo(Square *square)
     }
 
     MovementCommand::UPtr moveCmd = MovementCommand::create(square->position(), m_selectedPiece->atSquare()->position());
-    m_movesRegistry.commit(std::move(moveCmd));
+    m_movesRegistry.push(std::move(moveCmd));
 
     setSelectedPiece(nullptr);
     m_availableMovements->clear();
@@ -165,7 +165,7 @@ void Player::attack(Square *square)
     }
 
     AttackCommand::UPtr moveCmd = AttackCommand::create(square->position(), m_selectedPiece->atSquare()->position());
-    m_movesRegistry.commit(std::move(moveCmd));
+    m_movesRegistry.push(std::move(moveCmd));
 
     // TODO: simplfy....
     setSelectedPiece(nullptr);

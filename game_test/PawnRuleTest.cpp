@@ -71,7 +71,7 @@ void PawnRuleTest::shouldReturnMoveForNonInitialPosition()
     Chess::Chessboard board;
     Chess::PawnRule* rule = new Chess::PawnRule(board);
     Chess::Piece movedPiece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
-    movedPiece.markAsMoved();
+    movedPiece.markAsMoved(true);
     board.putPiece(Chess::Position::E3(), &movedPiece);
 
     QList<Chess::Square*> moves = rule->findMoves(movedPiece);

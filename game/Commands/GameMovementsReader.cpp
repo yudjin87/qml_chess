@@ -79,7 +79,7 @@ std::vector<IMoveCommand::UPtr> GameMovementsReader::read(const QByteArray &load
                 return {};
             }
 
-            cmds.push_back(std::move(cmd));
+            cmds.insert(cmds.begin(), std::move(cmd));
         }
         else if (cmdName == AttackCommand::NAME)
         {
@@ -98,7 +98,7 @@ std::vector<IMoveCommand::UPtr> GameMovementsReader::read(const QByteArray &load
                 return {};
             }
 
-            cmds.push_back(std::move(cmd));
+            cmds.insert(cmds.begin(), std::move(cmd));
         }
         else
         {

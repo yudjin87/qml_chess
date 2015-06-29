@@ -53,6 +53,7 @@ public:
     void undo(Chessboard& board) override;
 
     QString name() const override;
+    QString toString() const override;
 
     QJsonObject write() const override;
     bool load(const QJsonObject move) override;
@@ -63,6 +64,7 @@ public:
 private:
     Position m_to;
     Position m_from;
+    bool m_wasMoved;
 };
 
 } // namespace Chess

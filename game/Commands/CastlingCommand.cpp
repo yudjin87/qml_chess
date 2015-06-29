@@ -24,7 +24,7 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/Commands/MovementCommand.h"
+#include "game/Commands/CastlingCommand.h"
 #include "game/Chessboard.h"
 #include "game/Square.h"
 #include "game/Piece.h"
@@ -34,65 +34,47 @@
 namespace Chess
 {
 
-const char* MovementCommand::NAME = "MovementCommand";
+const char* CastlingCommand::NAME = "CastlingCommand";
 
-MovementCommand::MovementCommand()
+CastlingCommand::CastlingCommand()
     : IMoveCommand()
     , m_to(Position::A1())
     , m_from(Position::A1())
-    , m_wasMoved(false)
 {
 }
 
-MovementCommand::MovementCommand(const Position &to, const Position &from)
+CastlingCommand::CastlingCommand(const Position &to, const Position &from)
     : IMoveCommand()
     , m_to(to)
     , m_from(from)
-    , m_wasMoved(false)
 {
 }
 
-void MovementCommand::redo(Chessboard &board)
+void CastlingCommand::redo(Chessboard &board)
 {
     Square *to = board.squareAt(m_to);
     Square *from = board.squareAt(m_from);
+
     Q_ASSERT(to->isEmpty() && "Runtime error: square is not empty. AttackCommand should be used");
     Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
-
-    Piece* movedePiece = from->piece();
-    m_wasMoved = movedePiece->wasMoved();
-    movedePiece->markAsMoved(true);
-    board.removePiece(movedePiece);
-    board.putPiece(to, movedePiece);
-    qDebug() << "Move: " << Chess::toString(movedePiece->type()) << " " << from->toStr() << ":" << to->toStr();
 }
 
-void MovementCommand::undo(Chessboard &board)
+void CastlingCommand::undo(Chessboard &board)
 {
-    std::swap(m_to, m_from);
-    redo(board);
-    std::swap(m_to, m_from);
+    (void)board;
 }
 
-QString MovementCommand::name() const
+QString CastlingCommand::name() const
 {
-    return MovementCommand::NAME;
+    return CastlingCommand::NAME;
 }
 
-QString MovementCommand::toString() const
+QString CastlingCommand::toString() const
 {
-    return QString("Move: from %1 to %2").arg(m_from.toString()).arg(m_to.toString());
+    return QString("Castling: from %1 to %2").arg(m_from.toString()).arg(m_to.toString());
 }
 
-QJsonObject MovementCommand::write() const
-{
-    QJsonObject me;
-    me.insert("from", QJsonValue(m_from.toString()));
-    me.insert("to", QJsonValue(m_to.toString()));
-    return me;
-}
-
-bool MovementCommand::load(const QJsonObject move)
+bool CastlingCommand::load(const QJsonObject move)
 {
     const QString fromStr = move.value("from").toString();
     const QString toStr = move.value("to").toString();
@@ -112,14 +94,26 @@ bool MovementCommand::load(const QJsonObject move)
     return true;
 }
 
-void MovementCommand::setDestinationSquare(const Position &to)
+QJsonObject CastlingCommand::write() const
+{
+    // TODO: move to base
+    QJsonObject me;
+    me.insert("from", QJsonValue(m_from.toString()));
+    me.insert("to", QJsonValue(m_to.toString()));
+    return me;
+}
+
+void CastlingCommand::setDestinationSquare(const Position &to)
 {
     m_to = to;
 }
 
-void MovementCommand::setFromSquare(const Position &from)
+void CastlingCommand::setFromSquare(const Position &from)
 {
     m_from = from;
 }
 
 } // namespace Chess
+
+
+

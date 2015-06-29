@@ -61,7 +61,7 @@ ApplicationWindow {
                 id: startButton
                 anchors.left: parent.left
                 anchors.right: parent.right
-                text: game.isRunning ? qsTr("Stop") : qsTr("Start")
+                text: game.isRunning ? qsTr("Stop") : qsTr("Start new")
                 onClicked: {
                     if (game.isRunning)
                         game.stop();
@@ -121,17 +121,19 @@ ApplicationWindow {
                 visible: false//game.mode === g
                 Button {
                     id: prevButton
-                    text: "<<"
-//                    onClicked: {
-//                        chessController.prevMove()
-//                    }
+                    enabled: game.movesRegistry.canUndo
+                    text: "Prev"
+                    onClicked: {
+                        game.movesRegistry.undo()
+                    }
                 }
                 Button {
                     id: nextButton
-                    text: ">>"
-//                    onClicked: {
-//                        chessController.nextMove()
-//                    }
+                    enabled: game.movesRegistry.canRedo
+                    text: "Next"
+                    onClicked: {
+                        game.movesRegistry.redo()
+                    }
                 }
             }
         }

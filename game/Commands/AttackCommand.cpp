@@ -59,7 +59,7 @@ void AttackCommand::redo(Chessboard &board)
     Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
 
     Piece* movedePiece = from->piece();
-    movedePiece->markAsMoved(); // TODO: save prev. state
+    movedePiece->markAsMoved(true); // TODO: save prev. state
     board.removePiece(movedePiece);
 
     Piece* attackedPiece = to->piece();
@@ -76,6 +76,11 @@ void AttackCommand::undo(Chessboard &board)
 QString AttackCommand::name() const
 {
     return AttackCommand::NAME;
+}
+
+QString AttackCommand::toString() const
+{
+    return QString("Attack: from %1 to %2").arg(m_from.toString()).arg(m_to.toString());
 }
 
 bool AttackCommand::load(const QJsonObject move)

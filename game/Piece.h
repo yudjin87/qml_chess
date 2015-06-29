@@ -62,7 +62,7 @@ public:
     const Chess::Square* atSquare() const;
 
     bool wasMoved() const;
-    void markAsMoved();
+    void markAsMoved(bool moved);
 
 public slots:
     Chess::Square* atSquare();

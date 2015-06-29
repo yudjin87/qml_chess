@@ -96,6 +96,9 @@ Item {
                         }
 
                         onClicked: {
+                            if (!game.isRunning)
+                                return;
+
                             console.log("onClicked: enter")
                             repaintBoard(); // TODO: too expensive
                             console.log("repaintBoard finished")

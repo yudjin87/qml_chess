@@ -101,9 +101,9 @@ bool Piece::wasMoved() const
     return m_wasMoved;
 }
 
-void Piece::markAsMoved()
+void Piece::markAsMoved(bool moved)
 {
-    m_wasMoved = true;
+    m_wasMoved = moved;
 }
 
 } // namespace Chess

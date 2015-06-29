@@ -38,7 +38,9 @@ SOURCES += Square.cpp \
     Rules/BishopRule.cpp \
     Rules/RookRule.cpp \
     Rules/QueenRule.cpp \
-    Rules/KingRule.cpp
+    Rules/KingRule.cpp \
+    Commands/GameMovesRegistry.cpp \
+    Commands/CastlingCommand.cpp
 
 HEADERS += \
     Square.h \
@@ -57,7 +59,6 @@ HEADERS += \
     GameMode.h \
     Commands/GameMovementsWriter.h \
     Commands/GameMovementsReader.h \
-    Commands/IGameMovesRegistry.h \
     Commands/IMoveCommand.h \
     Commands/AttackCommand.h \
     Commands/MovementCommand.h \
@@ -67,4 +68,6 @@ HEADERS += \
     Rules/BishopRule.h \
     Rules/RookRule.h \
     Rules/QueenRule.h \
-    Rules/KingRule.h
+    Rules/KingRule.h \
+    Commands/GameMovesRegistry.h \
+    Commands/CastlingCommand.h

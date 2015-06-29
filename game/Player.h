@@ -38,7 +38,7 @@ namespace Chess
 class Square;
 class Piece;
 class SquareList;
-class IGameMovesRegistry;
+class GameMovesRegistry;
 
 class GAME_API Player : public QObject
 {
@@ -49,7 +49,7 @@ class GAME_API Player : public QObject
     Q_PROPERTY(Chess::SquareList* availableMovements READ availableMovements NOTIFY availableMovementsChanged)
     Q_PROPERTY(Chess::SquareList* availableAttacks READ availableAttacks NOTIFY availableAttacksChanged)
 public:
-    explicit Player(const Color color, IGameMovesRegistry& movesRegistry, QObject *parent = nullptr);
+    explicit Player(const Color color, GameMovesRegistry& movesRegistry, QObject *parent = nullptr);
 
     Color color() const;
     QString name() const;
@@ -79,7 +79,7 @@ private:
 
 private:
     const Color m_color;
-    IGameMovesRegistry& m_movesRegistry;
+    GameMovesRegistry& m_movesRegistry;
     QString m_name;
     Chess::Piece* m_selectedPiece;
     Chess::SquareList* m_availableMovements;

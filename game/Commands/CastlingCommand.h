@@ -24,27 +24,49 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef IGAMEMOVESREGISTRY
-#define IGAMEMOVESREGISTRY
+#ifndef CASTLINGCOMMAND_H
+#define CASTLINGCOMMAND_H
 
-#include "game/game_api.h"
 #include "game/Commands/IMoveCommand.h"
+#include "game/Position.h"
 
 namespace Chess
 {
 
-class IMoveCommand;
+class Square;
 
-class GAME_API IGameMovesRegistry
+class GAME_API CastlingCommand : public IMoveCommand
 {
 public:
-    IGameMovesRegistry() = default;
-    virtual ~IGameMovesRegistry() = default;
+    typedef std::unique_ptr<CastlingCommand> UPtr;
+    static const char* NAME;
 
-    virtual void commit(IMoveCommand::UPtr newMove) = 0;
+public:
+    CastlingCommand();
+    CastlingCommand(const Position& to, const Position& from);
+
+    template<class... TArgs>
+    static CastlingCommand::UPtr create(TArgs&&... args)
+    {
+        return CastlingCommand::UPtr(new CastlingCommand(std::forward<TArgs>(args)...));
+    }
+
+    void redo(Chessboard& board) override;
+    void undo(Chessboard& board) override;
+
+    QJsonObject write() const override;
+    bool load(const QJsonObject move) override;
+
+    QString name() const override;
+    QString toString() const override;
+
+    void setDestinationSquare(const Position& to);
+    void setFromSquare(const Position& from);
+
+private:
+    Position m_to;
+    Position m_from;
 };
 
 } // namespace Chess
-
-#endif // IGAMEMOVESREGISTRY
-
+#endif // CASTLINGCOMMAND_H

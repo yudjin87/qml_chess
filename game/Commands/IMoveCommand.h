@@ -51,6 +51,7 @@ public:
     virtual void undo(Chessboard& board) = 0;
 
     virtual QString name() const = 0;
+    virtual QString toString() const = 0;
 
     virtual QJsonObject write() const = 0;
     virtual bool load(const QJsonObject move) = 0;
