@@ -46,18 +46,20 @@ CastlingCommand::CastlingCommand(const Position &to, const Position &from)
 {
 }
 
-void CastlingCommand::redo(Chessboard &board)
+bool CastlingCommand::redo(Chessboard &board)
 {
     Square *to = board.squareAt(toSquare());
     Square *from = board.squareAt(fromSquare());
 
     Q_ASSERT(to->isEmpty() && "Runtime error: square is not empty. AttackCommand should be used");
     Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
+    return false;
 }
 
-void CastlingCommand::undo(Chessboard &board)
+bool CastlingCommand::undo(Chessboard &board)
 {
     (void)board;
+    return false;
 }
 
 QString CastlingCommand::toString() const

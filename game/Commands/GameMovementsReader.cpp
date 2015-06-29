@@ -26,6 +26,7 @@
 
 #include "game/Commands/GameMovementsReader.h"
 #include "game/Commands/AttackCommand.h"
+#include "game/Commands/CastlingCommand.h"
 #include "game/Commands/MovementCommand.h"
 
 #include <QtCore/QJsonArray>
@@ -41,8 +42,9 @@ GameMovementsReader::GameMovementsReader()
 {
 }
 
-std::vector<IMoveCommand::UPtr> GameMovementsReader::read(const QByteArray &loadStream)
+std::vector<IMoveCommand::UPtr> GameMovementsReader::read(const QByteArray &loadStream, bool* ok)
 {
+    if (ok) *ok = false;
     std::vector<IMoveCommand::UPtr> cmds;
 
     QJsonParseError error;
@@ -61,55 +63,57 @@ std::vector<IMoveCommand::UPtr> GameMovementsReader::read(const QByteArray &load
         const QJsonObject turn = turnsJson.at(i).toObject();
         const QString cmdName = turn.value("CmdType").toString();
 
-        // TODO: do something with it (Visitor?)
+        // Do something with it (Visitor?)
+        IMoveCommand::UPtr cmd;
         if (cmdName == MovementCommand::NAME)
         {
-            const int index = turn.value("Index").toInt();
-            if (index != i)
-            {
-                qCritical() << "Saved data corrupted";
-                return {};
-            }
-
-            const QJsonObject move = turn.value("Move").toObject();
-            MovementCommand::UPtr cmd(new MovementCommand());
-            if (!cmd->load(move))
-            {
-                qCritical() << "Can't load command's data";
-                return {};
-            }
-
-            cmds.insert(cmds.begin(), std::move(cmd));
+            cmd.reset(new MovementCommand());
         }
         else if (cmdName == AttackCommand::NAME)
         {
-            const int index = turn.value("Index").toInt();
-            if (index != i)
-            {
-                qCritical() << "Saved data corrupted";
-                return {};
-            }
-
-            const QJsonObject move = turn.value("Move").toObject();
-            AttackCommand::UPtr cmd(new AttackCommand());
-            if (!cmd->load(move))
-            {
-                qCritical() << "Can't load command's data";
-                return {};
-            }
-
-            cmds.insert(cmds.begin(), std::move(cmd));
+            cmd.reset(new AttackCommand());
+        }
+        else if (cmdName == CastlingCommand::NAME)
+        {
+            cmd.reset(new CastlingCommand());
         }
         else
         {
             qCritical() << "Unknown command type" << cmdName;
+            return {};
         }
 
+        if (!loadCommand(turn, *cmd, i))
+        {
+            qCritical() << "Saved data corrupted";
+            return {};
+        }
+        cmds.insert(cmds.begin(), std::move(cmd));
     }
 
+    if (ok) *ok = true;
     qDebug() << "Reading completed";
 
     return cmds;
+}
+
+bool GameMovementsReader::loadCommand(const QJsonObject &turn, IMoveCommand &cmd, const int index)
+{
+    const int savedIndex = turn.value("Index").toInt();
+    if (savedIndex != index)
+    {
+        qCritical() << "Saved data corrupted";
+        return false;
+    }
+
+    const QJsonObject move = turn.value("Move").toObject();
+    if (!cmd.load(move))
+    {
+        qCritical() << "Can't load command's data";
+        return false;
+    }
+
+    return true;
 }
 
 } // namespace Chess

@@ -48,13 +48,22 @@ AttackCommand::AttackCommand(const Position &to, const Position &from)
 {
 }
 
-void AttackCommand::redo(Chessboard &board)
+bool AttackCommand::redo(Chessboard &board)
 {
     Square *to = board.squareAt(toSquare());
     Square *from = board.squareAt(fromSquare());
 
-    Q_ASSERT(!to->isEmpty() && "Runtime error: square is empty. MoveCommand should be used");
-    Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
+    if (to->isEmpty())
+    {
+        qCritical() << "Runtime error: square is empty. MoveCommand should be used";
+        return false;
+    }
+
+    if (!from->isEmpty())
+    {
+        qCritical() << "Runtime error: square is empty";
+        return false;
+    }
 
     Piece* movedePiece = from->piece();
     markAsMoved(*movedePiece);
@@ -64,14 +73,26 @@ void AttackCommand::redo(Chessboard &board)
     board.removePiece(m_killedPiece);
     board.putPiece(to, movedePiece);
     qDebug() << "Attack: " << Chess::toString(movedePiece->type()) << " " << from->toStr() << ":" << to->toStr();
+
+    return true;
 }
 
-void AttackCommand::undo(Chessboard &board)
+bool AttackCommand::undo(Chessboard &board)
 {
     Square *to = board.squareAt(fromSquare());
     Square *from = board.squareAt(toSquare());
-    Q_ASSERT(to->isEmpty() && "Runtime error: square is not empty");
-    Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
+
+    if (!to->isEmpty())
+    {
+        qCritical() << "Runtime error: square is not empty";
+        return false;
+    }
+
+    if (from->isEmpty())
+    {
+        qCritical() << "Runtime error: square is empty";
+        return false;
+    }
 
     Piece* movedePiece = from->piece();
     undoMarkingAsMoved(*movedePiece);
@@ -82,6 +103,8 @@ void AttackCommand::undo(Chessboard &board)
     m_killedPiece = nullptr;
 
     qDebug() << "Attack (Undo): " << Chess::toString(movedePiece->type()) << " " << from->toStr() << ":" << to->toStr();
+
+    return true;
 }
 
 QString AttackCommand::toString() const

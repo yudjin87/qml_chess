@@ -33,6 +33,8 @@
 
 #include <vector>
 
+class QJsonObject;
+
 namespace Chess
 {
 
@@ -41,7 +43,10 @@ class GameMovementsReader
 public:
     GameMovementsReader();
 
-    std::vector<IMoveCommand::UPtr> read(const QByteArray &loadStream);
+    std::vector<IMoveCommand::UPtr> read(const QByteArray &loadStream, bool *ok);
+
+private:
+    static bool loadCommand(const QJsonObject& turn, IMoveCommand& cmd, const int index);
 };
 
 } // namespace Chess

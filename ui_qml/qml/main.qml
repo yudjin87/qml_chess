@@ -5,6 +5,7 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
+    id: mainWindow
     title: {
         game.activePlayer === null ? "Start game" : game.activePlayer.name;
     }
@@ -15,6 +16,17 @@ ApplicationWindow {
 
     onClosing: {
         game.stop();
+    }
+
+    MessageDialog {
+        id: executionFailedDialog
+        title: "Replay failed"
+        text: "It's unfair to change saved data and then expect me to continue without any issues"
+        icon: StandardIcon.Warning
+        onAccepted: {
+            console.log("And of course you could only agree.")
+        }
+        Component.onCompleted: visible = false
     }
 
     FileDialog {
@@ -50,6 +62,14 @@ ApplicationWindow {
         }
     }
 
+    Connections {
+        id: movesRegistryConnection
+        target: game.movesRegistry
+        onExecutionFailed: {
+            executionFailedDialog.open()
+        }
+    }
+
     RowLayout {
         anchors.fill: parent
         spacing: 10
@@ -61,7 +81,7 @@ ApplicationWindow {
                 id: startButton
                 anchors.left: parent.left
                 anchors.right: parent.right
-                text: game.isRunning ? qsTr("Stop") : qsTr("Start new")
+                text: game.isRunning ? qsTr("Stop") : qsTr("Start new game")
                 onClicked: {
                     if (game.isRunning)
                         game.stop();

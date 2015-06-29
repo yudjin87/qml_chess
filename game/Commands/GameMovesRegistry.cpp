@@ -116,7 +116,12 @@ void GameMovesRegistry::load(QString fileName)
 
     QByteArray savedDov = file.readAll();
     GameMovementsReader reader;
-    m_undoneCmnds = reader.read(savedDov);
+    bool ok = false;
+    m_undoneCmnds = reader.read(savedDov, &ok);
+    if (!ok)
+    {
+        return;
+    }
 
     qDebug() << m_undoneCmnds.size() << "commands were read:";
     for (const IMoveCommand::UPtr& cmd : m_undoneCmnds)
@@ -139,8 +144,13 @@ void GameMovesRegistry::redo()
 
     IMoveCommand::UPtr cmd = std::move(m_undoneCmnds.back());
     m_undoneCmnds.pop_back();
-    cmd->redo(m_board);
     m_performedCmnds.push_back(std::move(cmd));
+
+    if (!m_performedCmnds.back()->redo(m_board))
+    {
+        failExecution();
+        return;
+    }
 
     emit newMoveDone();
     emit canRedoChanged(canRedo());
@@ -158,13 +168,27 @@ void GameMovesRegistry::undo()
 
     IMoveCommand::UPtr cmd = std::move(m_performedCmnds.back());
     m_performedCmnds.pop_back();
-    cmd->undo(m_board);
     m_undoneCmnds.push_back(std::move(cmd));
+    if (!m_undoneCmnds.back()->undo(m_board))
+    {
+        failExecution();
+        return;
+    }
 
     emit newMoveDone();
 
     emit canRedoChanged(canRedo());
     emit canUndoChanged(canUndo());
+}
+
+void GameMovesRegistry::failExecution()
+{
+    m_performedCmnds.clear();
+    m_undoneCmnds.clear();
+
+    emit canRedoChanged(canRedo());
+    emit canUndoChanged(canUndo());
+    emit executionFailed();
 }
 
 } // namespace Chess

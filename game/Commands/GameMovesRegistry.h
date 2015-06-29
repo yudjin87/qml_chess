@@ -70,6 +70,10 @@ signals:
     void movesLoaded();
     void canRedoChanged(bool canRedo);
     void canUndoChanged(bool canUndo);
+    void executionFailed();
+
+private:
+    void failExecution();
 
 private:
     Chessboard& m_board;

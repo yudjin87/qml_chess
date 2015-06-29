@@ -47,8 +47,8 @@ public:
     IMoveCommand() = default;
     virtual ~IMoveCommand() = default;
 
-    virtual void redo(Chessboard& board) = 0;
-    virtual void undo(Chessboard& board) = 0;
+    virtual bool redo(Chessboard& board) = 0;
+    virtual bool undo(Chessboard& board) = 0;
 
     virtual QString name() const = 0;
     virtual QString toString() const = 0;

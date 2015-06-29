@@ -49,8 +49,8 @@ public:
         return MovementCommand::UPtr(new MovementCommand(std::forward<TArgs>(args)...));
     }
 
-    void redo(Chessboard& board) override;
-    void undo(Chessboard& board) override;
+    bool redo(Chessboard& board) override;
+    bool undo(Chessboard& board) override;
 
     QString toString() const override;
 };
