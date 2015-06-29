@@ -35,23 +35,14 @@ namespace Chess
 {
 
 KnightRule::KnightRule(Chessboard &board, QObject* parent)
-    : IMovementRule(parent)
-    , m_board(board)
+    : BaseRule(board, parent)
 {
 }
 
-QList<Square *> KnightRule::findMoves(Piece &forPiece) const
+QList<Square *> KnightRule::findMovesSafe(Piece &forPiece) const
 {
-    Square *currentPosition = forPiece.atSquare();
-    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
-
     QList<Square *> result;
-    if (!m_board.contains(currentPosition))
-    {
-        qWarning() << "currentPosition doesn't belong to specified board";
-        return result;
-    }
-
+    Square *currentPosition = forPiece.atSquare();
     Square* pos = leftLeftTop(currentPosition);
     if (pos != nullptr && pos->isEmpty())
     {
@@ -103,18 +94,10 @@ QList<Square *> KnightRule::findMoves(Piece &forPiece) const
     return result;
 }
 
-QList<Square *> KnightRule::findAttacks(Piece &forPiece) const
+QList<Square *> KnightRule::findAttacksSafe(Piece &forPiece) const
 {
-    Square *currentPosition = forPiece.atSquare();
-    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
-
     QList<Square *> result;
-    if (!m_board.contains(currentPosition))
-    {
-        qWarning() << "currentPosition doesn't belong to specified board";
-        return result;
-    }
-
+    Square *currentPosition = forPiece.atSquare();
     Square* pos = leftLeftTop(currentPosition);
     if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
     {

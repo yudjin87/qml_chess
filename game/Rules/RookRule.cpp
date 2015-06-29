@@ -35,23 +35,14 @@ namespace Chess
 {
 
 RookRule::RookRule(Chessboard &board, QObject* parent)
-    : IMovementRule(parent)
-    , m_board(board)
+    : BaseRule(board, parent)
 {
 }
 
-QList<Square *> RookRule::findMoves(Piece &forPiece) const
+QList<Square *> RookRule::findMovesSafe(Piece &forPiece) const
 {
-    Square *currentPosition = forPiece.atSquare();
-    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
-
     QList<Square *> result;
-    if (!m_board.contains(currentPosition))
-    {
-        qWarning() << "currentPosition doesn't belong to specified board";
-        return result;
-    }
-
+    Square *currentPosition = forPiece.atSquare();
     Square* left = nextMovement(currentPosition, &Square::left);
     while ((left != nullptr) && left->isEmpty())
     {
@@ -83,18 +74,10 @@ QList<Square *> RookRule::findMoves(Piece &forPiece) const
     return result;
 }
 
-QList<Square *> RookRule::findAttacks(Piece &forPiece) const
+QList<Square *> RookRule::findAttacksSafe(Piece &forPiece) const
 {
+    QList<Square *> result;
     Square *currentPosition = forPiece.atSquare();
-    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
-
-    QList<Square *> result; // TODO: base class
-    if (!m_board.contains(currentPosition))
-    {
-        qWarning() << "currentPosition doesn't belong to specified board";
-        return result;
-    }
-
     Square* left = nextMovement(currentPosition, &Square::left);
     while ((left != nullptr))
     {
@@ -164,12 +147,6 @@ QList<Square *> RookRule::findAttacks(Piece &forPiece) const
     }
 
     return result;
-}
-
-Square *RookRule::nextMovement(Square *base, RookRule::DirectionFunc dirFunc) const
-{
-    Square* next = (base->*dirFunc)();
-    return next;
 }
 
 } // namespace Chess

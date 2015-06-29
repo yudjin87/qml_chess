@@ -27,20 +27,21 @@
 #ifndef KNIGHTRULE_H
 #define KNIGHTRULE_H
 
-#include "game/Rules/IMovementRule.h"
+#include "game/Rules/BaseRule.h"
 
 namespace Chess
 {
 
 class Chessboard;
 
-class GAME_API KnightRule : public IMovementRule
+class GAME_API KnightRule : public BaseRule
 {
 public:
     KnightRule(Chessboard& board, QObject* parent = nullptr);
 
-    QList<Square*> findMoves(Piece& forPiece) const override;
-    QList<Square*> findAttacks(Piece& forPiece) const override;
+protected:
+    QList<Square*> findMovesSafe(Piece& forPiece) const override;
+    QList<Square*> findAttacksSafe(Piece& forPiece) const override;
 
 private:
     Square* leftLeftTop(Square* current) const;
@@ -51,9 +52,6 @@ private:
     Square* rightBotBot(Square* current) const;
     Square* leftBotBot(Square* current) const;
     Square* leftLeftBot(Square* current) const;
-
-private:
-    Chessboard& m_board;
 };
 
 } // namespace Chess

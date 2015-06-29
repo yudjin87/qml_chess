@@ -27,7 +27,7 @@
 #ifndef PAWNRULE_H
 #define PAWNRULE_H
 
-#include "game/Rules/IMovementRule.h"
+#include "game/Rules/BaseRule.h"
 #include "game/Color.h"
 
 namespace Chess
@@ -35,21 +35,18 @@ namespace Chess
 
 class Chessboard;
 
-class GAME_API PawnRule : public IMovementRule
+class GAME_API PawnRule : public BaseRule
 {
 public:
     PawnRule(Chessboard& board, QObject* parent = nullptr);
 
-    QList<Square*> findMoves(Piece& forPiece) const override;
-    QList<Square*> findAttacks(Piece& forPiece) const override;
+protected:
+    QList<Square*> findMovesSafe(Piece& forPiece) const override;
+    QList<Square*> findAttacksSafe(Piece& forPiece) const override;
 
-private:
     Square* nextMovement(const Color ownColor, Square* basePosition) const;
     Square* nextRightAttack(const Color ownColor, Square* basePosition) const;
     Square *nextLeftAttack(const Color ownColor, Square* basePosition) const;
-
-private:
-    Chessboard& m_board;
 };
 
 } // namespace Chess

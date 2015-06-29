@@ -35,23 +35,14 @@ namespace Chess
 {
 
 PawnRule::PawnRule(Chessboard &board, QObject* parent)
-    : IMovementRule(parent)
-    , m_board(board)
+    : BaseRule(board, parent)
 {
 }
 
-QList<Square *> PawnRule::findMoves(Piece &forPiece) const
+QList<Square *> PawnRule::findMovesSafe(Piece &forPiece) const
 {
-    Square *currentPosition = forPiece.atSquare();
-    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
-
     QList<Square *> result;
-    if (!m_board.contains(currentPosition))
-    {
-        qWarning() << "currentPosition doesn't belong to specified board";
-        return result;
-    }
-
+    Square *currentPosition = forPiece.atSquare();
     Square* shortMovement = nextMovement(forPiece.color(), currentPosition);
     if (shortMovement == nullptr)
     {
@@ -85,12 +76,10 @@ QList<Square *> PawnRule::findMoves(Piece &forPiece) const
     return result;
 }
 
-QList<Square *> PawnRule::findAttacks(Piece &forPiece) const
+QList<Square *> PawnRule::findAttacksSafe(Piece &forPiece) const
 {
-    Square *currentPosition = forPiece.atSquare();
-    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
-
     QList<Square *> result;
+    Square *currentPosition = forPiece.atSquare();
     Square* rightAttack = nextRightAttack(forPiece.color(), currentPosition);
     if (rightAttack != nullptr && !rightAttack->isEmpty())
     {

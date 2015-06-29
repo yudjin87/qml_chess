@@ -27,27 +27,21 @@
 #ifndef ROOKRULE_H
 #define ROOKRULE_H
 
-#include "game/Rules/IMovementRule.h"
+#include "game/Rules/BaseRule.h"
 
 namespace Chess
 {
 
 class Chessboard;
 
-class GAME_API RookRule : public IMovementRule
+class GAME_API RookRule : public BaseRule
 {
 public:
     RookRule(Chessboard& board, QObject* parent = nullptr);
 
-    QList<Square*> findMoves(Piece& forPiece) const override;
-    QList<Square*> findAttacks(Piece& forPiece) const override;
-
-private:
-    typedef Square*(Square::*DirectionFunc)();
-    Square* nextMovement(Square* base, DirectionFunc dirFunc) const;
-
-private:
-    Chessboard& m_board;
+protected:
+    QList<Square*> findMovesSafe(Piece& forPiece) const override;
+    QList<Square*> findAttacksSafe(Piece& forPiece) const override;
 };
 
 } // namespace Chess

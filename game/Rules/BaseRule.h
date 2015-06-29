@@ -24,26 +24,35 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef BISHOPRULE_H
-#define BISHOPRULE_H
+#ifndef BASERULE_H
+#define BASERULE_H
 
-#include "game/Rules/BaseRule.h"
+#include "game/Rules/IMovementRule.h"
 
 namespace Chess
 {
 
 class Chessboard;
 
-class GAME_API BishopRule : public BaseRule
+class GAME_API BaseRule : public IMovementRule
 {
 public:
-    BishopRule(Chessboard& board, QObject* parent = nullptr);
+    QList<Square*> findMoves(Piece& forPiece) const override final;
+    QList<Square*> findAttacks(Piece& forPiece) const override final;
 
 protected:
-    QList<Square*> findMovesSafe(Piece& forPiece) const override;
-    QList<Square*> findAttacksSafe(Piece& forPiece) const override;
+    BaseRule(Chessboard& board, QObject* parent = nullptr);
+
+    virtual QList<Square*> findMovesSafe(Piece& forPiece) const = 0;
+    virtual QList<Square*> findAttacksSafe(Piece& forPiece) const = 0;
+
+    typedef Square*(Square::*DirectionFunc)();
+    Square* nextMovement(Square* base, DirectionFunc dirFunc) const;
+
+private:
+    Chessboard& m_board;
 };
 
 } // namespace Chess
 
-#endif // BISHOPRULE_H
+#endif // BASERULE_H
