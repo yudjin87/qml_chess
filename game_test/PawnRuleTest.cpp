@@ -86,7 +86,7 @@ void PawnRuleTest::shouldReturnEmptyListIfMovementIsNotPossible()
     Chess::Piece blockedPiece(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
     board.putPiece(Chess::Position::E4(), &blockedPiece);
 
-    Chess::PawnRule *rule = new Chess::PawnRule(board); // TODO: use factory
+    Chess::PawnRule *rule = new Chess::PawnRule(board);
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E3(), &piece);
     QList<Chess::Square*> moves = rule->findMoves(piece);

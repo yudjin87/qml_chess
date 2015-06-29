@@ -52,7 +52,7 @@ Position Position::fromString(const QString &string, bool *error)
         return Position::A1();
     }
 
-    // TODO: use Qt enums for parsing...
+    // Use Qt enums for parsing...
 
     const QChar fileChar = string[0];
     const int file = fileChar.toLatin1() - 'A';

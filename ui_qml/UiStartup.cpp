@@ -42,11 +42,40 @@
 
 namespace UiQml
 {
+namespace
+{
+bool registerTypes();
+}
 
 UiStartup::UiStartup(QObject *parent)
     : QObject(parent)
 {
-    // TODO: move to static function
+    static const bool oneTimeRegistering = registerTypes();
+    (void) oneTimeRegistering;
+}
+
+bool UiStartup::showQmlWindow()
+{
+    QQmlApplicationEngine *engine = new QQmlApplicationEngine(this);
+    QQmlContext *qmlcontext = engine->rootContext();
+    if (qmlcontext == nullptr)
+    {
+        qCritical() << "Cannot get QML context";
+        return false;
+    }
+
+    Chess::ChessGame* game = new Chess::ChessGame(this);
+    qmlcontext->setContextProperty("game", game);
+
+    engine->load(QUrl(QStringLiteral("qrc:/ui_qml/qml/main.qml")));
+
+    return true;
+}
+
+namespace
+{
+bool registerTypes()
+{
     qmlRegisterUncreatableType<Chess::ChessGame>("Chess", 1, 0, "ChessGame", "Use 'game' object");
     qmlRegisterUncreatableType<Chess::Chessboard>("Chess", 1, 0, "Chessboard", "Get it from 'game' object");
     qmlRegisterUncreatableType<Chess::Piece>("Chess", 1, 0, "Piece", "Get it from 'chessBoard' object");
@@ -63,26 +92,12 @@ UiStartup::UiStartup(QObject *parent)
     qRegisterMetaType<Chess::GameMode>("Chess::GameMode");
 
     qmlRegisterType<UiQml::PieceItem>("ChessUi", 1, 0, "PieceItem");
-}
-
-bool UiStartup::showQmlWindow()
-{
-    // TODO: clean me up
-    QQmlApplicationEngine *engine = new QQmlApplicationEngine(this);
-    QQmlContext *qmlcontext = engine->rootContext();
-    if (qmlcontext == nullptr)
-    {
-        qCritical() << "Cannot get QML context";
-        return false;
-    }
-
-    Chess::ChessGame* game = new Chess::ChessGame(this);
-    qmlcontext->setContextProperty("game", game);
-
-    engine->load(QUrl(QStringLiteral("qrc:/ui_qml/qml/main.qml")));
 
     return true;
 }
+
+}
+
 
 } // namespace UiQml
 

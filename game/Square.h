@@ -63,11 +63,11 @@ public:
     bool isEmpty() const;
 
 public slots:
+    Chess::Color color() const;
     int index() const;
     Chess::Piece* piece();
 
-    Chess::Color color() const; // TODO: property
-    QString toStr() const; // TODO: toString() prints address...
+    QString toStr() const; // toString() prints object address inside QML...
 
     // locations
     Square* left();

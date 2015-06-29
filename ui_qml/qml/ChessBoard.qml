@@ -100,7 +100,7 @@ Item {
                                 return;
 
                             console.log("onClicked: enter")
-                            //repaintBoard(); // TODO: too expensive
+                            //repaintBoard(); // too expensive
                             console.log("repaintBoard finished")
 
                             var square = game.board.squareByIdex(mapIndex(index));

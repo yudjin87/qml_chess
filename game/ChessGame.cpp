@@ -56,8 +56,10 @@ ChessGame::ChessGame(QObject *parent)
 
 ChessGame::~ChessGame()
 {
-    Q_ASSERT(!isRunning() && "Logic error: game wasn't stopped");
-    // TODO: stop() inside d.tor is RAII but looks unsafe - client should stop it explicitly
+    if (isRunning())
+    {
+        qCritical() << "Logic error: game wasn't stopped";
+    }
 }
 
 bool ChessGame::isRunning() const
