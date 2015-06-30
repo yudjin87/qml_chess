@@ -35,10 +35,10 @@
 namespace Chess
 {
 
-class Square;
-class Piece;
-class SquareList;
+class AvailableMoves;
 class GameMovesRegistry;
+class Piece;
+class Square;
 
 class GAME_API Player : public QObject
 {
@@ -46,8 +46,8 @@ class GAME_API Player : public QObject
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(Chess::Color color READ color NOTIFY colorChanged)
     Q_PROPERTY(Chess::Piece* selectedPiece READ selectedPiece NOTIFY selectedPieceChanged)
-    Q_PROPERTY(Chess::SquareList* availableMovements READ availableMovements NOTIFY availableMovementsChanged)
-    Q_PROPERTY(Chess::SquareList* availableAttacks READ availableAttacks NOTIFY availableAttacksChanged)
+    Q_PROPERTY(Chess::AvailableMoves* availableMovements READ availableMovements NOTIFY availableMovementsChanged)
+    Q_PROPERTY(Chess::AvailableMoves* piecesUnderProtection READ piecesUnderProtection NOTIFY piecesUnderProtectionChanged)
 public:
     explicit Player(const Color color, GameMovesRegistry& movesRegistry, QObject *parent = nullptr);
 
@@ -56,21 +56,20 @@ public:
 
     Chess::Piece* selectedPiece();
 
-    Chess::SquareList* availableMovements();
-    Chess::SquareList* availableAttacks();
+    Chess::AvailableMoves* availableMovements();
+    Chess::AvailableMoves *piecesUnderProtection();
 
 public slots:
     void setName(QString name);
 
     bool selectPiece(Chess::Piece* piece);
-    void moveTo(Chess::Square* square);
-    void attack(Chess::Square* square);
+    void moveTo(Chess::Square *square);
 
 signals:
     void nameChanged(QString name);
     void colorChanged(Chess::Color color);
-    void availableMovementsChanged(Chess::SquareList* availableMovements);
-    void availableAttacksChanged(Chess::SquareList* availableAttacks);
+    void availableMovementsChanged(Chess::AvailableMoves* availableMovements);
+    void piecesUnderProtectionChanged(Chess::AvailableMoves* piecesUnderProtection);
 
     void selectedPieceChanged(Chess::Piece* selectedPiece);
 
@@ -82,8 +81,8 @@ private:
     GameMovesRegistry& m_movesRegistry;
     QString m_name;
     Chess::Piece* m_selectedPiece;
-    Chess::SquareList* m_availableMovements;
-    Chess::SquareList* m_availableAttacks;
+    Chess::AvailableMoves* m_availableMovements;
+    Chess::AvailableMoves* m_piecesUnderProtection;
 };
 
 } // namespace Chess

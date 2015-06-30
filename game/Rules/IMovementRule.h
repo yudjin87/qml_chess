@@ -28,6 +28,7 @@
 #define IMOVEMENTRULE_H
 
 #include "game/game_api.h"
+#include "game/Move.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -35,7 +36,6 @@
 namespace Chess
 {
 
-class Square;
 class Piece;
 
 class GAME_API IMovementRule : public QObject
@@ -43,8 +43,7 @@ class GAME_API IMovementRule : public QObject
 public:
     IMovementRule(QObject *parent = nullptr) : QObject(parent) {}
 
-    virtual QList<Square*> findMoves(Piece& forPiece) const = 0;
-    virtual QList<Square*> findAttacks(Piece& forPiece) const = 0;
+    virtual std::vector<Move::UPtr> findMoves(Piece& forPiece) const = 0;
 };
 
 } // namespace Chess

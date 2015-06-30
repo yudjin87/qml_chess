@@ -47,7 +47,7 @@ QueenRuleTest::QueenRuleTest(QObject *parent)
 //   ├───┼───┼───┼───┼───┼───┼───┼───┤
 // 6 │   │   │ x │ x │ x │   │   │   │  6
 //   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 5 │ x │ x │ x │ R │ x │ x │ x │ x │  5
+// 5 │ x │ x │ x │ Q │ x │ x │ x │ x │  5
 //   ├───┼───┼───┼───┼───┼───┼───┼───┤
 // 4 │   │   │ x │ x │ x │   │   │   │  4
 //   ├───┼───┼───┼───┼───┼───┼───┼───┤
@@ -66,8 +66,8 @@ void QueenRuleTest::shouldFindAllPossibleMovesOnEmptyBoard()
     Chess::Piece piece(Chess::PieceType::Queen, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::D5(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 14 + 13);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    QVERIFY(moves.size() == 14 + 13);
 }
 
 //     A   B   C   D   E   F   G   H
@@ -78,7 +78,7 @@ void QueenRuleTest::shouldFindAllPossibleMovesOnEmptyBoard()
 //   ├───┼───┼───┼───┼───┼───┼───┼───┤
 // 6 │   │   │ x │ x │ x │   │   │   │  6
 //   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 5 │   │   │ P │ R │ x │ x │ P │   │  5
+// 5 │   │   │ P │ Q │ x │ x │ P │   │  5
 //   ├───┼───┼───┼───┼───┼───┼───┼───┤
 // 4 │   │   │ x │ x │ x │   │   │   │  4
 //   ├───┼───┼───┼───┼───┼───┼───┼───┤
@@ -113,53 +113,13 @@ void QueenRuleTest::shouldFindAllPossibleMovesOnFilledBoard()
     Chess::Piece piece(Chess::PieceType::Queen, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::D5(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 7 + 11);
-}
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    size_t attacks = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Attack));
+    QVERIFY(attacks == 4);
 
-//     A   B   C   D   E   F   G   H
-//   ┌───┬───┬───┬───┬───┬───┬───┬───┐
-// 8 │   │   │   │ P │   │   │ x │   │  8
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 7 │   │ P │   │ x │   │ x │   │   │  7
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 6 │   │   │ x │ x │ x │   │   │   │  6
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 5 │   │   │ P │ R │ x │ x │ P │   │  5
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 4 │   │   │ x │ x │ x │   │   │   │  4
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 3 │   │ x │   │ x │   │ x │   │   │  3
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 2 │ x │   │   │ x │   │   │ x │   │  2
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 1 │   │   │   │ P │   │   │   │ x │  1
-//   └───┴───┴───┴───┴───┴───┴───┴───┘
-//     A   B   C   D   E   F   G   H
-//
-void QueenRuleTest::shouldFindAllPossibleAttacksOnBoard()
-{
-    Chess::Chessboard board;
+    size_t defends = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Defend));
+    QVERIFY(defends == 1);
 
-    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
-    board.putPiece(Chess::Position::D8(), &pawn1);
-
-    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board));
-    board.putPiece(Chess::Position::D1(), &pawn2);
-
-    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
-    board.putPiece(Chess::Position::G5(), &pawn3);
-
-    Chess::Piece pawn4(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
-    board.putPiece(Chess::Position::C5(), &pawn4);
-
-    Chess::Piece pawn5(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
-    board.putPiece(Chess::Position::B7(), &pawn5);
-
-    Chess::QueenRule* rule = new Chess::QueenRule(board);
-    Chess::Piece piece(Chess::PieceType::Queen, Chess::Color::White, &board, rule);
-    board.putPiece(Chess::Position::D5(), &piece);
-
-    QList<Chess::Square*> attacks = rule->findAttacks(piece);
-    QCOMPARE(attacks.size(), 4);
+    size_t movement = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Movement));
+    QVERIFY(movement == 18);
 }

@@ -37,17 +37,16 @@ class Chessboard;
 class GAME_API BaseRule : public IMovementRule
 {
 public:
-    QList<Square*> findMoves(Piece& forPiece) const override final;
-    QList<Square*> findAttacks(Piece& forPiece) const override final;
+    std::vector<Move::UPtr> findMoves(Piece& forPiece) const override final;
 
 protected:
     BaseRule(Chessboard& board, QObject* parent = nullptr);
 
-    virtual QList<Square*> findMovesSafe(Piece& forPiece) const = 0;
-    virtual QList<Square*> findAttacksSafe(Piece& forPiece) const = 0;
+    virtual std::vector<Move::UPtr> findMovesSafe(Piece& forPiece) const = 0;
 
     typedef Square*(Square::*DirectionFunc)();
     Square* nextMovement(Square* base, DirectionFunc dirFunc) const;
+    Move::UPtr createMove(Square* square, Piece& forPiece) const;
 
     Chessboard &board();
     const Chessboard &board() const;

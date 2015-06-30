@@ -24,60 +24,42 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#include "game/SquareList.h"
+#include "game/Move.h"
+#include "game/Square.h"
 
 namespace Chess
 {
 
-SquareList::SquareList(QObject *parent)
+Move::Move(const Type type, Square& square, QObject* parent)
     : QObject(parent)
-    , m_squares()
+    , m_square(square)
+    , m_type(type)
 {
 }
 
-Square *SquareList::at(const int index)
+Move::Type Move::type() const
 {
-    return const_cast<Square*>(const_cast<const SquareList*>(this)->at(index));
+    return m_type;
 }
 
-const Square *SquareList::at(const int index) const
+Square *Move::square()
 {
-    if (index < 0 || m_squares.size() <= index)
-    {
-        return nullptr;
-    }
-
-    return m_squares[index];
+    return &m_square;
 }
 
-void SquareList::append(Square *square)
+Position Move::position() const
 {
-    m_squares.append(square);
+    return m_square.position();
 }
 
-int SquareList::length() const
+ByTypePredicate::ByTypePredicate(const Move::Type type)
+    : m_type(type)
 {
-    return m_squares.size();
 }
 
-void SquareList::clear()
+bool ByTypePredicate::operator()(const Move::UPtr &m) const
 {
-    m_squares.clear();
-}
-
-void SquareList::reset(const QList<Square *> &squares)
-{
-    m_squares = squares;
-}
-
-bool SquareList::contains(Square *square) const
-{
-    return m_squares.contains(square);
-}
-
-int SquareList::size() const
-{
-    return m_squares.size();
+    return m->type() == m_type;
 }
 
 } // namespace Chess

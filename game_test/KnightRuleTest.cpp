@@ -66,8 +66,8 @@ void KnightRuleTest::shouldFindAllPossibleMovesOnEmptyBoard()
     Chess::Piece piece(Chess::PieceType::Knight, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::D4(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 8);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    QVERIFY(moves.size() == 8);
 }
 
 //     A   B   C   D   E   F   G   H
@@ -107,48 +107,13 @@ void KnightRuleTest::shouldFindAllPossibleMovesOnFilledBoard()
     Chess::Piece piece(Chess::PieceType::Knight, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::D4(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 5);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    size_t attacks = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Attack));
+    QVERIFY(attacks == 2);
+
+    size_t movement = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Movement));
+    QVERIFY(movement == 5);
+
+    size_t defends = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Defend));
+    QVERIFY(defends == 1);
 }
-
-//     A   B   C   D   E   F   G   H
-//   ┌───┬───┬───┬───┬───┬───┬───┬───┐
-// 8 │   │   │   │   │   │   │   │   │  8
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 7 │   │   │   │   │   │   │   │   │  7
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 6 │   │   │ x │   │ x │   │   │   │  6
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 5 │   │ P │   │   │   │ P │   │   │  5
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 4 │   │   │   │ K │   │   │   │   │  4
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 3 │   │ x │   │   │   │ x │   │   │  3
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 2 │   │   │ x │   │ P │   │   │   │  2
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 1 │   │   │   │   │   │   │   │   │  1
-//   └───┴───┴───┴───┴───┴───┴───┴───┘
-//     A   B   C   D   E   F   G   H
-//
-void KnightRuleTest::shouldFindAllPossibleAttacksOnBoard()
-{
-    Chess::Chessboard board;
-
-    Chess::Piece pawn1(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
-    board.putPiece(Chess::Position::E2(), &pawn1);
-
-    Chess::Piece pawn2(Chess::PieceType::Pawn, Chess::Color::White, &board, new Chess::PawnRule(board));
-    board.putPiece(Chess::Position::B5(), &pawn2);
-
-    Chess::Piece pawn3(Chess::PieceType::Pawn, Chess::Color::Black, &board, new Chess::PawnRule(board));
-    board.putPiece(Chess::Position::F5(), &pawn3);
-
-    Chess::KnightRule* rule = new Chess::KnightRule(board);
-    Chess::Piece piece(Chess::PieceType::Knight, Chess::Color::White, &board, rule);
-    board.putPiece(Chess::Position::D4(), &piece);
-
-    QList<Chess::Square*> attacks = rule->findAttacks(piece);
-    QCOMPARE(attacks.size(), 2);
-}
-

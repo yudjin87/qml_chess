@@ -39,207 +39,129 @@ QueenRule::QueenRule(Chessboard &board, QObject* parent)
 {
 }
 
-QList<Square *> QueenRule::findMovesSafe(Piece &forPiece) const
+std::vector<Move::UPtr> QueenRule::findMovesSafe(Piece &forPiece) const
 {
-    QList<Square *> result;
+    std::vector<Move::UPtr> result;
     Square *currentPosition = forPiece.atSquare();
+
     Square* bottomLeft = nextMovement(currentPosition, &Square::bottomLeft);
-    while ((bottomLeft != nullptr) && bottomLeft->isEmpty())
+    while (bottomLeft != nullptr)
     {
-        result.push_back(bottomLeft);
+        if (bottomLeft->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *bottomLeft));
+        }
+        else
+        {
+            result.push_back(Move::create((bottomLeft->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottomLeft));
+            break;
+        }
         bottomLeft = nextMovement(bottomLeft, &Square::bottomLeft);
     }
 
     Square* left = nextMovement(currentPosition, &Square::left);
-    while ((left != nullptr) && left->isEmpty())
+    while (left != nullptr)
     {
-        result.push_back(left);
+        if (left->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *left));
+        }
+        else
+        {
+            result.push_back(Move::create((left->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *left));
+            break;
+        }
         left = nextMovement(left, &Square::left);
     }
 
     Square* topLeft = nextMovement(currentPosition, &Square::topLeft);
-    while ((topLeft != nullptr) && topLeft->isEmpty())
+    while (topLeft != nullptr)
     {
-        result.push_back(topLeft);
+        if (topLeft->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *topLeft));
+        }
+        else
+        {
+            result.push_back(Move::create((topLeft->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *topLeft));
+            break;
+        }
         topLeft = nextMovement(topLeft, &Square::topLeft);
     }
 
     Square* top = nextMovement(currentPosition, &Square::top);
-    while ((top != nullptr) && top->isEmpty())
+    while (top != nullptr)
     {
-        result.push_back(top);
+        if (top->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *top));
+        }
+        else
+        {
+            result.push_back(Move::create((top->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *top));
+            break;
+        }
         top = nextMovement(top, &Square::top);
     }
 
     Square* topRight = nextMovement(currentPosition, &Square::topRight);
-    while ((topRight != nullptr) && topRight->isEmpty())
+    while (topRight != nullptr)
     {
-        result.push_back(topRight);
+        if (topRight->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *topRight));
+        }
+        else
+        {
+            result.push_back(Move::create((topRight->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *topRight));
+            break;
+        }
         topRight = nextMovement(topRight, &Square::topRight);
     }
 
     Square* right = nextMovement(currentPosition, &Square::right);
-    while ((right != nullptr) && right->isEmpty())
+    while (right != nullptr)
     {
-        result.push_back(right);
+        if (right->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *right));
+        }
+        else
+        {
+            result.push_back(Move::create((right->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *right));
+            break;
+        }
         right = nextMovement(right, &Square::right);
     }
 
     Square* bottomRight = nextMovement(currentPosition, &Square::bottomRight);
-    while ((bottomRight != nullptr) && bottomRight->isEmpty())
+    while (bottomRight != nullptr)
     {
-        result.push_back(bottomRight);
+        if (bottomRight->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *bottomRight));
+        }
+        else
+        {
+            result.push_back(Move::create((bottomRight->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottomRight));
+            break;
+        }
         bottomRight = nextMovement(bottomRight, &Square::bottomRight);
     }
 
     Square* bottom = nextMovement(currentPosition, &Square::bottom);
-    while ((bottom != nullptr) && bottom->isEmpty())
-    {
-        result.push_back(bottom);
-        bottom = nextMovement(bottom, &Square::bottom);
-    }
-
-    return result;
-}
-
-QList<Square *> QueenRule::findAttacksSafe(Piece &forPiece) const
-{
-    QList<Square *> result;
-    Square *currentPosition = forPiece.atSquare();
-    Square* bottomLeft = nextMovement(currentPosition, &Square::bottomLeft);
-    while ((bottomLeft != nullptr))
-    {
-        if (bottomLeft->isEmpty())
-        {
-            bottomLeft = nextMovement(bottomLeft, &Square::bottomLeft);
-            continue;
-        }
-
-        const Piece* piece = bottomLeft->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(bottomLeft);
-        }
-        break;
-    }
-
-    Square* left = nextMovement(currentPosition, &Square::left);
-    while ((left != nullptr))
-    {
-        if (left->isEmpty())
-        {
-            left = nextMovement(left, &Square::left);
-            continue;
-        }
-
-        const Piece* piece = left->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(left);
-        }
-        break;
-    }
-
-    Square* topLeft = nextMovement(currentPosition, &Square::topLeft);
-    while ((topLeft != nullptr))
-    {
-        if (topLeft->isEmpty())
-        {
-            topLeft = nextMovement(topLeft, &Square::topLeft);
-            continue;
-        }
-
-        const Piece* piece = topLeft->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(topLeft);
-        }
-        break;
-    }
-
-    Square* top = nextMovement(currentPosition, &Square::top);
-    while ((top != nullptr))
-    {
-        if (top->isEmpty())
-        {
-            top = nextMovement(top, &Square::top);
-            continue;
-        }
-
-        const Piece* piece = top->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(top);
-        }
-        break;
-    }
-
-    Square* topRight = nextMovement(currentPosition, &Square::topRight);
-    while ((topRight != nullptr))
-    {
-        if (topRight->isEmpty())
-        {
-            topRight = nextMovement(topRight, &Square::topRight);
-            continue;
-        }
-
-        const Piece* piece = topRight->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(topRight);
-        }
-        break;
-    }
-
-    Square* right = nextMovement(currentPosition, &Square::right);
-    while ((right != nullptr))
-    {
-        if (right->isEmpty())
-        {
-            right = nextMovement(right, &Square::right);
-            continue;
-        }
-
-        const Piece* piece = right->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(right);
-        }
-        break;
-    }
-
-    Square* bottomRight = nextMovement(currentPosition, &Square::bottomRight);
-    while ((bottomRight != nullptr))
-    {
-        if (bottomRight->isEmpty())
-        {
-            bottomRight = nextMovement(bottomRight, &Square::bottomRight);
-            continue;
-        }
-
-        const Piece* piece = bottomRight->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(bottomRight);
-        }
-        break;
-    }
-
-    Square* bottom = nextMovement(currentPosition, &Square::bottom);
-    while ((bottom != nullptr))
+    while (bottom != nullptr)
     {
         if (bottom->isEmpty())
         {
-            bottom = nextMovement(bottom, &Square::bottom);
-            continue;
+            result.push_back(Move::create(Move::Movement, *bottom));
         }
-
-        const Piece* piece = bottom->piece();
-        if (piece->color() != forPiece.color())
+        else
         {
-            result.push_back(bottom);
+            result.push_back(Move::create((bottom->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottom));
+            break;
         }
-        break;
+        bottom = nextMovement(bottom, &Square::bottom);
     }
 
     return result;

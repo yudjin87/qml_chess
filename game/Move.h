@@ -24,68 +24,70 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef PIECE_H
-#define PIECE_H
+#ifndef MOVE_H
+#define MOVE_H
 
 #include "game/game_api.h"
 #include "game/Color.h"
-#include "game/PieceType.h"
-#include "game/Move.h"
+#include "game/Position.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QList>
 
 #include <memory>
 
 namespace Chess
 {
 
-class IMovementRule;
-class Chessboard;
 class Square;
 
-class GAME_API Piece : public QObject
+class GAME_API Move : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(Chess::Color color READ color NOTIFY colorChanged)
+    Q_ENUMS(Type)
+    Q_PROPERTY(Type type READ type NOTIFY typeChanged)
+    Q_PROPERTY(Chess::Square* square READ square)
+public:
+    enum Type
+    {
+        Movement,
+        Attack,
+        Castling,
+        Defend
+    };
+
+    typedef std::unique_ptr<Move> UPtr;
 
 public:
-    typedef std::unique_ptr<Piece> UPtr;
+    Move(const Type type, Square& square, QObject* parent = nullptr);
 
-public:
-    Piece(const PieceType type, const Color color, Chessboard* board, IMovementRule* rule, QObject *parent = nullptr);
-    ~Piece();
+    template<class... TArgs>
+    static Move::UPtr create(TArgs&&... args)
+    {
+        return Move::UPtr(new Move(std::forward<TArgs>(args)...));
+    }
 
-    QString toString() const;
+    Type type() const;
+    Chess::Square* square();
 
-    PieceType type() const;
-    Color color() const;
-
-    Chessboard *board();
-    const Chessboard *board() const;
-
-    const Chess::Square* atSquare() const;
-
-    bool wasMoved() const;
-    void markAsMoved(bool moved);
-
-    std::vector<Move::UPtr> possibleMoves();
-
-public slots:
-    Chess::Square* atSquare();
+    Position position() const;
 
 signals:
-    void colorChanged(Chess::Color color);
+    void typeChanged(Type type);
 
 private:
-    const PieceType m_type;
-    const Color m_color;
-    Chessboard* m_board;
-    IMovementRule* m_movementRule;
-    bool m_wasMoved;
+    Square& m_square;
+    const Type m_type;
+};
+
+struct GAME_API ByTypePredicate
+{
+    ByTypePredicate(const Move::Type type);
+    bool operator()(const Move::UPtr& m) const;
+
+private:
+    const Move::Type m_type;
 };
 
 } // namespace Chess
 
-#endif // PIECE_H
+#endif // MOVE_H

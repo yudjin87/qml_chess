@@ -32,6 +32,7 @@
 #include <game/Piece.h>
 
 #include <QtTest/QtTest>
+#include <algorithm>
 
 PawnRuleTest::PawnRuleTest(QObject *parent)
     : QObject(parent)
@@ -45,9 +46,11 @@ void PawnRuleTest::shouldReturnMovesForInitialPosition()
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E2(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 2);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    QVERIFY(moves.size() == 2);
 
+    QVERIFY(moves[0]->type() == Chess::Move::Movement);
+    QVERIFY(moves[1]->type() == Chess::Move::Movement);
     QCOMPARE(moves[0]->position(), Chess::Position::E3());
     QCOMPARE(moves[1]->position(), Chess::Position::E4());
 }
@@ -59,9 +62,11 @@ void PawnRuleTest::shouldReturnMovesForInitialPositionForBlack()
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::Black, &board, rule);
     board.putPiece(Chess::Position::E7(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 2);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    QVERIFY(moves.size() == 2);
 
+    QVERIFY(moves[0]->type() == Chess::Move::Movement);
+    QVERIFY(moves[1]->type() == Chess::Move::Movement);
     QCOMPARE(moves[0]->position(), Chess::Position::E6());
     QCOMPARE(moves[1]->position(), Chess::Position::E5());
 }
@@ -74,9 +79,10 @@ void PawnRuleTest::shouldReturnMoveForNonInitialPosition()
     movedPiece.markAsMoved(true);
     board.putPiece(Chess::Position::E3(), &movedPiece);
 
-    QList<Chess::Square*> moves = rule->findMoves(movedPiece);
-    QCOMPARE(moves.size(), 1);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(movedPiece);
+    QVERIFY(moves.size() == 1);
 
+    QVERIFY(moves[0]->type() == Chess::Move::Movement);
     QCOMPARE(moves[0]->position(), Chess::Position::E4());
 }
 
@@ -89,8 +95,8 @@ void PawnRuleTest::shouldReturnEmptyListIfMovementIsNotPossible()
     Chess::PawnRule *rule = new Chess::PawnRule(board);
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E3(), &piece);
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 0);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    QVERIFY(moves.size() == 0);
 }
 
 //     A   B   C   D   E   G   G   F   H
@@ -123,8 +129,9 @@ void PawnRuleTest::shouldReturnAttacks()
     Chess::PawnRule *rule = new Chess::PawnRule(board);
     Chess::Piece piece(Chess::PieceType::Pawn, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E4(), &piece);
-    QList<Chess::Square*> attacks = rule->findAttacks(piece);
-    QCOMPARE(attacks.size(), 1);
-    QCOMPARE(attacks[0]->position(), Chess::Position::D5());
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+
+    size_t attacks = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Attack));
+    QVERIFY(attacks == 1);
 }
 

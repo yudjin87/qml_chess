@@ -26,7 +26,6 @@ SOURCES += Square.cpp \
     Piece.cpp \
     ChessGame.cpp \
     PieceType.cpp \
-    SquareList.cpp \
     Player.cpp \
     GameMode.cpp \
     Commands/GameMovementsWriter.cpp \
@@ -43,7 +42,9 @@ SOURCES += Square.cpp \
     Commands/CastlingCommand.cpp \
     Commands/BaseCommand.cpp \
     BoardCreator.cpp \
-    Rules/BaseRule.cpp
+    Rules/BaseRule.cpp \
+    Move.cpp \
+    AvailableMoves.cpp
 
 HEADERS += \
     Square.h \
@@ -57,7 +58,6 @@ HEADERS += \
     Piece.h \
     ChessGame.h \
     PieceType.h \
-    SquareList.h \
     Player.h \
     GameMode.h \
     Commands/GameMovementsWriter.h \
@@ -76,4 +76,6 @@ HEADERS += \
     Commands/CastlingCommand.h \
     Commands/BaseCommand.h \
     BoardCreator.h \
-    Rules/BaseRule.h
+    Rules/BaseRule.h \
+    Move.h \
+    AvailableMoves.h

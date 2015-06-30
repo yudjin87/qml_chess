@@ -24,44 +24,48 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef SQUARELIST_H
-#define SQUARELIST_H
+#ifndef AVAILABLEMOVES_H
+#define AVAILABLEMOVES_H
 
 #include "game/game_api.h"
+#include "game/Move.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QList>
+#include <vector>
 
 namespace Chess
 {
 
 class Square;
 
-class GAME_API SquareList : public QObject
+class GAME_API AvailableMoves : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int length READ length)
+
 public:
-    explicit SquareList(QObject *parent = nullptr);
+    explicit AvailableMoves(QObject* parent = nullptr);
 
-    const Chess::Square* at(const int index) const;
+    const Chess::Move* at(const size_t index) const;
+    size_t count(const Move::Type type) const;
 
-    void append(Chess::Square* square);
+    void append(Move::UPtr move);
 
     int length() const;
     void clear();
-    void reset(const QList<Square*>& squares);
-
 
 public slots:
     int size() const;
-    Chess::Square* at(const int index);
+    Chess::Move* at(const int index);
+    bool contains(Chess::Move* move) const;
     bool contains(Chess::Square* square) const;
+    Chess::Move* findMove(Chess::Square* square) const;
 
 private:
-    QList<Square*> m_squares;
+    std::vector<Move::UPtr> m_moves;
 };
 
 } // namespace Chess
 
-#endif // SQUARELIST_H
+
+#endif // AVAILABLEMOVES_H

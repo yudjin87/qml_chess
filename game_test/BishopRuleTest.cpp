@@ -66,11 +66,8 @@ void BishopRuleTest::shouldFindAllPossibleMovesOnEmptyBoard()
     Chess::Piece piece(Chess::PieceType::Bishop, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::D5(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 13);
-
-//    QCOMPARE(moves[0]->position(), Chess::Position::E3());
-    //    QCOMPARE(moves[1]->position(), Chess::Position::E4());
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    QVERIFY(moves.size() == 13);
 }
 
 //     A   B   C   D   E   F   G   H
@@ -113,8 +110,12 @@ void BishopRuleTest::shouldFindAllPossibleMovesOnFilledBoard()
     Chess::Piece piece(Chess::PieceType::Bishop, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E5(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 5);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    size_t attacks = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Attack));
+    QVERIFY(attacks == 3);
+
+    size_t movement = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Movement));
+    QVERIFY(movement == 5);
 }
 
 //     A   B   C   D   E   F   G   H
@@ -157,27 +158,7 @@ void BishopRuleTest::shouldFindAllPossibleAttacksOnBoard()
     Chess::Piece piece(Chess::PieceType::Bishop, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E5(), &piece);
 
-    QList<Chess::Square*> attacks = rule->findAttacks(piece);
-    QCOMPARE(attacks.size(), 3);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    size_t attacks = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Attack));
+    QVERIFY(attacks == 3);
 }
-
-//     A   B   C   D   E   F   G   H
-//   ┌───┬───┬───┬───┬───┬───┬───┬───┐
-// 8 │   │   │   │   │   │   │   │   │  8
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 7 │   │   │   │   │   │   │   │   │  7
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 6 │   │   │   │   │   │   │   │   │  6
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 5 │   │   │   │   │   │   │   │   │  5
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 4 │   │   │   │   │   │   │   │   │  4
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 3 │   │   │   │   │   │   │   │   │  3
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 2 │   │   │   │   │   │   │   │   │  2
-//   ├───┼───┼───┼───┼───┼───┼───┼───┤
-// 1 │   │   │   │   │   │   │   │   │  1
-//   └───┴───┴───┴───┴───┴───┴───┴───┘
-//     A   B   C   D   E   F   G   H
-//

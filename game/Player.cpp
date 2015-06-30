@@ -27,7 +27,8 @@
 #include "game/Player.h"
 #include "game/Piece.h"
 #include "game/Square.h"
-#include "game/SquareList.h"
+#include "game/Move.h"
+#include "game/AvailableMoves.h"
 #include "game/Commands/GameMovesRegistry.h"
 #include "game/Commands/AttackCommand.h"
 #include "game/Commands/MovementCommand.h"
@@ -43,8 +44,8 @@ Player::Player(const Color color, GameMovesRegistry &movesRegistry, QObject *par
     , m_movesRegistry(movesRegistry)
     , m_name("Player " + Chess::toString(color))
     , m_selectedPiece(nullptr)
-    , m_availableMovements(new SquareList(this))
-    , m_availableAttacks(new SquareList(this))
+    , m_availableMovements(new AvailableMoves(this))
+    , m_piecesUnderProtection(new AvailableMoves(this))
 {
 }
 
@@ -63,14 +64,9 @@ Piece *Player::selectedPiece()
     return m_selectedPiece;
 }
 
-SquareList *Player::availableMovements()
+AvailableMoves *Player::availableMovements()
 {
     return m_availableMovements;
-}
-
-SquareList *Player::availableAttacks()
-{
-    return m_availableAttacks;
 }
 
 void Player::setName(QString name)
@@ -88,13 +84,12 @@ bool Player::selectPiece(Piece* piece)
     {
         qDebug() << "Player: nothing to select";
         setSelectedPiece(nullptr);
-        m_availableMovements->clear();
-        availableMovementsChanged(m_availableMovements);
 
         // TODO: simplify
-        m_availableAttacks->clear();
-        availableAttacksChanged(m_availableAttacks);
-
+        m_availableMovements->clear();
+        availableMovementsChanged(m_availableMovements);
+        m_piecesUnderProtection->clear();
+        piecesUnderProtectionChanged(m_piecesUnderProtection);
         return false;
     }
 
@@ -104,22 +99,29 @@ bool Player::selectPiece(Piece* piece)
         setSelectedPiece(nullptr);
         m_availableMovements->clear();
         availableMovementsChanged(m_availableMovements);
-
-        m_availableAttacks->clear();
-        availableAttacksChanged(m_availableAttacks);
+        m_piecesUnderProtection->clear();
+        piecesUnderProtectionChanged(m_piecesUnderProtection);
         return false;
     }
 
     qDebug() << "Player: piece " << piece->toString() << " was selected";
 
     setSelectedPiece(piece);
-    const QList<Square*> moves = piece->possibleMoves();
-    m_availableMovements->reset(moves);
-    availableMovementsChanged(m_availableMovements);
+    m_availableMovements->clear();
+    m_piecesUnderProtection->clear();
 
-    const QList<Square*> attacks = piece->possibleAttacks();
-    m_availableAttacks->reset(attacks);
-    availableAttacksChanged(m_availableAttacks);
+    std::vector<Move::UPtr> moves = piece->possibleMoves();
+    for (auto it = std::begin(moves); it != std::end(moves); ++it)
+    {
+        Move::UPtr move = std::move(*it);
+        if (move->type() == Move::Defend)
+            m_piecesUnderProtection->append(std::move(move));
+        else
+            m_availableMovements->append(std::move(move));
+    }
+
+    availableMovementsChanged(m_availableMovements);
+    piecesUnderProtectionChanged(m_piecesUnderProtection);
     return true;
 }
 
@@ -132,23 +134,36 @@ void Player::moveTo(Square *square)
         return;
     }
 
-    if (!m_availableMovements->contains(square))
+    Move* move = m_availableMovements->findMove(square);
+    if (move == nullptr)
     {
         qWarning() << "Trying to move to illegal position. Aborted";
         return;
     }
 
-    MovementCommand::UPtr moveCmd = MovementCommand::create(square->position(), m_selectedPiece->atSquare()->position());
+    IMoveCommand::UPtr moveCmd;
+    switch (move->type())
+    {
+    case Move::Movement:
+        moveCmd = MovementCommand::create(square->position(), m_selectedPiece->atSquare()->position());
+        break;
+    case Move::Attack:
+        moveCmd = AttackCommand::create(square->position(), m_selectedPiece->atSquare()->position());
+        break;
+    case Move::Defend:
+        break;
+    case Move::Castling:
+        break;
+    }
+
     m_movesRegistry.push(std::move(moveCmd));
 
     setSelectedPiece(nullptr);
     m_availableMovements->clear();
     availableMovementsChanged(m_availableMovements);
-
-    m_availableAttacks->clear();
-    availableAttacksChanged(m_availableAttacks);
 }
 
+/*
 void Player::attack(Square *square)
 {
     Q_ASSERT(square != nullptr && "Logic error: Null pointer is not allowed");
@@ -158,23 +173,18 @@ void Player::attack(Square *square)
         return;
     }
 
-    if (!m_availableAttacks->contains(square))
-    {
-        qWarning() << "Trying to attack illegal position. Aborted";
-        return;
-    }
+//    AttackCommand::UPtr moveCmd = AttackCommand::create(square->position(), m_selectedPiece->atSquare()->position());
+//    m_movesRegistry.push(std::move(moveCmd));
 
-    AttackCommand::UPtr moveCmd = AttackCommand::create(square->position(), m_selectedPiece->atSquare()->position());
-    m_movesRegistry.push(std::move(moveCmd));
+//    // TODO: simplfy....
+//    setSelectedPiece(nullptr);
+//    m_availableMovements->clear();
+//    availableMovementsChanged(m_availableMovements);
 
-    // TODO: simplfy....
-    setSelectedPiece(nullptr);
-    m_availableMovements->clear();
-    availableMovementsChanged(m_availableMovements);
-
-    m_availableAttacks->clear();
-    availableAttacksChanged(m_availableAttacks);
+//    m_availableAttacks->clear();
+//    availableAttacksChanged(m_availableAttacks);
 }
+*/
 
 void Player::setSelectedPiece(Piece *selectedPiece)
 {
@@ -186,6 +196,12 @@ void Player::setSelectedPiece(Piece *selectedPiece)
     m_selectedPiece = selectedPiece;
     emit selectedPieceChanged(m_selectedPiece);
 }
+
+Chess::AvailableMoves *Player::piecesUnderProtection()
+{
+    return m_piecesUnderProtection;
+}
+
 
 
 } // namespace Chess

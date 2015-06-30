@@ -40,7 +40,7 @@ BaseRule::BaseRule(Chessboard &board, QObject* parent)
 {
 }
 
-QList<Square *> BaseRule::findMoves(Piece &forPiece) const
+std::vector<Move::UPtr> BaseRule::findMoves(Piece &forPiece) const
 {
     Square *currentPosition = forPiece.atSquare();
     Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
@@ -54,24 +54,25 @@ QList<Square *> BaseRule::findMoves(Piece &forPiece) const
     return findMovesSafe(forPiece);
 }
 
-QList<Square *> BaseRule::findAttacks(Piece &forPiece) const
-{
-    Square *currentPosition = forPiece.atSquare();
-    Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
-
-    if (!m_board.contains(currentPosition))
-    {
-        qWarning() << "currentPosition doesn't belong to specified board";
-        return {};
-    }
-
-    return findAttacksSafe(forPiece);
-}
-
 Square *BaseRule::nextMovement(Square *base, BaseRule::DirectionFunc dirFunc) const
 {
     Square* next = (base->*dirFunc)();
     return next;
+}
+
+Move::UPtr BaseRule::createMove(Square *square, Piece &forPiece) const
+{
+    if (square->isEmpty())
+    {
+        return Move::create(Move::Movement, *square);
+    }
+
+    if (square->piece()->color() != forPiece.color())
+    {
+        return Move::create(Move::Attack, *square);
+    }
+
+    return nullptr;
 }
 
 Chessboard &BaseRule::board()

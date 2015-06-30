@@ -41,8 +41,7 @@ public:
     PawnRule(Chessboard& board, QObject* parent = nullptr);
 
 protected:
-    QList<Square*> findMovesSafe(Piece& forPiece) const override;
-    QList<Square*> findAttacksSafe(Piece& forPiece) const override;
+    std::vector<Move::UPtr> findMovesSafe(Piece& forPiece) const override;
 
     Square* nextMovement(const Color ownColor, Square* basePosition) const;
     Square* nextRightAttack(const Color ownColor, Square* basePosition) const;

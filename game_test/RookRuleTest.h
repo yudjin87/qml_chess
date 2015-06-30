@@ -38,7 +38,6 @@ public:
 private slots:
     void shouldFindAllPossibleMovesOnEmptyBoard();
     void shouldFindAllPossibleMovesOnFilledBoard();
-    void shouldFindAllPossibleAttacksOnBoard();
 };
 
 #endif // ROOKRULETEST_H

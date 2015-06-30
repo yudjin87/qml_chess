@@ -111,13 +111,6 @@ Item {
                                 return;
                             }
 
-                            var availableAttacks = game.activePlayer.availableAttacks;
-                            if (availableAttacks.contains(square)) {
-                                game.activePlayer.attack(square);
-                                console.log("onClicked: exit")
-                                return;
-                            }
-
                             var piece = square.piece();
                             if (piece === null) {
                                 console.log("onClicked: exit")
@@ -134,15 +127,16 @@ Item {
                             //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
                             //console.log("Hello " + moves.length)
                             for (var i = 0; i < moves.length; ++i) {
-                                var s = moves.at(i);
-                                //console.log("     " + s.toStr());
-                                //repeater.itemAt(mapIndex(s.index())).color = "#220000FF"
-                            }
-
-                            var attacks = game.activePlayer.availableAttacks;
-                            for (i = 0; i < attacks.length; ++i) {
-                                s = attacks.at(i);
-                                //repeater.itemAt(mapIndex(s.index())).color = "#80FF0000"
+//                                var m = moves.at(i);
+//                                var s = m.square
+//                                if (m.type === 0)
+//                                    repeater.itemAt(mapIndex(s.index())).color = "#220000FF"
+//                                else if (m.type === 1)
+//                                    repeater.itemAt(mapIndex(s.index())).color = "#80FF0000"
+//                                else if (m.type === 2)
+//                                    repeater.itemAt(mapIndex(s.index())).color = "#8000FF00"
+//                                else if (m.type === 3)
+//                                    repeater.itemAt(mapIndex(s.index())).color = "#80F00F00"
                             }
 
                         }

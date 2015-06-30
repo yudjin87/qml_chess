@@ -40,141 +40,127 @@ KingRule::KingRule(Chessboard &board, QObject* parent)
 {
 }
 
-QList<Square *> KingRule::findMovesSafe(Piece &forPiece) const
+std::vector<Move::UPtr> KingRule::findMovesSafe(Piece &forPiece) const
 {
-    QList<Square *> result;
+    std::vector<Move::UPtr> result;
     Square *currentPosition = forPiece.atSquare();
     Square* bottomLeft = nextMovement(currentPosition, &Square::bottomLeft);
-    if ((bottomLeft != nullptr) && bottomLeft->isEmpty())
+    if (bottomLeft != nullptr)
     {
-        result.push_back(bottomLeft);
-        bottomLeft = nextMovement(bottomLeft, &Square::bottomLeft);
+        if (bottomLeft->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *bottomLeft));
+        }
+        else
+        {
+            result.push_back(Move::create((bottomLeft->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottomLeft));
+        }
     }
 
     Square* left = nextMovement(currentPosition, &Square::left);
-    if ((left != nullptr) && left->isEmpty())
+    if (left != nullptr)
     {
-        result.push_back(left);
-        left = nextMovement(left, &Square::left);
+        if (left->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *left));
+        }
+        else
+        {
+            result.push_back(Move::create((left->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *left));
+        }
     }
 
     Square* topLeft = nextMovement(currentPosition, &Square::topLeft);
-    if ((topLeft != nullptr) && topLeft->isEmpty())
+    if (topLeft != nullptr)
     {
-        result.push_back(topLeft);
-        topLeft = nextMovement(topLeft, &Square::topLeft);
+        if (topLeft->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *topLeft));
+        }
+        else
+        {
+            result.push_back(Move::create((topLeft->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *topLeft));
+        }
     }
 
     Square* top = nextMovement(currentPosition, &Square::top);
-    if ((top != nullptr) && top->isEmpty())
+    if (top != nullptr)
     {
-        result.push_back(top);
-        top = nextMovement(top, &Square::top);
+        if (top->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *top));
+        }
+        else
+        {
+            result.push_back(Move::create((top->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *top));
+        }
     }
 
     Square* topRight = nextMovement(currentPosition, &Square::topRight);
-    if ((topRight != nullptr) && topRight->isEmpty())
+    if (topRight != nullptr)
     {
-        result.push_back(topRight);
-        topRight = nextMovement(topRight, &Square::topRight);
+        if (topRight->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *topRight));
+        }
+        else
+        {
+            result.push_back(Move::create((topRight->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *topRight));
+        }
     }
 
     Square* right = nextMovement(currentPosition, &Square::right);
-    if ((right != nullptr) && right->isEmpty())
+    if (right != nullptr)
     {
-        result.push_back(right);
-        right = nextMovement(right, &Square::right);
+        if (right->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *right));
+        }
+        else
+        {
+            result.push_back(Move::create((right->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *right));
+        }
     }
 
     Square* bottomRight = nextMovement(currentPosition, &Square::bottomRight);
-    if ((bottomRight != nullptr) && bottomRight->isEmpty())
+    if (bottomRight != nullptr)
     {
-        result.push_back(bottomRight);
-        bottomRight = nextMovement(bottomRight, &Square::bottomRight);
+        if (bottomRight->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *bottomRight));
+        }
+        else
+        {
+            result.push_back(Move::create((bottomRight->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottomRight));
+        }
     }
 
     Square* bottom = nextMovement(currentPosition, &Square::bottom);
-    if ((bottom != nullptr) && bottom->isEmpty())
+    if (bottom != nullptr)
     {
-        result.push_back(bottom);
-        bottom = nextMovement(bottom, &Square::bottom);
+        if (bottom->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *bottom));
+        }
+        else
+        {
+            result.push_back(Move::create((bottom->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottom));
+        }
     }
 
-    result.append(findCastling(forPiece));
-    return result;
-}
-
-QList<Square *> KingRule::findAttacksSafe(Piece &forPiece) const
-{
-    QList<Square *> result;
-    Square *currentPosition = forPiece.atSquare();
-    Square* bottomLeft = nextMovement(currentPosition, &Square::bottomLeft);
-    if (bottomLeft != nullptr && !bottomLeft->isEmpty() && bottomLeft->piece()->color() != forPiece.color())
-    {
-        result.push_back(bottomLeft);
-    }
-
-    Square* left = nextMovement(currentPosition, &Square::left);
-    if (left != nullptr && !left->isEmpty() && left->piece()->color() != forPiece.color())
-    {
-        result.push_back(left);
-    }
-
-    Square* topLeft = nextMovement(currentPosition, &Square::topLeft);
-    if (topLeft != nullptr && !topLeft->isEmpty() && topLeft->piece()->color() != forPiece.color())
-    {
-        result.push_back(topLeft);
-    }
-
-    Square* top = nextMovement(currentPosition, &Square::top);
-    if (top != nullptr && !top->isEmpty() && top->piece()->color() != forPiece.color())
-    {
-        result.push_back(top);
-    }
-
-    Square* topRight = nextMovement(currentPosition, &Square::topRight);
-    if (topRight != nullptr && !topRight->isEmpty() && topRight->piece()->color() != forPiece.color())
-    {
-        result.push_back(topRight);
-    }
-
-    Square* right = nextMovement(currentPosition, &Square::right);
-    if (right != nullptr && !right->isEmpty() && right->piece()->color() != forPiece.color())
-    {
-        result.push_back(right);
-    }
-
-    Square* bottomRight = nextMovement(currentPosition, &Square::bottomRight);
-    if (bottomRight != nullptr && !bottomRight->isEmpty() && bottomRight->piece()->color() != forPiece.color())
-    {
-        result.push_back(bottomRight);
-    }
-
-    Square* bottom = nextMovement(currentPosition, &Square::bottom);
-    if (bottom != nullptr && !bottom->isEmpty() && bottom->piece()->color() != forPiece.color())
-    {
-        result.push_back(bottom);
-    }
-
-    return result;
-}
-
-QList<Square *> KingRule::findCastling(Piece &forPiece) const
-{
+    // castling
     if (forPiece.wasMoved())
     {
-        return {};
+        return result;
     }
 
-    Square *currentPosition = forPiece.atSquare();
-    QList<Square *> result;
     const Square *aRock = squareAtMyLine(forPiece.color(), File::A);
     if (!aRock->isEmpty() && !aRock->piece()->wasMoved()
             && currentPosition->left()->isEmpty()
             && currentPosition->left()->left()->isEmpty()
             && currentPosition->left()->left()->left()->isEmpty())
     {
-        result.push_back(currentPosition->left()->left());
+        result.push_back(Move::create(Move::Castling, *currentPosition->left()->left()));
     }
 
     const Square *hRock = squareAtMyLine(forPiece.color(), File::H);
@@ -182,7 +168,7 @@ QList<Square *> KingRule::findCastling(Piece &forPiece) const
             && currentPosition->right()->isEmpty()
             && currentPosition->right()->right()->isEmpty())
     {
-        result.push_back(currentPosition->right()->right());
+        result.push_back(Move::create(Move::Castling, *currentPosition->right()->right()));
     }
 
     return result;

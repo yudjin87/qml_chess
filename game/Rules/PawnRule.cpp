@@ -39,10 +39,24 @@ PawnRule::PawnRule(Chessboard &board, QObject* parent)
 {
 }
 
-QList<Square *> PawnRule::findMovesSafe(Piece &forPiece) const
+std::vector<Move::UPtr> PawnRule::findMovesSafe(Piece &forPiece) const
 {
-    QList<Square *> result;
+    std::vector<Move::UPtr> result;
     Square *currentPosition = forPiece.atSquare();
+    Square* rightAttack = nextRightAttack(forPiece.color(), currentPosition);
+    if (rightAttack != nullptr && !rightAttack->isEmpty())
+    {
+        const Piece* piece = rightAttack->piece();
+        result.push_back(Move::create((piece->color() == forPiece.color()) ? Move::Defend : Move::Attack, *rightAttack));
+    }
+
+    Square* leftAttack = nextLeftAttack(forPiece.color(), currentPosition);
+    if (leftAttack != nullptr && !leftAttack->isEmpty())
+    {
+        const Piece* piece = leftAttack->piece();
+        result.push_back(Move::create((piece->color() == forPiece.color()) ? Move::Defend : Move::Attack, *leftAttack));
+    }
+
     Square* shortMovement = nextMovement(forPiece.color(), currentPosition);
     if (shortMovement == nullptr)
     {
@@ -54,7 +68,7 @@ QList<Square *> PawnRule::findMovesSafe(Piece &forPiece) const
         return result;
     }
 
-    result.push_back(shortMovement); // TODO: check for possible check
+    result.push_back(Move::create(Move::Movement, *shortMovement)); // TODO: check for possible check
 
     if (forPiece.wasMoved())
     {
@@ -70,34 +84,7 @@ QList<Square *> PawnRule::findMovesSafe(Piece &forPiece) const
 
     if (longMovement->isEmpty())
     {
-        result.push_back(longMovement); // TODO: check for possible check
-    }
-
-    return result;
-}
-
-QList<Square *> PawnRule::findAttacksSafe(Piece &forPiece) const
-{
-    QList<Square *> result;
-    Square *currentPosition = forPiece.atSquare();
-    Square* rightAttack = nextRightAttack(forPiece.color(), currentPosition);
-    if (rightAttack != nullptr && !rightAttack->isEmpty())
-    {
-        const Piece* piece = rightAttack->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(rightAttack);
-        }
-    }
-
-    Square* leftAttack = nextLeftAttack(forPiece.color(), currentPosition);
-    if (leftAttack != nullptr && !leftAttack->isEmpty())
-    {
-        const Piece* piece = leftAttack->piece();
-        if (piece->color() != forPiece.color())
-        {
-            result.push_back(leftAttack);
-        }
+        result.push_back(Move::create(Move::Movement, *longMovement)); // TODO: check for possible check
     }
 
     return result;

@@ -42,11 +42,9 @@ public:
     KingRule(Chessboard& board, QObject* parent = nullptr);
 
 protected:
-    QList<Square*> findMovesSafe(Piece& forPiece) const override;
-    QList<Square*> findAttacksSafe(Piece& forPiece) const override;
+    std::vector<Move::UPtr> findMovesSafe(Piece& forPiece) const override;
 
 private:
-    QList<Square*> findCastling(Piece& forPiece) const;
     const Square* squareAtMyLine(const Color forColor, const File file) const;
 };
 

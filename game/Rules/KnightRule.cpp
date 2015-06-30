@@ -39,111 +39,104 @@ KnightRule::KnightRule(Chessboard &board, QObject* parent)
 {
 }
 
-QList<Square *> KnightRule::findMovesSafe(Piece &forPiece) const
+std::vector<Move::UPtr> KnightRule::findMovesSafe(Piece &forPiece) const
 {
-    QList<Square *> result;
+    std::vector<Move::UPtr> result;
     Square *currentPosition = forPiece.atSquare();
-    Square* pos = leftLeftTop(currentPosition);
-    if (pos != nullptr && pos->isEmpty())
+    if (Square* pos = leftLeftTop(currentPosition))
     {
-        result.push_back(pos);
+        if (pos->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *pos));
+        }
+        else
+        {
+            result.push_back(Move::create((pos->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *pos));
+        }
     }
 
-    pos = leftTopTop(currentPosition);
-    if (pos != nullptr && pos->isEmpty())
+    if (Square* pos = leftTopTop(currentPosition))
     {
-        result.push_back(pos);
+        if (pos->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *pos));
+        }
+        else
+        {
+            result.push_back(Move::create((pos->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *pos));
+        }
     }
 
-    pos = rightTopTop(currentPosition);
-    if (pos != nullptr && pos->isEmpty())
+    if (Square* pos = rightTopTop(currentPosition))
     {
-        result.push_back(pos);
+        if (pos->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *pos));
+        }
+        else
+        {
+            result.push_back(Move::create((pos->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *pos));
+        }
     }
 
-    pos = rightRightTop(currentPosition);
-    if (pos != nullptr && pos->isEmpty())
+    if (Square* pos = rightRightTop(currentPosition))
     {
-        result.push_back(pos);
+        if (pos->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *pos));
+        }
+        else
+        {
+            result.push_back(Move::create((pos->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *pos));
+        }
     }
 
-    pos = rightRightBot(currentPosition);
-    if (pos != nullptr && pos->isEmpty())
+    if (Square* pos = rightRightBot(currentPosition))
     {
-        result.push_back(pos);
+        if (pos->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *pos));
+        }
+        else
+        {
+            result.push_back(Move::create((pos->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *pos));
+        }
     }
 
-    pos = rightBotBot(currentPosition);
-    if (pos != nullptr && pos->isEmpty())
+    if (Square* pos = rightBotBot(currentPosition))
     {
-        result.push_back(pos);
+        if (pos->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *pos));
+        }
+        else
+        {
+            result.push_back(Move::create((pos->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *pos));
+        }
     }
 
-    pos = leftBotBot(currentPosition);
-    if (pos != nullptr && pos->isEmpty())
+    if (Square* pos = leftBotBot(currentPosition))
     {
-        result.push_back(pos);
+        if (pos->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *pos));
+        }
+        else
+        {
+            result.push_back(Move::create((pos->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *pos));
+        }
     }
 
-    pos = leftLeftBot(currentPosition);
-    if (pos != nullptr && pos->isEmpty())
+    if (Square* pos = leftLeftBot(currentPosition))
     {
-        result.push_back(pos);
-    }
-
-    return result;
-}
-
-QList<Square *> KnightRule::findAttacksSafe(Piece &forPiece) const
-{
-    QList<Square *> result;
-    Square *currentPosition = forPiece.atSquare();
-    Square* pos = leftLeftTop(currentPosition);
-    if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
-    {
-        result.push_back(pos);
-    }
-
-    pos = leftTopTop(currentPosition);
-    if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
-    {
-        result.push_back(pos);
-    }
-
-    pos = rightTopTop(currentPosition);
-    if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
-    {
-        result.push_back(pos);
-    }
-
-    pos = rightRightTop(currentPosition);
-    if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
-    {
-        result.push_back(pos);
-    }
-
-    pos = rightRightBot(currentPosition);
-    if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
-    {
-        result.push_back(pos);
-    }
-
-    pos = rightBotBot(currentPosition);
-    if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
-    {
-        result.push_back(pos);
-    }
-
-    pos = leftBotBot(currentPosition);
-    if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
-    {
-        result.push_back(pos);
-    }
-
-    pos = leftLeftBot(currentPosition);
-    if (pos != nullptr && !pos->isEmpty() && pos->piece()->color() != forPiece.color())
-    {
-        result.push_back(pos);
+        if (pos->isEmpty())
+        {
+            result.push_back(Move::create(Move::Movement, *pos));
+        }
+        else
+        {
+            result.push_back(Move::create((pos->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *pos));
+        }
     }
 
     return result;

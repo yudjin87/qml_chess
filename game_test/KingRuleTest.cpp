@@ -66,8 +66,8 @@ void KingRuleTest::shouldFindAllPossibleMovesOnEmptyBoard()
     Chess::Piece piece(Chess::PieceType::King, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::D5(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 8);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    QVERIFY(moves.size() == 8);
 }
 
 //     A   B   C   D   E   F   G   H
@@ -107,8 +107,15 @@ void KingRuleTest::shouldFindAllPossibleMovesOnFilledBoard()
     Chess::Piece piece(Chess::PieceType::King, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::D5(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 5);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    size_t attacks = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Attack));
+    QVERIFY(attacks == 2);
+
+    size_t movement = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Movement));
+    QVERIFY(movement == 5);
+
+    size_t defends = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Defend));
+    QVERIFY(defends == 1);
 }
 
 //     A   B   C   D   E   F   G   H
@@ -151,8 +158,15 @@ void KingRuleTest::shouldFindAllPossibleAttacksOnBoard()
     Chess::Piece piece(Chess::PieceType::King, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::D5(), &piece);
 
-    QList<Chess::Square*> attacks = rule->findAttacks(piece);
-    QCOMPARE(attacks.size(), 2);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    size_t attacks = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Attack));
+    QVERIFY(attacks == 2);
+
+    size_t movement = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Movement));
+    QVERIFY(movement == 5);
+
+    size_t defends = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Defend));
+    QVERIFY(defends == 1);
 }
 
 //     A   B   C   D   E   F   G   H
@@ -189,6 +203,10 @@ void KingRuleTest::shouldCheckForCastling()
     Chess::Piece piece(Chess::PieceType::King, Chess::Color::White, &board, rule);
     board.putPiece(Chess::Position::E1(), &piece);
 
-    QList<Chess::Square*> moves = rule->findMoves(piece);
-    QCOMPARE(moves.size(), 5 + 2);
+    std::vector<Chess::Move::UPtr> moves = rule->findMoves(piece);
+    size_t castling = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Castling));
+    QVERIFY(castling == 2);
+
+    size_t movement = std::count_if(std::begin(moves), std::end(moves), Chess::ByTypePredicate(Chess::Move::Movement));
+    QVERIFY(movement == 5);
 }

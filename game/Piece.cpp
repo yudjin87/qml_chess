@@ -80,15 +80,9 @@ Square *Piece::atSquare()
     return m_board->findSquare(this);
 }
 
-QList<Square *> Piece::possibleMoves()
+std::vector<Move::UPtr> Piece::possibleMoves()
 {
-    const QList<Square *> moves = m_movementRule->findMoves(*this);
-    return moves;
-}
-
-QList<Square *> Piece::possibleAttacks()
-{
-    return m_movementRule->findAttacks(*this);
+    return m_movementRule->findMoves(*this);
 }
 
 const Square *Piece::atSquare() const

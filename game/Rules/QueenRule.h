@@ -40,8 +40,7 @@ public:
     QueenRule(Chessboard& board, QObject* parent = nullptr);
 
 protected:
-    QList<Square*> findMovesSafe(Piece& forPiece) const override;
-    QList<Square*> findAttacksSafe(Piece& forPiece) const override;
+    std::vector<Move::UPtr> findMovesSafe(Piece& forPiece) const override;
 };
 
 } // namespace Chess
