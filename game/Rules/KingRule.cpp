@@ -28,6 +28,7 @@
 #include "game/Chessboard.h"
 #include "game/Piece.h"
 #include "game/Square.h"
+#include "game/Position.h"
 
 #include <QtCore/QDebug>
 
@@ -99,6 +100,7 @@ QList<Square *> KingRule::findMovesSafe(Piece &forPiece) const
         bottom = nextMovement(bottom, &Square::bottom);
     }
 
+    result.append(findCastling(forPiece));
     return result;
 }
 
@@ -155,6 +157,40 @@ QList<Square *> KingRule::findAttacksSafe(Piece &forPiece) const
     }
 
     return result;
+}
+
+QList<Square *> KingRule::findCastling(Piece &forPiece) const
+{
+    if (forPiece.wasMoved())
+    {
+        return {};
+    }
+
+    Square *currentPosition = forPiece.atSquare();
+    QList<Square *> result;
+    const Square *aRock = squareAtMyLine(forPiece.color(), File::A);
+    if (!aRock->isEmpty() && !aRock->piece()->wasMoved()
+            && currentPosition->left()->isEmpty()
+            && currentPosition->left()->left()->isEmpty()
+            && currentPosition->left()->left()->left()->isEmpty())
+    {
+        result.push_back(currentPosition->left()->left());
+    }
+
+    const Square *hRock = squareAtMyLine(forPiece.color(), File::H);
+    if (!hRock->isEmpty() && !hRock->piece()->wasMoved()
+            && currentPosition->right()->isEmpty()
+            && currentPosition->right()->right()->isEmpty())
+    {
+        result.push_back(currentPosition->right()->right());
+    }
+
+    return result;
+}
+
+const Square *KingRule::squareAtMyLine(const Color forColor, const File file) const
+{
+    return board().squareAt(Position(file, (forColor == Color::White) ? Rank::R1 : Rank::R8));
 }
 
 } // namespace Chess

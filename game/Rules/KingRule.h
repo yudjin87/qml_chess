@@ -28,6 +28,8 @@
 #define KINGRULE_H
 
 #include "game/Rules/BaseRule.h"
+#include "game/Color.h"
+#include "game/File.h"
 
 namespace Chess
 {
@@ -42,6 +44,10 @@ public:
 protected:
     QList<Square*> findMovesSafe(Piece& forPiece) const override;
     QList<Square*> findAttacksSafe(Piece& forPiece) const override;
+
+private:
+    QList<Square*> findCastling(Piece& forPiece) const;
+    const Square* squareAtMyLine(const Color forColor, const File file) const;
 };
 
 } // namespace Chess

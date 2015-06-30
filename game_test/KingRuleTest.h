@@ -39,6 +39,7 @@ private slots:
     void shouldFindAllPossibleMovesOnEmptyBoard();
     void shouldFindAllPossibleMovesOnFilledBoard();
     void shouldFindAllPossibleAttacksOnBoard();
+    void shouldCheckForCastling();
 };
 
 #endif // KINGRULETEST_H

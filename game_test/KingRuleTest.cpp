@@ -154,3 +154,41 @@ void KingRuleTest::shouldFindAllPossibleAttacksOnBoard()
     QList<Chess::Square*> attacks = rule->findAttacks(piece);
     QCOMPARE(attacks.size(), 2);
 }
+
+//     A   B   C   D   E   F   G   H
+//   ┌───┬───┬───┬───┬───┬───┬───┬───┐
+// 8 │   │   │   │   │   │   │   │   │  8
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 7 │   │   │   │   │   │   │   │   │  7
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 6 │   │   │   │   │   │   │   │   │  6
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 5 │   │   │   │   │   │   │   │   │  5
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 4 │   │   │   │   │   │   │   │   │  4
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 3 │   │   │   │   │   │   │   │   │  3
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 2 │   │   │   │ x │ x │ x │   │   │  2
+//   ├───┼───┼───┼───┼───┼───┼───┼───┤
+// 1 │ R │   │ x │ x │ K │ x │ x │ R │  1
+//   └───┴───┴───┴───┴───┴───┴───┴───┘
+//     A   B   C   D   E   F   G   H
+//
+void KingRuleTest::shouldCheckForCastling()
+{
+    Chess::Chessboard board;
+
+    Chess::Piece rook1(Chess::PieceType::Rook, Chess::Color::White, &board, new Chess::PawnRule(board));
+    board.putPiece(Chess::Position::H1(), &rook1);
+
+    Chess::Piece rook2(Chess::PieceType::Rook, Chess::Color::White, &board, new Chess::PawnRule(board));
+    board.putPiece(Chess::Position::A1(), &rook2);
+
+    Chess::KingRule* rule = new Chess::KingRule(board);
+    Chess::Piece piece(Chess::PieceType::King, Chess::Color::White, &board, rule);
+    board.putPiece(Chess::Position::E1(), &piece);
+
+    QList<Chess::Square*> moves = rule->findMoves(piece);
+    QCOMPARE(moves.size(), 5 + 2);
+}

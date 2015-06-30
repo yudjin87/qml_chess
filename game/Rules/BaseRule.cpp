@@ -74,4 +74,15 @@ Square *BaseRule::nextMovement(Square *base, BaseRule::DirectionFunc dirFunc) co
     return next;
 }
 
+Chessboard &BaseRule::board()
+{
+    return m_board;
+}
+
+const Chessboard &BaseRule::board() const
+{
+    return m_board;
+}
+
+
 } // namespace Chess

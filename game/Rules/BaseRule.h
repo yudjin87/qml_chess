@@ -49,6 +49,9 @@ protected:
     typedef Square*(Square::*DirectionFunc)();
     Square* nextMovement(Square* base, DirectionFunc dirFunc) const;
 
+    Chessboard &board();
+    const Chessboard &board() const;
+
 private:
     Chessboard& m_board;
 };
