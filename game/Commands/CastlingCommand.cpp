@@ -53,13 +53,96 @@ bool CastlingCommand::redo(Chessboard &board)
 
     Q_ASSERT(to->isEmpty() && "Runtime error: square is not empty. AttackCommand should be used");
     Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
-    return false;
+
+    Piece* kingPiece = from->piece();
+    if (kingPiece == nullptr)
+    {
+        qCritical() << "Castled King is absent";
+        return false;
+    }
+
+    if (kingPiece->type() != PieceType::King)
+    {
+        qCritical() << "Castled piece is not a King";
+        return false;
+    }
+
+    markAsMoved(*kingPiece);
+    board.removePiece(kingPiece);
+    board.putPiece(to, kingPiece);
+
+    Piece* rookPiece = board.squareAt(Position(to->file() == File::C ? File::A : File::H, to->rank()))->piece();
+    if (rookPiece == nullptr)
+    {
+        qCritical() << "Castling Rook is absent";
+        return false;
+    }
+
+    if (rookPiece->type() != PieceType::Rook)
+    {
+        qCritical() << "Castling piece is not a Rook";
+        return false;
+    }
+
+    // TODO: check for possible attack of intermediate squares
+    markAsMoved(*rookPiece);
+    board.removePiece(rookPiece);
+
+    Square* rookNewPlace = board.squareAt(Position(to->file() == File::C ? File::D : File::F, to->rank()));
+    board.putPiece(rookNewPlace, rookPiece);
+
+    qDebug() << "Castling: " << " " << from->toStr() << ":" << rookNewPlace->toStr();
+
+    return true;
 }
 
 bool CastlingCommand::undo(Chessboard &board)
 {
-    (void)board;
-    return false;
+    Square *to = board.squareAt(fromSquare());
+    Square *from = board.squareAt(toSquare());
+
+    Q_ASSERT(to->isEmpty() && "Runtime error: square is not empty. AttackCommand should be used");
+    Q_ASSERT(!from->isEmpty() && "Runtime error: square is empty");
+
+    Piece* kingPiece = from->piece();
+    if (kingPiece == nullptr)
+    {
+        qCritical() << "Castled King is absent";
+        return false;
+    }
+
+    if (kingPiece->type() != PieceType::King)
+    {
+        qCritical() << "Castled piece is not a King";
+        return false;
+    }
+
+    markAsMoved(*kingPiece);
+    board.removePiece(kingPiece);
+    board.putPiece(to, kingPiece);
+
+    Piece* rookPiece = board.squareAt(Position(from->file() == File::C ? File::D : File::F, from->rank()))->piece();
+    if (rookPiece == nullptr)
+    {
+        qCritical() << "Castling Rook is absent";
+        return false;
+    }
+
+    if (rookPiece->type() != PieceType::Rook)
+    {
+        qCritical() << "Castling piece is not a Rook";
+        return false;
+    }
+
+    markAsMoved(*rookPiece);
+    board.removePiece(rookPiece);
+
+    Square* rookNewPlace = board.squareAt(Position(from->file() == File::C ? File::A : File::H, from->rank()));
+    board.putPiece(rookNewPlace, rookPiece);
+
+    qDebug() << "Castling (Undo): " << " " << from->toStr() << ":" << rookNewPlace->toStr();
+
+    return true;
 }
 
 QString CastlingCommand::toString() const

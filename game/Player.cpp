@@ -31,6 +31,7 @@
 #include "game/AvailableMoves.h"
 #include "game/Commands/GameMovesRegistry.h"
 #include "game/Commands/AttackCommand.h"
+#include "game/Commands/CastlingCommand.h"
 #include "game/Commands/MovementCommand.h"
 
 #include <QtCore/QDebug>
@@ -142,6 +143,7 @@ void Player::moveTo(Square *square)
     }
 
     IMoveCommand::UPtr moveCmd;
+    // TODO: factory?
     switch (move->type())
     {
     case Move::Movement:
@@ -153,10 +155,14 @@ void Player::moveTo(Square *square)
     case Move::Defend:
         break;
     case Move::Castling:
+        moveCmd = CastlingCommand::create(square->position(), m_selectedPiece->atSquare()->position());
         break;
     }
 
-    m_movesRegistry.push(std::move(moveCmd));
+    if (moveCmd != nullptr)
+    {
+        m_movesRegistry.push(std::move(moveCmd));
+    }
 
     setSelectedPiece(nullptr);
     m_availableMovements->clear();

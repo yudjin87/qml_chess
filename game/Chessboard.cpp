@@ -156,7 +156,7 @@ Piece *Chessboard::takePiece(Square *square)
 
 void Chessboard::clear()
 {
-
+    // TODO: use clear here
 }
 
 } // namespace Chess
