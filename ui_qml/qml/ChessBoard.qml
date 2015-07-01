@@ -9,12 +9,12 @@ Item {
         return 64 - ((base + 1)* 8) + mod8;
     }
 
-    function repaintBoard() {
-        for (var i = 0; i < 64; ++i) {
-            repeater.itemAt(i).color =
-                    game.board.squareByIdex(mapIndex(i)).color() === 0 ? "#D18B47" : "#FFCE9E"
-        }
-    }
+//    function repaintBoard() {
+//        for (var i = 0; i < 64; ++i) {
+//            repeater.itemAt(i).color =
+//                    game.board.squareByIdex(mapIndex(i)).color() === 0 ? "#D18B47" : "#FFCE9E"
+//        }
+//    }
 
     id: root
     property int cellSize: width / 8
@@ -23,12 +23,10 @@ Item {
         id: boardConnection
         target: game.board
         onPieceAdded: {
-            //console.log("Added: " + piece.atSquare().toStr())
             repeater.itemAt(mapIndex(piece.atSquare().index())).piece = piece
         }
 
         onPieceRemoved: {
-            //console.log("Added: " + piece.atSquare().toStr())
             repeater.itemAt(mapIndex(piece.atSquare().index())).piece = null
         }
     }
@@ -52,22 +50,10 @@ Item {
 
                 Rectangle {
                     id: chessCell
-//                    property PieceItem pieceItem: null
                     anchors.fill: parent
                     color: game.board.squareByIdex(mapIndex(index)).color() === 0 ? "#D18B47" : "#FFCE9E"
-                    //color: chessBoard.squareByIdex(index).color() === 0 ? "black" : "white"
                     border.color: "black";
                     border.width: 1
-
-//                    onPieceItemChanged: {
-//                        if (pieceItem != null) {
-//                            chessCell.children = pieceItem
-//                            pieceItem.z = 1
-//                            pieceItem.anchors.fill = chessCell
-//                            pieceItem.width = chessCell.width
-//                            pieceItem.height = chessCell.height
-//                        }
-//                    }
                 }
 
                 PieceItem {
@@ -88,12 +74,6 @@ Item {
                         id: mouseSquareArea
                         anchors.fill: parent
                         hoverEnabled: true
-
-                        onEntered: {                            
-                        }
-
-                        onExited: {
-                        }
 
                         onClicked: {
                             if (!game.isRunning)
@@ -122,10 +102,7 @@ Item {
                                 return;
                             }
 
-                            //chessCell.color = "#800000FF"
                             var moves = game.activePlayer.availableMovements;
-                            //console.log("Hello " + chessBoard.squareByIdex(mapIndex(index)).toStr() + ", " + piece.possibleMoves().length)
-                            //console.log("Hello " + moves.length)
                             for (var i = 0; i < moves.length; ++i) {
 //                                var m = moves.at(i);
 //                                var s = m.square

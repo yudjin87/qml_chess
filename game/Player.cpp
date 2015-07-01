@@ -30,9 +30,7 @@
 #include "game/Move.h"
 #include "game/AvailableMoves.h"
 #include "game/Commands/GameMovesRegistry.h"
-#include "game/Commands/AttackCommand.h"
-#include "game/Commands/CastlingCommand.h"
-#include "game/Commands/MovementCommand.h"
+#include "game/Commands/CommandFactory.h"
 
 #include <QtCore/QDebug>
 
@@ -72,7 +70,9 @@ AvailableMoves *Player::availableMovements()
 void Player::setName(QString name)
 {
     if (m_name == name)
+    {
         return;
+    }
 
     m_name = name;
     emit nameChanged(name);
@@ -83,20 +83,14 @@ bool Player::selectPiece(Piece* piece)
     if (piece == nullptr)
     {
         qDebug() << "Player: nothing to select";
-        setSelectedPiece(nullptr);
-
-        // TODO: simplify
-        m_availableMovements->clear();
-        availableMovementsChanged(m_availableMovements);
+        deselectPiece();
         return false;
     }
 
     if (piece->color() != color())
     {
         qDebug() << "Player: wrong color";
-        setSelectedPiece(nullptr);
-        m_availableMovements->clear();
-        availableMovementsChanged(m_availableMovements);
+        deselectPiece();
         return false;
     }
 
@@ -133,23 +127,7 @@ void Player::moveTo(Square *square)
         return;
     }
 
-    IMoveCommand::UPtr moveCmd;
-    // TODO: factory?
-    switch (move->type())
-    {
-    case Move::Movement:
-        moveCmd = MovementCommand::create(square->position(), m_selectedPiece->atSquare()->position());
-        break;
-    case Move::Attack:
-        moveCmd = AttackCommand::create(square->position(), m_selectedPiece->atSquare()->position());
-        break;
-    case Move::Defend:
-        break;
-    case Move::Castling:
-        moveCmd = CastlingCommand::create(square->position(), m_selectedPiece->atSquare()->position());
-        break;
-    }
-
+    IMoveCommand::UPtr moveCmd = CommandFactory::create(move->type(), square->position(), m_selectedPiece->atSquare()->position());
     if (moveCmd != nullptr)
     {
         m_movesRegistry.push(std::move(moveCmd));
@@ -169,6 +147,13 @@ void Player::setSelectedPiece(Piece *selectedPiece)
 
     m_selectedPiece = selectedPiece;
     emit selectedPieceChanged(m_selectedPiece);
+}
+
+void Player::deselectPiece()
+{
+    setSelectedPiece(nullptr);
+    m_availableMovements->clear();
+    availableMovementsChanged(m_availableMovements);
 }
 
 } // namespace Chess

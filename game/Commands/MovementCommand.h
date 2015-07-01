@@ -37,7 +37,6 @@ class GAME_API MovementCommand : public BaseCommand
 {
 public:
     typedef std::unique_ptr<MovementCommand> UPtr;
-    static const char* NAME;
 
 public:
     MovementCommand();

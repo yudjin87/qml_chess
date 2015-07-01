@@ -101,30 +101,21 @@ ApplicationWindow {
                 }
             }
 
-//            Item {
-//                id: saveItem
-//                anchors.left: parent.left
-//                anchors.right: parent.right
-//                visible: ((game.isRunning) && (game.mode === 0))
             Label {
                 id: saveLabel
                 text: qsTr("Enter file name to save:")
-                //visible: game.isRunning
             }
 
             TextField {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 id: saveFileName
-                //visible: game.isRunning
             }
 
             Button {
                 id: saveButton
-                //visible: game.isRunning
                 anchors.left: parent.left
                 anchors.right: parent.right
-                //enabled: !chessController.gameRunning && chessController.movesNumber > 0
                 enabled: saveFileName.text.length > 0
                 text: qsTr("Save")
                 onClicked: {
@@ -132,7 +123,6 @@ ApplicationWindow {
                         game.save(saveFileName.text)
                 }
             }
-            //}
 
             Row {
                 id: gameControls

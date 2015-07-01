@@ -72,6 +72,7 @@ signals:
 
 private:
     void setSelectedPiece(Piece* selectedPiece);
+    void deselectPiece();
 
 private:
     const Color m_color;

@@ -48,7 +48,7 @@ QByteArray GameMovementsWriter::write(const std::vector<IMoveCommand::UPtr> &per
     {
         const IMoveCommand::UPtr& cmd = performedCmnds[i];
         QJsonObject jsonCmd;
-        jsonCmd.insert("CmdType", cmd->name());
+        jsonCmd.insert("CmdType", cmd->type());
         jsonCmd.insert("Index", static_cast<int>(i));
 
         QJsonObject move = cmd->write();

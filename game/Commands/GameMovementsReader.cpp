@@ -25,9 +25,7 @@
  * END_COMMON_COPYRIGHT_HEADER */
 
 #include "game/Commands/GameMovementsReader.h"
-#include "game/Commands/AttackCommand.h"
-#include "game/Commands/CastlingCommand.h"
-#include "game/Commands/MovementCommand.h"
+#include "game/Commands/CommandFactory.h"
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
@@ -61,25 +59,12 @@ std::vector<IMoveCommand::UPtr> GameMovementsReader::read(const QByteArray &load
     for (int i = 0; i < turnsJson.count(); ++i)
     {
         const QJsonObject turn = turnsJson.at(i).toObject();
-        const QString cmdName = turn.value("CmdType").toString();
+        const Move::Type cmdType = static_cast<Move::Type>(turn.value("CmdType").toInt(-1));
 
-        // Do something with it (Visitor?)
-        IMoveCommand::UPtr cmd;
-        if (cmdName == MovementCommand::NAME)
+        IMoveCommand::UPtr cmd = CommandFactory::create(cmdType);
+        if (cmd == nullptr)
         {
-            cmd.reset(new MovementCommand());
-        }
-        else if (cmdName == AttackCommand::NAME)
-        {
-            cmd.reset(new AttackCommand());
-        }
-        else if (cmdName == CastlingCommand::NAME)
-        {
-            cmd.reset(new CastlingCommand());
-        }
-        else
-        {
-            qCritical() << "Unknown command type" << cmdName;
+            qCritical() << "Unknown command type" << cmdType;
             return {};
         }
 

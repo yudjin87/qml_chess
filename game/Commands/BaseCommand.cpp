@@ -34,18 +34,18 @@
 namespace Chess
 {
 
-BaseCommand::BaseCommand(const QString &name)
+BaseCommand::BaseCommand(const Move::Type type)
     : IMoveCommand()
-    , m_name(name)
+    , m_type(type)
     , m_to(Position::A1())
     , m_from(Position::A1())
     , m_wasMoved(false)
 {
 }
 
-BaseCommand::BaseCommand(const QString &name, const Position &to, const Position &from)
+BaseCommand::BaseCommand(const Move::Type type, const Position &to, const Position &from)
     : IMoveCommand()
-    , m_name(name)
+    , m_type(type)
     , m_to(to)
     , m_from(from)
     , m_wasMoved(false)
@@ -74,9 +74,9 @@ Position BaseCommand::toSquare() const
 }
 
 
-QString BaseCommand::name() const
+Move::Type BaseCommand::type() const
 {
-    return m_name;
+    return m_type;
 }
 
 QString BaseCommand::toString() const

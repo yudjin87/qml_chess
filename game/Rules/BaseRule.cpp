@@ -42,6 +42,8 @@ BaseRule::BaseRule(Chessboard &board, QObject* parent)
 
 std::vector<Move::UPtr> BaseRule::findMoves(Piece &forPiece) const
 {
+    // TODO: check for possible "check" in all rules
+
     Square *currentPosition = forPiece.atSquare();
     Q_ASSERT(currentPosition != nullptr && "Null poiner is not allowed");
 

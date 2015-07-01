@@ -68,7 +68,7 @@ std::vector<Move::UPtr> PawnRule::findMovesSafe(Piece &forPiece) const
         return result;
     }
 
-    result.push_back(Move::create(Move::Movement, *shortMovement)); // TODO: check for possible check
+    result.push_back(Move::create(Move::Movement, *shortMovement));
 
     if (forPiece.wasMoved())
     {
@@ -84,7 +84,7 @@ std::vector<Move::UPtr> PawnRule::findMovesSafe(Piece &forPiece) const
 
     if (longMovement->isEmpty())
     {
-        result.push_back(Move::create(Move::Movement, *longMovement)); // TODO: check for possible check
+        result.push_back(Move::create(Move::Movement, *longMovement));
     }
 
     return result;

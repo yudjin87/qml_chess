@@ -34,16 +34,14 @@
 namespace Chess
 {
 
-const char* AttackCommand::NAME = "AttackCommand";
-
 AttackCommand::AttackCommand()
-    : BaseCommand(AttackCommand::NAME)
+    : BaseCommand(Move::Attack)
     , m_killedPiece(nullptr)
 {
 }
 
 AttackCommand::AttackCommand(const Position &to, const Position &from)
-    : BaseCommand(AttackCommand::NAME, to, from)
+    : BaseCommand(Move::Attack, to, from)
     , m_killedPiece(nullptr)
 {
 }

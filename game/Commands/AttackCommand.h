@@ -39,7 +39,6 @@ class GAME_API AttackCommand : public BaseCommand
 {
 public:
     typedef std::unique_ptr<AttackCommand> UPtr;
-    static const char* NAME;
 
 public:
     AttackCommand();

@@ -24,45 +24,20 @@
  *
  * END_COMMON_COPYRIGHT_HEADER */
 
-#ifndef BASECOMMAND_H
-#define BASECOMMAND_H
+#ifndef COMMANDFACTORY_H
+#define COMMANDFACTORY_H
 
 #include "game/Commands/IMoveCommand.h"
-#include "game/Position.h"
 
 namespace Chess
 {
 
-class Piece;
-
-class GAME_API BaseCommand : public IMoveCommand
+class GAME_API CommandFactory
 {
 public:
-    Move::Type type() const override;
-    QString toString() const override;
-
-    QJsonObject write() const override;
-    bool load(const QJsonObject move) override;
-
-    void setToSquare(const Position& toSquare);
-    void setFromSquare(const Position& fromSquare);
-
-    Position toSquare() const;
-    Position fromSquare() const;
-
-protected:
-    BaseCommand(const Move::Type type);
-    BaseCommand(const Move::Type type, const Position& toSquare, const Position& fromSquare);
-
-    void markAsMoved(Piece& piece);
-    void undoMarkingAsMoved(Piece& piece);
-
-private:
-    const Move::Type m_type;
-    Position m_to;
-    Position m_from;
-    bool m_wasMoved;
+    static IMoveCommand::UPtr create(const Move::Type movementType);
+    static IMoveCommand::UPtr create(const Move::Type movementType, const Position& to, const Position& from);
 };
 
 } // namespace Chess
-#endif // BASECOMMAND_H
+#endif // COMMANDFACTORY_H

@@ -34,15 +34,13 @@
 namespace Chess
 {
 
-const char* MovementCommand::NAME = "MovementCommand";
-
 MovementCommand::MovementCommand()
-    : BaseCommand(MovementCommand::NAME)
+    : BaseCommand(Move::Movement)
 {
 }
 
 MovementCommand::MovementCommand(const Position &to, const Position &from)
-    : BaseCommand(MovementCommand::NAME, to, from)
+    : BaseCommand(Move::Movement, to, from)
 {
 }
 

@@ -28,6 +28,7 @@
 #define IMOVECOMMAND
 
 #include "game/game_api.h"
+#include "game/Move.h"
 #include <QtCore/QJsonObject>
 
 #include <memory>
@@ -50,7 +51,7 @@ public:
     virtual bool redo(Chessboard& board) = 0;
     virtual bool undo(Chessboard& board) = 0;
 
-    virtual QString name() const = 0;
+    virtual Move::Type type() const = 0;
     virtual QString toString() const = 0;
 
     virtual QJsonObject write() const = 0;

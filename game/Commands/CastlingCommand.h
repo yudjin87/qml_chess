@@ -39,7 +39,6 @@ class GAME_API CastlingCommand : public BaseCommand
 {
 public:
     typedef std::unique_ptr<CastlingCommand> UPtr;
-    static const char* NAME;
 
 public:
     CastlingCommand();

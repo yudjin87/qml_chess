@@ -44,7 +44,8 @@ SOURCES += Square.cpp \
     BoardCreator.cpp \
     Rules/BaseRule.cpp \
     Move.cpp \
-    AvailableMoves.cpp
+    AvailableMoves.cpp \
+    Commands/CommandFactory.cpp
 
 HEADERS += \
     Square.h \
@@ -78,4 +79,5 @@ HEADERS += \
     BoardCreator.h \
     Rules/BaseRule.h \
     Move.h \
-    AvailableMoves.h
+    AvailableMoves.h \
+    Commands/CommandFactory.h

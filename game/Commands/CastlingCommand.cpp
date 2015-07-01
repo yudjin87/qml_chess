@@ -34,15 +34,13 @@
 namespace Chess
 {
 
-const char* CastlingCommand::NAME = "CastlingCommand";
-
 CastlingCommand::CastlingCommand()
-    : BaseCommand(CastlingCommand::NAME)
+    : BaseCommand(Move::Castling)
 {
 }
 
 CastlingCommand::CastlingCommand(const Position &to, const Position &from)
-    : BaseCommand(CastlingCommand::NAME, to, from)
+    : BaseCommand(Move::Castling, to, from)
 {
 }
 
