@@ -79,24 +79,16 @@ Item {
                             if (!game.isRunning)
                                 return;
 
-                            console.log("onClicked: enter")
                             //repaintBoard(); // too expensive
-                            console.log("repaintBoard finished")
 
                             var square = game.board.squareByIdex(mapIndex(index));
                             var availableMovements = game.activePlayer.availableMovements;
                             if (availableMovements.contains(square)) {
                                 game.activePlayer.moveTo(square);
-                                console.log("onClicked: exit")
                                 return;
                             }
 
                             var piece = square.piece();
-                            if (piece === null) {
-                                console.log("onClicked: exit")
-                                return;
-                            }
-
                             if (!game.activePlayer.selectPiece(piece)) {
                                 console.log("onClicked: exit")
                                 return;

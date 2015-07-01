@@ -18,13 +18,11 @@ DEFINES += UI_QML_LIB_IMPORT
 HEADERS += \
     UiStartup.h \
     ui_qml_api.h \
-    PieceItem.h \
-    ChessboardPresenter.h
+    PieceItem.h
 
 SOURCES += \
     UiStartup.cpp \
-    PieceItem.cpp \
-    ChessboardPresenter.cpp
+    PieceItem.cpp
 
 RESOURCES += \
     ui_qml.qrc
