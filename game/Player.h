@@ -47,7 +47,6 @@ class GAME_API Player : public QObject
     Q_PROPERTY(Chess::Color color READ color NOTIFY colorChanged)
     Q_PROPERTY(Chess::Piece* selectedPiece READ selectedPiece NOTIFY selectedPieceChanged)
     Q_PROPERTY(Chess::AvailableMoves* availableMovements READ availableMovements NOTIFY availableMovementsChanged)
-    Q_PROPERTY(Chess::AvailableMoves* piecesUnderProtection READ piecesUnderProtection NOTIFY piecesUnderProtectionChanged)
 public:
     explicit Player(const Color color, GameMovesRegistry& movesRegistry, QObject *parent = nullptr);
 
@@ -57,7 +56,6 @@ public:
     Chess::Piece* selectedPiece();
 
     Chess::AvailableMoves* availableMovements();
-    Chess::AvailableMoves *piecesUnderProtection();
 
 public slots:
     void setName(QString name);
@@ -69,7 +67,6 @@ signals:
     void nameChanged(QString name);
     void colorChanged(Chess::Color color);
     void availableMovementsChanged(Chess::AvailableMoves* availableMovements);
-    void piecesUnderProtectionChanged(Chess::AvailableMoves* piecesUnderProtection);
 
     void selectedPieceChanged(Chess::Piece* selectedPiece);
 
@@ -82,7 +79,6 @@ private:
     QString m_name;
     Chess::Piece* m_selectedPiece;
     Chess::AvailableMoves* m_availableMovements;
-    Chess::AvailableMoves* m_piecesUnderProtection;
 };
 
 } // namespace Chess

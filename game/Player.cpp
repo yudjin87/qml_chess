@@ -46,7 +46,6 @@ Player::Player(const Color color, GameMovesRegistry &movesRegistry, QObject *par
     , m_name("Player " + Chess::toString(color))
     , m_selectedPiece(nullptr)
     , m_availableMovements(new AvailableMoves(this))
-    , m_piecesUnderProtection(new AvailableMoves(this))
 {
 }
 
@@ -89,8 +88,6 @@ bool Player::selectPiece(Piece* piece)
         // TODO: simplify
         m_availableMovements->clear();
         availableMovementsChanged(m_availableMovements);
-        m_piecesUnderProtection->clear();
-        piecesUnderProtectionChanged(m_piecesUnderProtection);
         return false;
     }
 
@@ -100,8 +97,6 @@ bool Player::selectPiece(Piece* piece)
         setSelectedPiece(nullptr);
         m_availableMovements->clear();
         availableMovementsChanged(m_availableMovements);
-        m_piecesUnderProtection->clear();
-        piecesUnderProtectionChanged(m_piecesUnderProtection);
         return false;
     }
 
@@ -109,20 +104,16 @@ bool Player::selectPiece(Piece* piece)
 
     setSelectedPiece(piece);
     m_availableMovements->clear();
-    m_piecesUnderProtection->clear();
 
     std::vector<Move::UPtr> moves = piece->possibleMoves();
     for (auto it = std::begin(moves); it != std::end(moves); ++it)
     {
         Move::UPtr move = std::move(*it);
-        if (move->type() == Move::Defend)
-            m_piecesUnderProtection->append(std::move(move));
-        else
+        if (move->type() != Move::Defend)
             m_availableMovements->append(std::move(move));
     }
 
     availableMovementsChanged(m_availableMovements);
-    piecesUnderProtectionChanged(m_piecesUnderProtection);
     return true;
 }
 
@@ -169,29 +160,6 @@ void Player::moveTo(Square *square)
     availableMovementsChanged(m_availableMovements);
 }
 
-/*
-void Player::attack(Square *square)
-{
-    Q_ASSERT(square != nullptr && "Logic error: Null pointer is not allowed");
-    if (m_selectedPiece == nullptr)
-    {
-        qWarning() << "Piece wasn't selected - attack is aborted";
-        return;
-    }
-
-//    AttackCommand::UPtr moveCmd = AttackCommand::create(square->position(), m_selectedPiece->atSquare()->position());
-//    m_movesRegistry.push(std::move(moveCmd));
-
-//    // TODO: simplfy....
-//    setSelectedPiece(nullptr);
-//    m_availableMovements->clear();
-//    availableMovementsChanged(m_availableMovements);
-
-//    m_availableAttacks->clear();
-//    availableAttacksChanged(m_availableAttacks);
-}
-*/
-
 void Player::setSelectedPiece(Piece *selectedPiece)
 {
     if (selectedPiece == m_selectedPiece)
@@ -202,13 +170,6 @@ void Player::setSelectedPiece(Piece *selectedPiece)
     m_selectedPiece = selectedPiece;
     emit selectedPieceChanged(m_selectedPiece);
 }
-
-Chess::AvailableMoves *Player::piecesUnderProtection()
-{
-    return m_piecesUnderProtection;
-}
-
-
 
 } // namespace Chess
 

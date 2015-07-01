@@ -44,64 +44,23 @@ std::vector<Move::UPtr> BishopRule::findMovesSafe(Piece &forPiece) const
     std::vector<Move::UPtr> result;
 
     Square *currentPosition = forPiece.atSquare();
-    Square* bottomLeft = nextMovement(currentPosition, &Square::bottomLeft);
-    while (bottomLeft != nullptr)
+    BaseRule::DirectionFunc dirFuncs[] = {&Square::bottomLeft, &Square::topLeft, &Square::topRight, &Square::bottomRight};
+    for (BaseRule::DirectionFunc dirFunc : dirFuncs)
     {
-        if (bottomLeft->isEmpty())
+        Square* nextSquare = nextMovement(currentPosition, dirFunc);
+        while (nextSquare != nullptr)
         {
-            result.push_back(Move::create(Move::Movement, *bottomLeft));
+            if (nextSquare->isEmpty())
+            {
+                result.push_back(Move::create(Move::Movement, *nextSquare));
+            }
+            else
+            {
+                result.push_back(Move::create((nextSquare->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *nextSquare));
+                break;
+            }
+            nextSquare = nextMovement(nextSquare, dirFunc);
         }
-        else
-        {
-            result.push_back(Move::create((bottomLeft->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottomLeft));
-            break;
-        }
-        bottomLeft = nextMovement(bottomLeft, &Square::bottomLeft);
-    }
-
-    Square* topLeft = nextMovement(currentPosition, &Square::topLeft);
-    while (topLeft != nullptr)
-    {
-        if (topLeft->isEmpty())
-        {
-            result.push_back(Move::create(Move::Movement, *topLeft));
-        }
-        else
-        {
-            result.push_back(Move::create((topLeft->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *topLeft));
-            break;
-        }
-        topLeft = nextMovement(topLeft, &Square::topLeft);
-    }
-
-    Square* topRight = nextMovement(currentPosition, &Square::topRight);
-    while (topRight != nullptr)
-    {
-        if (topRight->isEmpty())
-        {
-            result.push_back(Move::create(Move::Movement, *topRight));
-        }
-        else
-        {
-            result.push_back(Move::create((topRight->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *topRight));
-            break;
-        }
-        topRight = nextMovement(topRight, &Square::topRight);
-    }
-
-    Square* bottomRight = nextMovement(currentPosition, &Square::bottomRight);
-    while (bottomRight != nullptr)
-    {
-        if (bottomRight->isEmpty())
-        {
-            result.push_back(Move::create(Move::Movement, *bottomRight));
-        }
-        else
-        {
-            result.push_back(Move::create((bottomRight->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottomRight));
-            break;
-        }
-        bottomRight = nextMovement(bottomRight, &Square::bottomRight);
     }
 
     return result;

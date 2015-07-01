@@ -43,64 +43,23 @@ std::vector<Move::UPtr> RookRule::findMovesSafe(Piece &forPiece) const
 {
     std::vector<Move::UPtr> result;
     Square *currentPosition = forPiece.atSquare();
-    Square* left = nextMovement(currentPosition, &Square::left);
-    while (left != nullptr)
+    BaseRule::DirectionFunc dirFuncs[] = {&Square::left, &Square::top, &Square::right, &Square::bottom};
+    for (BaseRule::DirectionFunc dirFunc : dirFuncs)
     {
-        if (left->isEmpty())
+        Square* nextSquare = nextMovement(currentPosition, dirFunc);
+        while (nextSquare != nullptr)
         {
-            result.push_back(Move::create(Move::Movement, *left));
+            if (nextSquare->isEmpty())
+            {
+                result.push_back(Move::create(Move::Movement, *nextSquare));
+            }
+            else
+            {
+                result.push_back(Move::create((nextSquare->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *nextSquare));
+                break;
+            }
+            nextSquare = nextMovement(nextSquare, dirFunc);
         }
-        else
-        {
-            result.push_back(Move::create((left->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *left));
-            break;
-        }
-        left = nextMovement(left, &Square::left);
-    }
-
-    Square* top = nextMovement(currentPosition, &Square::top);
-    while (top != nullptr)
-    {
-        if (top->isEmpty())
-        {
-            result.push_back(Move::create(Move::Movement, *top));
-        }
-        else
-        {
-            result.push_back(Move::create((top->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *top));
-            break;
-        }
-        top = nextMovement(top, &Square::top);
-    }
-
-    Square* right = nextMovement(currentPosition, &Square::right);
-    while (right != nullptr)
-    {
-        if (right->isEmpty())
-        {
-            result.push_back(Move::create(Move::Movement, *right));
-        }
-        else
-        {
-            result.push_back(Move::create((right->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *right));
-            break;
-        }
-        right = nextMovement(right, &Square::right);
-    }
-
-    Square* bottom = nextMovement(currentPosition, &Square::bottom);
-    while (bottom != nullptr)
-    {
-        if (bottom->isEmpty())
-        {
-            result.push_back(Move::create(Move::Movement, *bottom));
-        }
-        else
-        {
-            result.push_back(Move::create((bottom->piece()->color() == forPiece.color()) ? Move::Defend : Move::Attack, *bottom));
-            break;
-        }
-        bottom = nextMovement(bottom, &Square::bottom);
     }
 
     return result;
