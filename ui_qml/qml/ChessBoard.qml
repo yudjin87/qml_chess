@@ -89,8 +89,10 @@ Item {
                             }
 
                             var piece = square.piece();
+                            if (piece === null)
+                                return;
+
                             if (!game.activePlayer.selectPiece(piece)) {
-                                console.log("onClicked: exit")
                                 return;
                             }
 
