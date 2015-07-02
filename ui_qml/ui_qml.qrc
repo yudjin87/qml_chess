@@ -2,6 +2,9 @@
     <qresource prefix="/ui_qml">
         <file>qml/main.qml</file>
         <file>qml/ChessBoard.qml</file>
+        <file>qml/Screen1Ctrl.qml</file>
+        <file>qml/Screen2Ctrl.qml</file>
+        <file>qml/Screen3Ctrl.qml</file>
     </qresource>
     <qresource prefix="/ui_imgs">
         <file>images/bishop_black.svg</file>

@@ -41,28 +41,6 @@ ApplicationWindow {
     }
 
     Connections {
-        id: gameConnection
-        target: game
-        onModeChanged: {
-            switch (mode) {
-            case 0:
-                gameControls.visible = false
-                saveLabel.visible = true
-                saveButton.visible = true
-                saveFileName.visible = true
-                break;
-            case 1:
-                gameControls.visible = true
-                saveLabel.visible = false
-                saveButton.visible = false
-                saveFileName.visible = false
-                break;
-            }
-
-        }
-    }
-
-    Connections {
         id: movesRegistryConnection
         target: game.movesRegistry
         onExecutionFailed: {
@@ -70,81 +48,50 @@ ApplicationWindow {
         }
     }
 
+    Item {
+        id: screenStateChart
+        state: "screen1Ctrl"
+        states: [
+            State {
+                name: "screen1Ctrl"
+                PropertyChanges { target: screen1Ctrl; visible: true; enabled: true; restoreEntryValues: true }
+            },
+
+            State {
+                name: "screen2Ctrl"
+                PropertyChanges { target: screen2Ctrl; visible: true; enabled: true; restoreEntryValues: true }
+            },
+            State {
+                name: "screen3Ctrl"
+                PropertyChanges { target: screen3Ctrl; visible: true; enabled: true; restoreEntryValues: true }
+            }
+        ]
+    }
+
     RowLayout {
         anchors.fill: parent
         spacing: 10
 
-        Column {
-            id: buttons
+        ColumnLayout {
+            anchors.fill: parent
             spacing: 4
-            Button {
-                id: startButton
-                anchors.left: parent.left
-                anchors.right: parent.right
-                text: game.isRunning ? qsTr("Stop") : qsTr("Start new game")
-                onClicked: {
-                    if (game.isRunning)
-                        game.stop();
-                    else
-                        game.start();
-                }
-            }
-            Button {
-                id: loadButton
-                anchors.left: parent.left
-                anchors.right: parent.right
-                visible: !game.isRunning;
 
-                text: qsTr("Load")
-                onClicked: {
-                    fileOpenDialog.open()
-                }
+            Screen1Ctrl {
+                id: screen1Ctrl
+                enabled: false
+                visible: false
             }
 
-            Label {
-                id: saveLabel
-                text: qsTr("Enter file name to save:")
+            Screen2Ctrl {
+                id: screen2Ctrl
+                enabled: false
+                visible: false
             }
 
-            TextField {
-                anchors.left: parent.left
-                anchors.right: parent.right
-                id: saveFileName
-            }
-
-            Button {
-                id: saveButton
-                anchors.left: parent.left
-                anchors.right: parent.right
-                enabled: saveFileName.text.length > 0
-                text: qsTr("Save")
-                onClicked: {
-                    if (saveFileName.text != "")
-                        game.save(saveFileName.text)
-                }
-            }
-
-            Row {
-                id: gameControls
-                anchors.left: parent.left
-                anchors.right: parent.right
-                visible: false//game.mode === g
-                Button {
-                    id: prevButton
-                    enabled: game.movesRegistry.canUndo
-                    text: "Prev"
-                    onClicked: {
-                        game.movesRegistry.undo()
-                    }
-                }
-                Button {
-                    id: nextButton
-                    enabled: game.movesRegistry.canRedo
-                    text: "Next"
-                    onClicked: {
-                        game.movesRegistry.redo()
-                    }
-                }
+            Screen3Ctrl {
+                id: screen3Ctrl
+                enabled: false
+                visible: false
             }
         }
 
