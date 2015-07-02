@@ -41,6 +41,7 @@ namespace Chess
 class GAME_API Position
 {
 public:
+    Position(const int index);
     Position(const File file, const Rank rank);
 
     static Position fromString(const QString& string, bool *error);

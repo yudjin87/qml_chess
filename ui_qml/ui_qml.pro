@@ -19,12 +19,12 @@ HEADERS += \
     UiStartup.h \
     ui_qml_api.h \
     PieceItem.h \
-    ChessboardPresenter.h
+    ChessboardItem.h
 
 SOURCES += \
     UiStartup.cpp \
     PieceItem.cpp \
-    ChessboardPresenter.cpp
+    ChessboardItem.cpp
 
 RESOURCES += \
     ui_qml.qrc

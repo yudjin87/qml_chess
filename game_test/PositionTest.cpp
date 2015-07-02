@@ -202,3 +202,12 @@ void PositionTest::shouldParseFromString()
     QVERIFY(Chess::Position::H7() == Chess::Position::fromString("H7", &ok)); QVERIFY(ok);
     QVERIFY(Chess::Position::H8() == Chess::Position::fromString("H8", &ok)); QVERIFY(ok);
 }
+
+void PositionTest::shouldCreateFromIndex()
+{
+    Chess::Position a1(0);
+    QCOMPARE(a1, Chess::Position::A1());
+
+    Chess::Position h8(63);
+    QCOMPARE(h8, Chess::Position::H8());
+}

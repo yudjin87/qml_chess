@@ -26,6 +26,7 @@
 
 #include "ui_qml/UiStartup.h"
 #include "ui_qml/PieceItem.h"
+#include "ui_qml/ChessboardItem.h"
 
 #include "game/AvailableMoves.h"
 #include "game/Chessboard.h"
@@ -95,6 +96,7 @@ bool registerTypes()
     qRegisterMetaType<Chess::GameMode>("Chess::GameMode");
 
     qmlRegisterType<UiQml::PieceItem>("ChessUi", 1, 0, "PieceItem");
+    qmlRegisterType<UiQml::ChessboardItem>("ChessUi", 1, 0, "ChessboardItem");
 
     return true;
 }

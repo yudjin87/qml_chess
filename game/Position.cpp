@@ -37,6 +37,23 @@ namespace
 int compare(const Position &one, const Position &other);
 }
 
+Position::Position(const int index)
+    : m_file(File::A)
+    , m_rank(Rank::R1)
+{
+    if (index < 0 || 63 < index)
+    {
+        // T0DO: throw expection
+        qCritical() << "Invalid index " << index;
+    }
+
+    const int mod8 = index % 8;
+    const int base = index / 8;
+
+    m_rank = static_cast<Rank>(base);
+    m_file = static_cast<File>(mod8);
+}
+
 Position::Position(const File file, const Rank rank)
     : m_file(file)
     , m_rank(rank)

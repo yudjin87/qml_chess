@@ -42,6 +42,7 @@ private slots:
     void preIncrementTest();
     void loopTest();
     void shouldParseFromString();
+    void shouldCreateFromIndex();
 };
 
 #endif // POSITIONTEST_H

@@ -28,7 +28,8 @@
 #include "game/Piece.h"
 
 #include <QtGui/QPainter>
-#include <QtGui/QPainter>
+#include <QtGui/QBrush>
+#include <QtCore/QDebug>
 
 namespace UiQml
 {
@@ -48,7 +49,8 @@ void PieceItem::paint(QPainter *painter)
         return;
     }
 
-    painter->drawImage(boundingRect(), m_pieceImg);
+    qDebug() << "PieceItem::paint position: " << position() << boundingRect();
+    painter->drawImage(QPoint(0, 0), m_pieceImg);
 }
 
 Chess::Piece *PieceItem::piece()

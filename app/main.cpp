@@ -26,11 +26,15 @@
 
 #include "ui_qml/UiStartup.h"
 #include <QtGui/QGuiApplication>
+#include <QtCore/QThread>
+#include <QtCore/QDebug>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication a(argc, argv);
     UiQml::UiStartup startup;
+    qDebug() << "main thread" << QThread::currentThread()->objectName() << QThread::currentThread();
+
     if (!startup.showQmlWindow())
     {
         return 0;

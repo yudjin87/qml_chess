@@ -3,6 +3,7 @@ import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
+import ChessUi 1.0
 
 ApplicationWindow {
     id: mainWindow
@@ -148,12 +149,20 @@ ApplicationWindow {
             }
         }
 
-        ChessBoard {
+        ChessboardItem {
             id: board
             height: parent.height
             width: board.height
             anchors.right: parent.right
+            chessboard: game.board
         }
+
+//        ChessBoard {
+//            id: board
+//            height: parent.height
+//            width: board.height
+//            anchors.right: parent.right
+//        }
 
     }
 }
