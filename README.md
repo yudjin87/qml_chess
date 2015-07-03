@@ -4,4 +4,6 @@ Done:
 - simple chess rules
 - simple castling
 - game history saving/loading
+ 
+Was checked on Windows
 
